@@ -1,8 +1,8 @@
 const express = require('express');
 const pool = require('../db');
 const auth = require('../middleware/auth');
+const { sendHelpdeskNotification, sendHelpdeskConfirmation, sendTicketReply } = require('../utils/mailer'); // <-- THIS LINE IS MISSING
 const router = express.Router();
-
 /* ============ ADMIN GUARD ============ */
 function requireAdmin(req, res, next) {
   if (req.user.role !== 'admin') {

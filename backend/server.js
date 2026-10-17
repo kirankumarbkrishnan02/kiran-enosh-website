@@ -20,7 +20,7 @@ app.use(cookieParser());
 /* ============ CORS (Allows Localhost 5500 & 5501) ============ */
 /* ============ STRICT CORS SECURITY ============ */
 const allowedOrigins = [
-  'https://kiran-enosh-website-frontend.vercel.app', // Your live site
+  'https://https://kiranenosh.vercel.app', // Your live site
   'http://localhost:5500',                           // Local frontend
   'http://localhost:5501',                           // Local frontend (Live Server)
   'http://127.0.0.1:5500',                           // Local fallback

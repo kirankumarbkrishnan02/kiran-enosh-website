@@ -1,9 +1,7 @@
 const { google } = require('googleapis');
 require('dotenv').config();
 
-// ============================================================
-// SETUP GMAIL API (Using OAuth2)
-// ============================================================
+// Setup Google OAuth2 Client
 const OAuth2 = google.auth.OAuth2;
 
 const oauth2Client = new OAuth2(
@@ -56,11 +54,10 @@ async function sendMail({ to, subject, html }) {
 }
 
 // ============================================================
-// 1. HELPDESK: NOTIFY ADMIN
+// HELPDESK: NOTIFY ADMIN
 // ============================================================
 async function sendHelpdeskNotification({ student, subject, message, ticketId }) {
   const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
-
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f6f8fc; padding: 30px;">
       <h1 style="color: #ff7b00;">🎫 NEW HELPDESK TICKET #${ticketId}</h1>
@@ -72,12 +69,11 @@ async function sendHelpdeskNotification({ student, subject, message, ticketId })
       <p style="background: #fff; padding: 15px; border-left: 4px solid #4a90e2;">${message}</p>
     </div>
   `;
-
   return sendMail({ to: adminEmail, subject: `🎫 Helpdesk #${ticketId} - ${subject}`, html });
 }
 
 // ============================================================
-// 2. HELPDESK: CONFIRM TO STUDENT
+// HELPDESK: CONFIRM TO STUDENT
 // ============================================================
 async function sendHelpdeskConfirmation({ student, subject, ticketId }) {
   const html = `
@@ -88,12 +84,11 @@ async function sendHelpdeskConfirmation({ student, subject, ticketId }) {
       <p>Our team will get in touch with you at <strong>${student.email}</strong> and <strong>${student.phone}</strong> within 24 hours.</p>
     </div>
   `;
-
   return sendMail({ to: student.email, subject: `✅ We received your query #${ticketId}`, html });
 }
 
 // ============================================================
-// 3. HELPDESK: ADMIN REPLIES TO STUDENT
+// HELPDESK: ADMIN REPLIES TO STUDENT
 // ============================================================
 async function sendTicketReply({ to, name, subject, reply }) {
   const html = `
@@ -107,12 +102,11 @@ async function sendTicketReply({ to, name, subject, reply }) {
       </div>
     </div>
   `;
-
   return sendMail({ to: to, subject: `Reply to your ticket - Kiran Enosh`, html });
 }
 
 // ============================================================
-// 4. PASSWORD RESET (Optional)
+// PASSWORD RESET (Keep if used)
 // ============================================================
 async function sendPasswordResetEmail({ to, name, resetLink }) {
   const html = `<div><h1>Reset Password</h1><p>Hi ${name},</p><a href="${resetLink}">Click here</a></div>`;

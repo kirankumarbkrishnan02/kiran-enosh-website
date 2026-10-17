@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Manage Attendance | Kiran Enosh Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .admin-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+  .form-card { background: rgba(20,42,82,0.9); padding: 30px; border-radius: 15px; margin-bottom: 40px; border: 1px solid rgba(74,144,226,0.3); }
+  .form-row { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+  .form-row > * { flex: 1; min-width: 180px; padding: 12px 15px; border-radius: 10px; background: rgba(0,0,0,0.4); color: white; border: 1px solid #4a90e2; font-family: inherit; font-size: 14px; }
+  .btn-save { background: linear-gradient(135deg,#ff7b00,#ff5500); color: white; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+  .btn-save:hover { transform: translateY(-2px); }
+  
+  .table-wrapper { background: rgba(20,42,82,0.7); border-radius: 15px; overflow: auto; border: 1px solid rgba(74,144,226,0.3); }
+  .att-table { width: 100%; border-collapse: collapse; font-size: 14px; white-space: nowrap; }
+  .att-table th { padding: 15px; text-align: left; color: #ff7b00; font-size: 12px; text-transform: uppercase; background: rgba(255,123,0,0.05); border-bottom: 1px solid rgba(255,123,0,0.2); position: sticky; top: 0; }
+  .att-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #c3cce0; }
+  .att-table tr:hover { background: rgba(255,123,0,0.03); }
+  
+  .badge-pending { background: rgba(255,193,7,0.2); color: #ffc107; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-approved { background: rgba(34,197,94,0.2); color: #22c55e; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-rejected { background: rgba(239,68,68,0.2); color: #ef4444; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  
+  .action-btn { padding: 6px 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 12px; margin-right: 5px; font-family: inherit; }
+  .btn-approve { background: #22c55e; color: white; }
+  .btn-reject { background: #ef4444; color: white; }
+  
+  /* Stats row */
+  .stats-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat-box { background: rgba(0,0,0,0.3); padding: 15px 25px; border-radius: 10px; border: 1px solid rgba(74,144,226,0.3); }
+  .stat-box h4 { color: #7a89a8; font-size: 12px; margin-bottom: 5px; text-transform: uppercase; }
+  .stat-box p { color: #fff; font-size: 22px; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="admin-dashboard.html" class="nav-brand">
+    <img src="images/logo.png" alt="Kiran Enosh Logo" />
+    <div class="nav-brand-text">KIRAN ENOSH<span>ADMIN PANEL</span></div>
+  </a>
+  <a href="admin-dashboard.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Admin Home</a>
+</nav>
+
+<div class="dashboard-page">
+  <div class="admin-container">
+    <h2 class="section-title" style="text-align:left;font-size:28px;">Manage Live Sessions & Attendance</h2>
+
+    <!-- SET TODAY'S LINK -->
+    <div class="form-card">
+      <h3 style="color:#fff;font-size:18px;margin-bottom:5px;">Create Today's Live Session (Host: Kiran Kumar)</h3>
+      <p style="color:#7a89a8;font-size:13px;margin-bottom:15px;">Set the Google Meet link and password. Students will only see this for the selected date.</p>
+      
+      <div class="form-row">
+        <select id="adminCourseSelect">
+          <option value="">-- Select Course --</option>
+        </select>
+        <input type="text" id="meetLinkInput" placeholder="Google Meet Link (https://...)" />
+        <input type="text" id="meetPasswordInput" placeholder="Meet Password" />
+        <input type="date" id="sessionDateInput" />
+        <button class="btn-save" onclick="saveSessionLink()">Save Link</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <h4>Total Live Classes Held</h4>
+        <p id="totalClassesHeld">0</p>
+      </div>
+      <div class="stat-box">
+        <h4>Pending Approvals</h4>
+        <p id="totalPending" style="color:#ffc107;">0</p>
+      </div>
+    </div>
+
+    <!-- ATTENDANCE TABLE -->
+    <h3 style="color:#fff;font-size:20px;margin-bottom:15px;">Student Attendance Records</h3>
+    <div class="table-wrapper">
+      <table class="att-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th>Status</th>
+            <th>Overall Attendance (Attended / Held)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTable">
+          <tr><td colspan="7" style="text-align:center;padding:30px;color:#7a89a8;">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:5000/api';
+  
+  // Set today's date in the input
+  document.getElementById('sessionDateInput').value = new Date().toISOString().split('T')[0];
+
+  // Load courses for dropdown
+  fetch(`${API}/admin/courses`, { credentials: 'include' })
+    .then(r => r.json())
+    .then(data => {
+      const select = document.getElementById('adminCourseSelect');
+      data.courses.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.title;
+        opt.textContent = c.title;
+        select.appendChild(opt);
+      });
+    });
+
+  // Save Link
+  async function saveSessionLink() {
+    const course_name = document.getElementById('adminCourseSelect').value;
+    const meet_link = document.getElementById('meetLinkInput').value.trim();
+    const meet_password = document.getElementById('meetPasswordInput').value.trim();
+    const session_date = document.getElementById('sessionDateInput').value;
+
+    if (!course_name || !meet_link || !session_date) {
+      return alert('Please fill Course, Link, and Date.');
+    }
+
+    try {
+      const res = await fetch(`${API}/attendance/admin/session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ course_name, meet_link, meet_password, session_date })
+      });
+      const data = await res.json();
+      
+      if (!res.ok) return alert('❌ ' + data.error);
+      
+      alert('✅ Session link saved! Students can now see it.');
+      document.getElementById('meetLinkInput').value = ''; 
+      document.getElementById('meetPasswordInput').value = '';
+      loadAttendance(); // Refresh stats
+    } catch (err) {
+      console.error(err);
+      alert('Cannot reach server.');
+    }
+  }
+
+  // Load Attendance Table & Auto-Calculate Stats
+  async function loadAttendance() {
+    const tbody = document.getElementById('attendanceTable');
+    try {
+      const res = await fetch(`${API}/attendance/admin/attendance`, { credentials: 'include' });
+      const data = await res.json();
+
+      // Calculate totals
+      let totalHeld = 0;
+      let pendingCount = 0;
+      
+      // We use a Set to count unique dates where a class was held
+      const uniqueDates = new Set();
+      
+      if (data.attendance.length > 0) {
+        data.attendance.forEach(a => {
+          uniqueDates.add(a.session_date.split('T')[0]);
+          if (a.status === 'pending') pendingCount++;
+        });
+        totalHeld = uniqueDates.size;
+      }
+
+      document.getElementById('totalClassesHeld').textContent = totalHeld;
+      document.getElementById('totalPending').textContent = pendingCount;
+
+      if (!data.attendance.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#7a89a8;">No attendance records yet.</td></tr>';
+        return;
+      }
+
+      // Group by student to calculate their personal attendance ratio
+      const studentStats = {};
+      data.attendance.forEach(a => {
+        if (!studentStats[a.student_email]) {
+          studentStats[a.student_email] = { present: 0, total: 0 };
+        }
+        studentStats[a.student_email].total += 1;
+        if (a.status === 'approved') studentStats[a.student_email].present += 1;
+      });
+
+      tbody.innerHTML = data.attendance.map(a => {
+        let badgeClass = a.status === 'approved' ? 'badge-approved' : a.status === 'rejected' ? 'badge-rejected' : 'badge-pending';
+        let actionHtml = a.status === 'pending' 
+          ? `<button class="action-btn btn-approve" onclick="updateStatus(${a.id}, 'approved')">Approve</button>
+             <button class="action-btn btn-reject" onclick="updateStatus(${a.id}, 'rejected')">Reject</button>`
+          : `<span style="color:#7a89a8;font-size:12px;">Action Done</span>`;
+
+        // Get this student's ratio
+        const stats = studentStats[a.student_email];
+        const ratio = `${stats.present} / ${stats.total}`;
+        
+        // Highlight if they are below 75%
+        const ratioColor = (stats.present / stats.total) < 0.75 ? '#ef4444' : '#22c55e';
+
+        return `
+          <tr>
+            <td>${a.session_date.split('T')[0]}</td>
+            <td><strong>${a.student_name}</strong></td>
+            <td>${a.student_email}</td>
+            <td>${a.course_name}</td>
+            <td><span class="${badgeClass}">${a.status}</span></td>
+            <td><strong style="color:${ratioColor};">${ratio}</strong> Days</td>
+            <td>${actionHtml}</td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error(err);
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ff8a8a;">Error loading records.</td></tr>';
+    }
+  }
+
+  // Update Status
+  async function updateStatus(id, status) {
+    if (!confirm(`Are you sure you want to mark this as ${status}?`)) return;
+    try {
+      const res = await fetch(`${API}/attendance/admin/attendance/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        loadAttendance(); // reload table & recalculate
+      } else {
+        alert('Failed to update.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  loadAttendance();
+</script>
+
+</body>
+</html>

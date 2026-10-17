@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel | Kiran Enosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="icon" type="image/png" href="images/logo.png" />
+<style>
+  .admin-banner {
+    background: linear-gradient(135deg, rgba(255,123,0,0.25), rgba(10,77,166,0.25));
+    border: 1px solid rgba(255,123,0,0.4);
+    position: relative;
+  }
+  .search-wrapper { display: flex; gap: 12px; margin: 30px 0 20px; flex-wrap: wrap; }
+  .search-wrapper input {
+    flex: 1; min-width: 240px; padding: 14px 20px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(74,144,226,0.35);
+    border-radius: 12px; color: #fff; font-size: 15px; outline: none;
+    font-family: inherit;
+  }
+  .search-wrapper input:focus { border-color: #ff7b00; }
+  .search-wrapper select {
+    padding: 14px 20px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(74,144,226,0.35);
+    border-radius: 12px; color: #fff; font-size: 15px;
+    font-family: inherit; cursor: pointer; outline: none;
+  }
+  .search-wrapper select option { background: #0a1128; }
+
+  .table-wrapper {
+    background: linear-gradient(160deg, rgba(20,42,82,0.6), rgba(10,17,40,0.9));
+    border: 1px solid rgba(74,144,226,0.25);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+  }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .admin-table th {
+    padding: 18px 20px; text-align: left;
+    color: #ff7b00; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    background: rgba(255,123,0,0.08);
+    border-bottom: 1px solid rgba(255,123,0,0.2);
+  }
+  .admin-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #c3cce0;
+  }
+  .admin-table tr:last-child td { border-bottom: none; }
+  .admin-table tr:hover td { background: rgba(255,123,0,0.04); }
+
+  .role-badge {
+    display: inline-block; padding: 4px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .role-badge.admin {
+    background: rgba(255,123,0,0.2); color: #ff7b00;
+    border: 1px solid rgba(255,123,0,0.4);
+  }
+  .role-badge.student {
+    background: rgba(74,144,226,0.2); color: #7fb3ff;
+    border: 1px solid rgba(74,144,226,0.4);
+  }
+
+  .action-btn {
+    padding: 6px 14px;
+    background: rgba(255,60,60,0.15);
+    border: 1px solid rgba(255,60,60,0.4);
+    color: #ff8a8a; border-radius: 8px;
+    font-size: 12px; cursor: pointer;
+    transition: 0.3s; font-family: inherit;
+  }
+  .action-btn:hover { background: rgba(255,60,60,0.3); color: #fff; }
+
+  .empty-state { padding: 60px 20px; text-align: center; color: #7a89a8; }
+
+  @media (max-width: 768px) {
+    .admin-table { font-size: 12px; }
+    .admin-table th, .admin-table td { padding: 12px 10px; }
+    .hide-mobile { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.png" alt="Kiran Enosh Logo" />
+    <div class="nav-brand-text">
+      KIRAN ENOSH
+      <span>ADMIN PANEL</span>
+    </div>
+  </a>
+  <a href="#" id="logoutBtn" class="nav-cta" style="background:rgba(255,60,60,0.2);border:1px solid rgba(255,60,60,0.5);">Logout</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="dashboard-page">
+  <div class="dashboard-container">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner admin-banner">
+      <h1>Admin Dashboard </h1>
+      <p>Welcome back, <strong id="adminName" style="color:#ff7b00;">Admin</strong>. Here's your institute overview.</p>
+    </div>
+
+    <div class="dashboard-grid" style="margin-bottom:50px;">
+  
+  <!-- Clickable: Total Users -->
+  <a href="admin.html" class="dash-card" style="text-decoration:none; color:inherit; display:block; cursor:pointer; transition:0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+    <h3>👥 Total Users</h3>
+    <p class="big-number" id="totalUsers">—</p>
+    <p>Registered students &amp; admins</p>
+  </a>
+
+  <!-- Clickable: Active Courses -->
+  <a href="courses.html" class="dash-card" style="text-decoration:none; color:inherit; display:block; cursor:pointer; transition:0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+    <h3>📚 Active Courses</h3>
+    <p class="big-number" id="totalCourses">—</p>
+    <p>Programs currently offered</p>
+  </a>
+
+  <!-- Clickable: Enrollments -->
+  <!-- NOTE: This links to the Payments page for now. If you want a dedicated enrollment page later, change this href. -->
+  <a href="admin-payments.html" class="dash-card" style="text-decoration:none; color:inherit; display:block; cursor:pointer; transition:0.3s; border-color:#ff7b00;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+    <h3>🎓 Enrollments</h3>
+    <p class="big-number" id="totalEnrollments">—</p>
+    <p>Total course sign-ups</p>
+  </a>
+
+</div>
+
+    <!-- SEARCH & FILTER -->
+    <h2 class="section-title" style="text-align:left;font-size:26px;margin-bottom:8px;">All Users</h2>
+    <p style="color:#7a89a8;font-size:14px;margin-bottom:10px;">Manage student accounts and permissions</p>
+
+    <div class="search-wrapper">
+      <input type="text" id="searchInput" placeholder="🔍 Search by name, email, or phone..." />
+      <select id="roleFilter">
+        <option value="">All Roles</option>
+        <option value="student">Students Only</option>
+        <option value="admin">Admins Only</option>
+      </select>
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="table-wrapper">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th class="hide-mobile">Phone</th>
+            <th>Role</th>
+            <th class="hide-mobile">Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <tr><td colspan="7" class="empty-state">Loading users...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="text-align:center;color:#7a89a8;font-size:13px;margin-top:25px;">
+      Showing <span id="visibleCount">0</span> users
+    </p>
+
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script src="js/navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Course Details | Kiran Enosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .details-page { min-height: 100vh; padding: 120px 20px 60px; background: #0a1128; }
+  .details-container { max-width: 900px; margin: 0 auto; }
+  .hero-card { background: linear-gradient(160deg, rgba(20,42,82,0.9), rgba(10,17,40,0.95)); padding: 50px; border-radius: 25px; border: 1px solid rgba(74,144,226,0.3); text-align: center; margin-bottom: 40px; }
+  .hero-card h1 { font-size: 40px; color: #fff; margin-bottom: 15px; }
+  .hero-card .desc { color: #c3cce0; font-size: 18px; line-height: 1.6; margin-bottom: 30px; }
+  .badge-row { display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+  .badge { padding: 10px 20px; background: rgba(74,144,226,0.15); border: 1px solid #4a90e2; border-radius: 20px; color: #7fb3ff; font-weight: 600; }
+  
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(255,123,0, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(255,123,0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,123,0, 0); }
+  }
+  .btn-pay-now { display: inline-block; padding: 18px 45px; background: linear-gradient(135deg, #ff7b00, #ff5500); color: #fff; font-size: 20px; font-weight: 800; border-radius: 30px; text-decoration: none; border: none; cursor: pointer; animation: pulseGlow 2s infinite; transition: 0.3s; }
+  .btn-pay-now:hover { transform: scale(1.05); }
+  
+  .btn-whatsapp { display: inline-block; padding: 15px 35px; background: #25D366; color: #fff; font-size: 16px; font-weight: 700; border-radius: 30px; text-decoration: none; margin-left: 15px; transition: 0.3s; }
+  .btn-whatsapp:hover { background: #128C7E; }
+
+  #paymentSection { display: none; margin-top: 40px; animation: slideUp 0.6s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .pay-card { background: rgba(0,0,0,0.4); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+  .pay-title { text-align: center; color: #ffb347; font-size: 24px; margin-bottom: 25px; }
+  
+  .emi-box { background: rgba(74,144,226,0.1); border: 1px solid #4a90e2; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; }
+  .emi-box h4 { color: #fff; margin-bottom: 10px; font-size: 18px; }
+  .emi-amount { color: #22c55e; font-size: 26px; font-weight: 800; margin: 10px 0; }
+  .emi-desc { color: #c3cce0; font-size: 14px; line-height: 1.5; }
+  
+  .input-group { margin-bottom: 20px; text-align: center; }
+  .input-group label { display: block; color: #c3cce0; margin-bottom: 8px; font-size: 14px; }
+  .input-group input { width: 200px; padding: 12px; border-radius: 10px; border: 1px solid #4a90e2; background: #0a1128; color: white; font-size: 18px; text-align: center; font-weight: bold; }
+
+  .qr-container { text-align: center; margin-top: 25px; }
+  .qr-container img { max-width: 200px; border-radius: 15px; background: white; padding: 10px; }
+  
+  .btn-confirm-pay { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-size: 18px; font-weight: 700; border: none; border-radius: 12px; margin-top: 30px; cursor: pointer; transition: 0.3s; }
+  .btn-confirm-pay:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(34,197,94,0.4); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="courses.html" class="nav-brand">
+    <img src="images/logo.png" alt="Kiran Enosh Logo" />
+    <div class="nav-brand-text">KIRAN ENOSH<span>STUDENT PORTAL</span></div>
+  </a>
+  <a href="courses.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Back to Courses</a>
+</nav>
+
+<div class="details-page">
+  <div class="details-container">
+    
+    <div class="hero-card">
+      <h1 id="courseName">Loading...</h1>
+      <p class="desc">Master this technology with hands-on projects, live sessions, and expert mentorship.</p>
+      <div class="badge-row">
+        <span class="badge" id="courseDuration">3 Months Duration</span>
+        <span class="badge" id="coursePrice">₹0</span>
+      </div>
+      <div style="margin-top: 40px;">
+        <button class="btn-pay-now" onclick="revealPayment()">Pay Now to Enroll →</button>
+        <a href="https://wa.me/917093277482?text=Hi%20Kiran%20Kumar,%20I%20have%20a%20doubt%20about%20a%20course." target="_blank" class="btn-whatsapp">Contact Founder</a>
+      </div>
+    </div>
+
+    <div id="paymentSection">
+      <div class="pay-card">
+        <h2 class="pay-title">Secure Your Seat</h2>
+        
+        <div class="emi-box">
+          <h4> Your Monthly EMI Breakdown</h4>
+          <div class="emi-desc" id="emiFullBreakdown">Calculating...</div>
+          <div class="emi-amount" id="emiMonthlyAmount">₹0</div>
+          <div class="emi-desc" style="margin-top: 15px; font-weight: bold; color: #ffb347;" id="remainingMessage">
+            Please enter the amount you wish to pay now.
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>How much are you paying today?</label>
+          <input type="number" id="customAmount" min="10" value="10" oninput="updateRemaining()" />
+        </div>
+
+        <div class="qr-container">
+          <p style="color:#c3cce0; margin-bottom:10px;">Scan to pay via UPI</p>
+          <img src="images/qr.jpeg" alt="Payment QR" onerror="this.src='https://via.placeholder.com/200x200.png?text=Add+QR+Image'" />
+          <p style="color:#ff7b00; font-weight:700; margin-top:15px; font-size:18px;">kiranenosh@ybl</p>
+        </div>
+
+        <button class="btn-confirm-pay" onclick="processPayment()">✓ I Have Paid — Confirm Enrollment</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:5000/api/admin';
+  let courseTitle = '';
+  let coursePrice = 0;
+  const months = 3; // You can make this dynamic later if needed
+
+  // 1. Get URL params
+  const params = new URLSearchParams(window.location.search);
+  courseTitle = params.get('course') || 'Course Name';
+  coursePrice = parseInt(params.get('price') || '0');
+
+  // 2. Calculate exact EMI
+  const emiAmount = Math.round(coursePrice / months);
+
+  // 3. Set UI Text
+  document.getElementById('courseName').textContent = courseTitle;
+  document.getElementById('coursePrice').textContent = '₹' + coursePrice.toLocaleString('en-IN');
+  document.getElementById('courseDuration').textContent = months + ' Months Duration';
+  document.getElementById('emiFullBreakdown').textContent = `Total: ₹${coursePrice.toLocaleString('en-IN')} / ${months} months`;
+  document.getElementById('emiMonthlyAmount').textContent = '₹' + emiAmount.toLocaleString('en-IN') + ' / month';
+
+  // 4. Show Payment Section
+  function revealPayment() {
+    document.getElementById('paymentSection').style.display = 'block';
+    document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+    updateRemaining(); // Run calculation once visible
+  }
+
+  // 5. Dynamic remaining calculation
+  function updateRemaining() {
+    const input = document.getElementById('customAmount');
+    let paidAmount = parseInt(input.value) || 0;
+
+    if (paidAmount < 10) {
+      input.value = 10;
+      paidAmount = 10;
+    }
+
+    const remaining = emiAmount - paidAmount;
+    const msgBox = document.getElementById('remainingMessage');
+
+    if (remaining > 0) {
+      msgBox.innerHTML = `You are paying ₹${paidAmount.toLocaleString('en-IN')} today.<br>
+      <span style="color:#ff5555;">Please pay the remaining ₹${remaining.toLocaleString('en-IN')} for this month to complete your EMI.</span>`;
+    } else if (remaining === 0) {
+      msgBox.innerHTML = `<span style="color:#22c55e;">You are paying the full monthly EMI amount today. Excellent!</span>`;
+    } else {
+      msgBox.innerHTML = `<span style="color:#22c55e;">You have paid more than the monthly EMI. This will be adjusted against next month.</span>`;
+    }
+  }
+
+  // 6. Process the payment
+  async function processPayment() {
+    const btn = event.target;
+    const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
+    
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API}/payments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          course_name: courseTitle,
+          amount: paidAmount, 
+          payment_method: 'UPI',
+          payment_type: 'deposit',
+          payment_plan: 'installment',
+          installment_months: months
+        })
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) {
+        alert('❌ ' + (data.error || 'Payment failed.'));
+        btn.textContent = '✓ I Have Paid — Confirm Enrollment';
+        btn.disabled = false;
+        return;
+      }
+      
+      // Redirect to receipt on success
+      window.location.href = `receipt.html?id=${data.payment.id}`;
+
+    } catch (err) {
+      alert('Cannot reach server.');
+      btn.textContent = '✓ I Have Paid — Confirm Enrollment';
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>

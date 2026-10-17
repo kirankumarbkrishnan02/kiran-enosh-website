@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Dashboard | Kiran Enosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+
+<style>
+  .admin-action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    margin-bottom: 50px;
+  }
+  .admin-action-card {
+    background: linear-gradient(160deg, #142a52, #0a1128);
+    border: 1px solid rgba(255,123,0,0.3);
+    border-radius: 20px;
+    padding: 32px;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.35s;
+    display: block;
+  }
+  .admin-action-card:hover {
+    transform: translateY(-6px);
+    border-color: #ff7b00;
+    box-shadow: 0 25px 50px rgba(255,123,0,0.25);
+  }
+  .admin-action-icon {
+    font-size: 38px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .admin-action-card h3 {
+    color: #ff7b00;
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+  .admin-action-card p {
+    color: #a5b1cc;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  /* --- NEW HEADER FLEXBOX STYLES --- */
+  .top-nav-header {
+    display: flex;
+    justify-content: space-between; /* This pushes them to East and West */
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #0b132b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+  }
+</style>
+</head>
+<body>
+
+<!-- WRAPPER ADDED HERE -->
+<header class="top-nav-header">
+  <a href="admin-dashboard.html" class="nav-brand" style="text-decoration:none;">
+    <div class="nav-brand-text">
+      KIRAN ENOSH
+      <span>ADMIN PORTAL</span>
+    </div>
+  </a>
+  <a href="#" id="logoutBtn" class="nav-cta" style="background:rgba(255,60,60,0.2);border:1px solid rgba(255,60,60,0.5); text-decoration:none;">Logout</a>
+</header>
+<!-- END WRAPPER -->
+
+<div class="dashboard-page">
+  <div class="dashboard-container">
+
+    <div class="welcome-banner" style="background:linear-gradient(135deg,rgba(255,123,0,0.25),rgba(10,77,166,0.25));border:1px solid rgba(255,123,0,0.4);">
+      <h1>Admin Dashboard </h1>
+      <p>Welcome back, <strong id="adminName" style="color:#ff7b00;">Admin</strong>. Manage your institute from here.</p>
+    </div>
+
+    <h2 class="section-title" style="text-align:left;font-size:24px;margin-bottom:20px;">Quick Overview</h2>
+
+    <div class="dashboard-grid" style="margin-bottom:50px;">
+      
+      <!-- Total Users -> admin.html -->
+      <a href="admin.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
+        <h3> Total Users</h3>
+        <p class="big-number" id="totalUsers">—</p>
+        <p>Registered students &amp; admins</p>
+      </a>
+
+      <!-- Active Courses -> courses.html -->
+      <a href="courses.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
+        <h3> Active Courses</h3>
+        <p class="big-number" id="totalCourses">—</p>
+        <p>Programs currently offered</p>
+      </a>
+
+      <!-- Enrollments -> admin-payments.html -->
+      <a href="admin-payments.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
+        <h3> Enrollments</h3>
+        <p class="big-number" id="totalEnrollments">—</p>
+        <p>Total course sign-ups</p>
+      </a>
+
+      <!-- Total Revenue -> admin-payments.html -->
+      <a href="admin-payments.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
+        <h3> Total Revenue</h3>
+        <p class="big-number" id="totalRevenue">—</p>
+        <p>From course registrations</p>
+      </a>
+
+    </div>
+
+    <h2 class="section-title" style="text-align:left;font-size:24px;margin-bottom:20px;">Quick Actions</h2>
+
+    <div class="admin-action-grid">
+      <!-- Manage Users -->
+      <a href="admin.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
+        <h3>Manage Users</h3>
+        <p>View, search, and delete student accounts. Change roles and monitor activity.</p>
+      </a>
+
+      <!-- Helpdesk -->
+      <a href="admin-tickets.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
+        <h3>Helpdesk Tickets</h3>
+        <p>See all student questions, reply, and mark them as resolved.</p>
+      </a>
+
+      <!-- Payments -->
+      <a href="admin-payments.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
+        <h3>Payment Records</h3>
+        <p>View all course registration payments, verify against your bank, and export.</p>
+      </a>
+
+      <!-- NEW ATTENDANCE CARD -->
+      <a href="admin-attendance.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
+        <h3>Attendance & Live Links</h3>
+        <p>Set today's Google Meet link & password. Verify student attendance.</p>
+      </a>
+
+      <!-- Browse Courses -->
+      <a href="courses.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
+        <h3>Browse Courses</h3>
+        <p>See courses as a student would. Preview enrollment and payment flow.</p>
+      </a>
+
+      <!-- View Homepage -->
+      <a href="index.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
+        <h3>View Homepage</h3>
+        <p>See the public site as visitors do. Check the 3D homepage and courses page.</p>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:5000/api';
+  const AUTH_API = 'http://localhost:5000/api/auth';
+
+  // Verify admin access
+  fetch(`${AUTH_API}/me`, { credentials: 'include' })
+    .then(function (r) {
+      if (!r.ok) {
+        window.location.href = 'login.html';
+        throw new Error('Not logged in');
+      }
+      return r.json();
+    })
+    .then(function (data) {
+      if (data.user.role !== 'admin') {
+        alert('❌ Access Denied. Admin only.');
+        window.location.href = 'dashboard.html';
+        return;
+      }
+      document.getElementById('adminName').textContent = data.user.name;
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+
+  // Load stats
+  fetch(`${API}/admin/stats`, { credentials: 'include' })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      document.getElementById('totalUsers').textContent = data.users;
+      document.getElementById('totalCourses').textContent = data.courses;
+      document.getElementById('totalEnrollments').textContent = data.enrollments;
+    })
+    .catch(function (err) { console.error(err); });
+
+  // Load total revenue from payments
+  fetch(`${API}/admin/payments`, { credentials: 'include' })
+    .then(function (r) {
+      if (!r.ok) return { payments: [] };
+      return r.json();
+    })
+    .then(function (data) {
+      var total = 0;
+      (data.payments || []).forEach(function (p) {
+        total += p.amount || 0;
+      });
+      document.getElementById('totalRevenue').textContent = '₹' + total.toLocaleString('en-IN');
+    })
+    .catch(function () {
+      document.getElementById('totalRevenue').textContent = '₹0';
+    });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', async function (e) {
+    e.preventDefault();
+    try {
+      await fetch(`${AUTH_API}/logout`, { method: 'POST', credentials: 'include' });
+    } catch (err) {
+      console.error(err);
+    }
+    window.location.href = 'index.html';
+  });
+</script>
+    
+</body>
+</html> 

@@ -1,0 +1,8 @@
+{
+  "liveServer.settings.root": "/frontend",
+  "liveServer.settings.port": 5501,
+  "liveServer.settings.CustomBrowser": "chrome",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.host": "localhost",
+  "liveServer.settings.multiRootWorkspaceName": "kiran-enosh-website"
+}

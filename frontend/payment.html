@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Course Payment | Kiran Enosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .payment-page { min-height: 100vh; padding: 130px 20px 60px; background: radial-gradient(circle at 20% 20%, rgba(10,77,166,0.25), transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,123,0,0.18), transparent 50%), #0a1128; }
+  .payment-container { max-width: 700px; margin: 0 auto; }
+  .payment-card { background: linear-gradient(160deg, rgba(20,42,82,0.9), rgba(10,17,40,0.95)); padding: 45px; border-radius: 25px; border: 1px solid rgba(74,144,226,0.3); box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
+  .payment-title { font-size: 32px; font-weight: 800; text-align: center; margin-bottom: 10px; background: linear-gradient(90deg, #4a90e2, #ff7b00); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .payment-sub { text-align: center; color: #7a89a8; margin-bottom: 35px; font-size: 15px; }
+  
+  .info-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: #7a89a8; font-size: 14px; }
+  .info-value { color: #fff; font-weight: 600; font-size: 15px; text-align: right; }
+  .info-value.highlight { color: #ffb347; font-size: 22px; font-weight: 800; }
+  
+  .section-heading { color: #ff7b00; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin: 30px 0 15px; }
+  
+  /* Installment Selector */
+  .installment-options { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+  .inst-option { flex: 1; min-width: 120px; padding: 15px; background: rgba(0,0,0,0.3); border: 2px solid rgba(74,144,226,0.3); border-radius: 12px; cursor: pointer; text-align: center; transition: 0.3s; }
+  .inst-option:hover { border-color: #ff7b00; }
+  .inst-option.active { border-color: #ff7b00; background: rgba(255,123,0,0.1); }
+  .inst-option h4 { color: #fff; font-size: 16px; margin-bottom: 5px; }
+  .inst-option p { color: #a5b1cc; font-size: 12px; }
+  
+  /* Tabs */
+  .pay-tabs { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+  .pay-tab { flex: 1; min-width: 100px; padding: 14px 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(74,144,226,0.3); color: #a5b1cc; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 13px; text-align: center; transition: 0.3s; font-family: inherit; }
+  .pay-tab.active { background: linear-gradient(135deg, #ff7b00, #ff5500); color: #fff; border-color: transparent; }
+  .pay-content { display: none; }
+  .pay-content.active { display: block; }
+  
+  .qr-box { text-align: center; padding: 30px; background: rgba(255,255,255,0.95); border-radius: 20px; max-width: 300px; margin: 0 auto 25px; }
+  .qr-box img { width: 100%; max-width: 220px; display: block; margin: 0 auto 15px; }
+  .qr-box p { color: #333; font-size: 13px; font-weight: 600; }
+  
+  .upi-box { background: rgba(0,0,0,0.35); padding: 20px; border-radius: 12px; text-align: center; margin-top: 15px; }
+  .upi-box .upi-id { color: #ff7b00; font-size: 20px; font-weight: 800; letter-spacing: 1px; word-break: break-all; }
+  
+  .bank-details { background: rgba(0,0,0,0.35); padding: 22px; border-radius: 12px; margin-top: 15px; }
+  .bank-details .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .bank-details .row:last-child { border-bottom: none; }
+  .bank-details .row span:first-child { color: #7a89a8; font-size: 13px; }
+  .bank-details .row span:last-child { color: #fff; font-weight: 600; font-size: 14px; }
+
+  .pay-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, #ff7b00, #ff5500); color: #fff; border: none; border-radius: 14px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 35px; transition: 0.3s; font-family: inherit; }
+  .pay-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(255,123,0,0.5); }
+  .pay-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  
+  .note { text-align: center; color: #7a89a8; font-size: 12px; margin-top: 20px; line-height: 1.7; }
+  .alert-box { padding: 14px 18px; border-radius: 12px; font-size: 14px; margin-bottom: 20px; display: none; }
+  .alert-box.error { background: rgba(255,60,60,0.15); border: 1px solid rgba(255,60,60,0.4); color: #ff8a8a; display: block; }
+  .alert-box.success { background: rgba(80,220,120,0.15); border: 1px solid rgba(80,220,120,0.4); color: #7fffaf; display: block; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="dashboard.html" class="nav-brand">
+    <img src="images/logo.png" alt="Kiran Enosh Logo" />
+    <div class="nav-brand-text">
+      KIRAN ENOSH
+      <span>STUDENT PORTAL</span>
+    </div>
+  </a>
+  <a href="courses.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Back to Courses</a>
+</nav>
+
+<div class="payment-page">
+  <div class="payment-container">
+    <div class="payment-card">
+      <h1 class="payment-title">Complete Your Registration</h1>
+      <p class="payment-sub">Pay the ₹10 deposit to confirm your seat and choose your payment plan.</p>
+
+      <div class="alert-box" id="alertBox"></div>
+
+      <div class="info-row">
+        <span class="info-label">Course</span>
+        <span class="info-value" id="courseTitle">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Total Course Fee</span>
+        <span class="info-value" id="courseTotal">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Registration Deposit (Now)</span>
+        <span class="info-value highlight">₹10</span>
+      </div>
+
+      <!-- INSTALLMENT SELECTOR -->
+      <h3 class="section-heading">Choose Your Payment Plan</h3>
+      <div class="installment-options" id="installmentOptions">
+        <!-- Options will be generated by JS based on price -->
+      </div>
+
+      <!-- PAYMENT METHOD TABS -->
+      <h3 class="section-heading">Choose Payment Method (For ₹10 Deposit)</h3>
+      <div class="pay-tabs">
+        <button class="pay-tab active" data-tab="upi">UPI / QR</button>
+        <button class="pay-tab" data-tab="netbanking">Net Banking</button>
+        <button class="pay-tab" data-tab="card">Debit Card</button>
+      </div>
+
+      <div class="pay-content active" id="tab-upi">
+        <div class="qr-box">
+          <img src="images/upi-qr.png" alt="Scan to pay ₹10" onerror="this.style.display='none'" />
+          <p>Scan this QR with any UPI app<br>(Google Pay, PhonePe, Paytm, etc.)</p>
+        </div>
+        <div class="upi-box">
+          <div class="upi-id">kiranenosh@upi</div>
+          <div class="copy-hint" style="color:#7a89a8;font-size:12px;margin-top:8px;">Or pay to this UPI ID</div>
+        </div>
+      </div>
+
+      <div class="pay-content" id="tab-netbanking">
+        <div class="bank-details">
+          <div class="row"><span>Account Name</span><span>Kiran Enosh Institute</span></div>
+          <div class="row"><span>Account Number</span><span>1234567890123</span></div>
+          <div class="row"><span>IFSC Code</span><span>SBIN0001234</span></div>
+          <div class="row"><span>Bank</span><span>State Bank of India</span></div>
+        </div>
+        <p style="color:#7a89a8;font-size:13px;margin-top:15px;text-align:center;">
+          Use these details to transfer ₹10 from your net banking portal.
+        </p>
+      </div>
+
+      <div class="pay-content" id="tab-card">
+        <div class="bank-details">
+          <div class="row"><span>Payment Link</span><span>Will be provided by admin</span></div>
+          <div class="row"><span>Accepted Cards</span><span>Visa, Mastercard, RuPay</span></div>
+        </div>
+        <p style="color:#7a89a8;font-size:13px;margin-top:15px;text-align:center;">
+          For debit card payments, please contact us at +91 70932 77482 to receive a secure payment link.
+        </p>
+      </div>
+
+      <button class="pay-btn" id="paidBtn">
+        ✓ I Have Paid ₹10 — Confirm Registration
+      </button>
+
+      <p class="note">
+        After payment, click the button above to confirm.<br>
+        Your enrollment will be confirmed and a digital receipt will be issued.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="js/payment.js"></script>
+</body>
+</html>

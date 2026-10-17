@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Login | Kiran Enosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="icon" type="image/png" href="images/logo.png" />
+</head>
+<body>
+
+<div class="auth-page">
+  <div class="auth-card" style="border-color: rgba(255,123,0,0.5);">
+    <img src="images/logo.png" alt="Kiran Enosh Logo" class="auth-logo" />
+    <h2 style="color: #ff7b00;">Admin Access</h2>
+    <p class="auth-sub">Restricted area — Authorized personnel only</p>
+
+    <div class="auth-message" id="messageBox"></div>
+
+    <form id="adminLoginForm" novalidate>
+      <div class="form-group">
+        <label for="email">Admin Email</label>
+        <input type="email" id="email" name="email" placeholder="admin@kiranenosh.in" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Your admin password" required />
+          <button type="button" class="eye-toggle" onclick="togglePwd('password', this)" aria-label="Show password">👁️</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn" style="background: linear-gradient(135deg, #0a4da6, #ff5500);">Access Admin Panel</button>
+    </form>
+
+    <p class="auth-switch" style="margin-top: 20px;">
+      <a href="index.html" style="color: #7a89a8;">← Back to Homepage</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  const API_BASE = '/api/auth';
+
+  function showMessage(text, type) {
+    const box = document.getElementById('messageBox');
+    box.textContent = text;
+    box.className = 'auth-message ' + (type || 'error');
+  }
+
+  function togglePwd(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁️';
+    }
+  }
+
+  document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('submitBtn');
+
+    if (!email || !password) {
+      return showMessage('Please enter email and password.');
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Verifying...';
+
+    try {
+      const res = await fetch(`${API_BASE}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        btn.disabled = false;
+        btn.textContent = 'Access Admin Panel';
+        return showMessage(data.error || 'Invalid credentials.');
+      }
+
+      // Check if the logged-in user is actually an admin
+      if (data.user.role !== 'admin') {
+        // Log them out immediately for security
+        await fetch(`${API_BASE}/logout`, { method: 'POST', credentials: 'include' });
+        btn.disabled = false;
+        btn.textContent = 'Access Admin Panel';
+        return showMessage('❌ Access Denied. This account is not an administrator.');
+      }
+
+      showMessage('✅ Admin access granted. Redirecting...', 'success');
+      setTimeout(() => {
+        window.location.href = 'admin-dashboard.html';
+      }, 800);
+
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'Access Admin Panel';
+      showMessage('Cannot reach server.');
+    }
+  });
+</script>
+
+</body>
+</html>

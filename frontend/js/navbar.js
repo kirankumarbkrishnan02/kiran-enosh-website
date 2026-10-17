@@ -46,7 +46,7 @@
 
     var html =
       '<div class="ln-left">' +
-        '<img src="images/logo.png" class="ln-logo" alt="Kiran Enosh" />' +
+        '<img src="images/" class="ln-logo" alt="Kiran Enosh" />' +
         '<div class="ln-brand-text">KIRAN ENOSH<span>' + (isAdmin ? 'ADMIN PORTAL' : 'STUDENT PORTAL') + '</span></div>' +
       '</div>' +
       '<div class="ln-center">' + linksHtml + '</div>' +

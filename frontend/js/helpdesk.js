@@ -20,7 +20,7 @@ async function loadMyCourses() {
 
     container.innerHTML = data.courses.map(c => `
       <div class="dash-card">
-        <h3>📚 ${c.course_name}</h3>
+        <h3> ${c.course_name}</h3>
         <p style="font-size:12px;color:#7a89a8;margin-top:8px;">Enrolled on ${new Date(c.enrolled_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
         <p style="margin-top:10px;color:#7fffaf;font-size:13px;">✓ Active</p>
       </div>
@@ -90,4 +90,4 @@ function showMsg(text, type) {
 }
 
 loadMyCourses();
-console.log('💬 Helpdesk loaded');
+console.log(' Helpdesk loaded');

@@ -18,30 +18,33 @@ app.use(cookieParser());
 
 
 /* ============ CORS (Allows Localhost 5500 & 5501) ============ */
+/* ============ STRICT CORS SECURITY ============ */
+const allowedOrigins = [
+  'https://kiran-enosh-website-frontend.vercel.app', // Your live site
+  'http://localhost:5500',                           // Local frontend
+  'http://localhost:5501',                           // Local frontend (Live Server)
+  'http://127.0.0.1:5500',                           // Local fallback
+  'http://127.0.0.1:5501'                            // Local fallback
+];
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, curl, etc)
+      // Allow requests with no origin (like mobile apps, curl, or same-origin)
       if (!origin) return callback(null, true);
       
-      // Allow ANY localhost or 127.0.0.1 port (5500, 5501, etc.)
-      if (
-        origin === 'https://kiran-enosh-website-frontend.vercel.app' || // YOUR LIVE FRONTEND
-        origin.startsWith('http://localhost:') ||
-        origin.startsWith('http://127.0.0.1:') ||
-        origin.startsWith('http://192.168.')
-      ) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
         return callback(null, true);
+      } else {
+        console.warn('⛔ CORS Blocked Origin:', origin);
+        return callback(new Error('Not allowed by CORS'));
       }
-      
-      
-      console.warn('CORS blocked origin:', origin);
-      return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
-
 /* ============ RATE LIMITING ============ */
 app.use(
   rateLimit({

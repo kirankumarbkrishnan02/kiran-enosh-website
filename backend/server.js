@@ -10,9 +10,6 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-// Trust Render's proxy for rate limiting to work correctly
-app.set('trust proxy', 1);
-
 /* ============ SECURITY MIDDLEWARE ============ */
 app.use(helmet());
 app.use(express.json({ limit: '10kb' }));
@@ -20,7 +17,7 @@ app.use(cookieParser());
 
 /* ============ STRICT CORS SECURITY ============ */
 const allowedOrigins = [
-  'https://kiranenosh.vercel.app', // <-- YOUR NEW DOMAIN
+  'https://kiranenosh.vercel.app', // Your new domain
   'http://localhost:5500',
   'http://localhost:5501',
   'http://127.0.0.1:5500',

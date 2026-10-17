@@ -2,7 +2,7 @@
    KIRAN ENOSH — HELPDESK.JS
    ============================================================ */
 
-const API_ADMIN_HD = 'https://kiran-enosh-backend.onrender.com/api/admin';
+const API_ADMIN_HD = '/api/admin';
 
 async function loadMyCourses() {
   const container = document.getElementById('myCoursesList');

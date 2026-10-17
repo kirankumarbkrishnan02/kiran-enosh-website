@@ -2,8 +2,8 @@
    KIRAN ENOSH — DASHBOARD.JS
    ============================================================ */
 
-const API_BASE = 'https://kiran-enosh-backend.onrender.com/api/auth';
-const ADMIN_API = 'https://kiran-enosh-backend.onrender.com/api/admin';
+const API_BASE = '/api/auth';
+const ADMIN_API = '/api/admin';
 
 let currentUser = null;
 

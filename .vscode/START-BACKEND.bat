@@ -6,7 +6,7 @@ echo ============================================
 echo   KIRAN ENOSH - BACKEND
 echo ============================================
 echo.
-echo Server will be on https://kiran-enosh-backend.onrender.com
+echo Server will be on 
 echo Keep this window open while using the site.
 echo.
 npm run dev

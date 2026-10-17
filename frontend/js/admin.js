@@ -3,8 +3,8 @@
    ============================================================ */
 
 // ⚠️ CORRECT API BASE — must be /api/admin (not /api/auth/admin)
-const API = 'https://kiran-enosh-backend.onrender.com/api';
-const AUTH_API = 'https://kiran-enosh-backend.onrender.com/api/auth';
+const API = '/api';
+const AUTH_API = '/api/auth';
 
 let allUsers = [];
 

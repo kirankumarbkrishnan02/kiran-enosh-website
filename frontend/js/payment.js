@@ -2,8 +2,8 @@
    KIRAN ENOSH — PAYMENT.JS (Installment Version)
    ============================================================ */
 
-const API = 'https://kiran-enosh-backend.onrender.com/api/admin';
-const API_AUTH = 'https://kiran-enosh-backend.onrender.com/api/auth';
+const API = '/api/admin';
+const API_AUTH = '/api/auth';
 
 let courseTitle = '';
 let coursePrice = 0;

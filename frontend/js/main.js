@@ -82,23 +82,14 @@ if (canvas && window.THREE) {
     new THREE.BufferAttribute(positions, 3)
   );
 
-  // Find your particlesMaterial code and change the color to a slightly darker blue
-const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.35,
-  color: 0x1a5fbf, // Darker blue for white background
-  transparent: true,
-  opacity: 0.6,
-  blending: THREE.AdditiveBlending,
-});
+  const particlesMaterial = new THREE.PointsMaterial({
+    size: 0.35,
+    color: 0x4a90e2,
+    transparent: true,
+    opacity: 0.8,
+    blending: THREE.AdditiveBlending,
+  });
 
-// Find your accentMaterial code and change the color
-const accentMaterial = new THREE.PointsMaterial({
-  size: 0.5,
-  color: 0xff5500, // Darker orange
-  transparent: true,
-  opacity: 0.7,
-  blending: THREE.AdditiveBlending,
-});
   const particles = new THREE.Points(particlesGeometry, particlesMaterial);
   scene.add(particles);
 

@@ -98,13 +98,12 @@ router.post(
         { expiresIn: process.env.JWT_EXPIRES }
       );
 
-      res.cookie('token', token, {
+        res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: true,            // MUST be true for cross-site cookies
+        sameSite: 'none',        // MUST be 'none' to allow Vercel to read it
         maxAge: 24 * 60 * 60 * 1000,
       });
-
       delete user.password_hash;
       res.json({ success: true, user });
     } catch (err) {

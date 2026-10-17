@@ -1678,33 +1678,24 @@ body.light-mode .theme-toggle-btn {
   color: white;
 }
 
-/* ============================================================
-   DARK / LIGHT MODE THEME OVERRIDES
-   ============================================================ */
-
-body {
-  transition: background-color 0.4s, color 0.4s;
-}
-
 /* =========================================
-   1. DEFAULT DARK MODE (Keep your original)
-   ========================================= */
-/* (Your existing dark mode CSS is already above this block, so we don't touch it) */
-
-/* =========================================
-   2. LIGHT MODE STYLES
+   2. LIGHT MODE STYLES (Premium 3D Look)
    ========================================= */
 body.light-mode {
-  background-color: #f8fafc !important; /* Soft off-white */
+  /* This gradient creates a beautiful soft glow */
+  background: radial-gradient(circle at 15% 50%, rgba(230, 240, 255, 0.8), transparent 40%),
+              radial-gradient(circle at 85% 30%, rgba(255, 240, 230, 0.8), transparent 40%),
+              #f8fafc !important;
   color: #1e293b !important;
 }
 
 /* Navbar */
 body.light-mode .navbar,
 body.light-mode .top-nav-header {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 body.light-mode .nav-brand-text,
@@ -1716,15 +1707,17 @@ body.light-mode .nav-brand-text span {
   color: #ff7b00 !important;
 }
 
-body.light-mode .nav-links a::after {
-  background: #ff7b00;
-}
-
-/* Hero Section */
+/* Hero Section Text - Making it Bold and 3D */
 body.light-mode .hero h1 {
-  background: linear-gradient(90deg, #0a4da6 0%, #ff7b00 100%);
+  background: linear-gradient(135deg, #0a4da6 0%, #ff7b00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0px 4px 20px rgba(255, 123, 0, 0.15); /* Subtle 3D glow */
+}
+
+body.light-mode .hero .tagline {
+  color: #0a4da6;
+  text-shadow: 0px 2px 10px rgba(10, 77, 166, 0.1);
 }
 
 body.light-mode .hero .sub,
@@ -1733,144 +1726,14 @@ body.light-mode p {
   color: #475569 !important;
 }
 
-body.light-mode .hero .tagline {
-  color: #ff7b00;
-}
-
-/* Course Cards / About Cards / Dashboard Cards */
-body.light-mode .course-card,
-body.light-mode .dash-card,
-body.light-mode .about-card,
-body.light-mode .auth-card,
-body.light-mode .admin-action-card,
-body.light-mode .session-card {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
-}
-
-body.light-mode .course-card:hover,
-body.light-mode .dash-card:hover,
-body.light-mode .admin-action-card:hover {
-  border-color: #ff7b00 !important;
-  box-shadow: 0 15px 35px rgba(255, 123, 0, 0.1) !important;
-}
-
-body.light-mode h2,
-body.light-mode h3,
-body.light-mode h4 {
-  color: #0f172a !important;
-}
-
-body.light-mode .course-price,
-body.light-mode .big-number {
-  color: #0a4da6 !important;
-}
-
-/* Forms & Inputs */
-body.light-mode .form-group input,
-body.light-mode .form-group textarea,
-body.light-mode select {
-  background-color: #ffffff !important;
-  color: #1e293b !important;
-  border: 1px solid #cbd5e0 !important;
-}
-
-body.light-mode .form-group input:focus,
-body.light-mode .form-group textarea:focus {
+/* The "From Code to Career" Button Outline */
+body.light-mode .btn-outline {
   border-color: #0a4da6 !important;
-  box-shadow: 0 0 0 3px rgba(10, 77, 166, 0.15) !important;
-}
-
-/* Tables (Admin Panel) */
-body.light-mode .table-wrapper,
-body.light-mode .admin-table {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
-}
-
-body.light-mode .admin-table th {
-  background: #f8fafc !important;
   color: #0a4da6 !important;
-  border-bottom: 2px solid #e2e8f0 !important;
+  background: rgba(10, 77, 166, 0.05);
 }
 
-body.light-mode .admin-table td {
-  color: #475569 !important;
-  border-bottom: 1px solid #edf2f7 !important;
-}
-
-body.light-mode .admin-table tr:hover td {
-  background: #f7fafc !important;
-}
-
-/* Founder Section */
-body.light-mode .founder-section {
-  background: linear-gradient(160deg, #ffffff, #f8fafc) !important;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-body.light-mode .founder-quote {
-  background: #f8fafc !important;
-  border-left: 4px solid #ff7b00 !important;
-}
-
-body.light-mode .founder-quote p {
-  color: #1e293b !important;
-}
-
-body.light-mode .quote-author strong {
-  color: #ff7b00 !important;
-}
-
-/* Footer */
-body.light-mode footer {
-  background-color: #ffffff !important;
-  border-top: 1px solid #e2e8f0 !important;
-}
-
-body.light-mode .footer-links a,
-body.light-mode .footer-contact span,
-body.light-mode .footer-copy {
-  color: #475569 !important;
-}
-
-body.light-mode .footer-links a:hover {
-  color: #ff7b00 !important;
-}
-
-/* =========================================
-   3. THE TOGGLE BUTTON
-   ========================================= */
-.theme-toggle-btn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  color: #ffb347;
-  border: 1px solid rgba(255,255,255,0.1);
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  z-index: 9999;
-  transition: all 0.3s ease;
-}
-
-.theme-toggle-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-}
-
-/* Toggle button in Light Mode */
-body.light-mode .theme-toggle-btn {
-  background: linear-gradient(135deg, #ffffff, #f1f5f9);
-  color: #0a4da6;
-  border: 1px solid #cbd5e0;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+body.light-mode .btn-outline:hover {
+  background: #0a4da6 !important;
+  color: white !important;
 }

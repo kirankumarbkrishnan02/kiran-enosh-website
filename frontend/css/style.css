@@ -1572,3 +1572,108 @@ body.has-logged-navbar {
     text-align: center;
   }
 }}
+/* ============================================================
+   LIGHT / DARK MODE THEME
+   ============================================================ */
+
+/* Default Dark Mode (Your current design) */
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+  background-color: #f4f7f6 !important;
+  color: #333333 !important;
+}
+
+body.light-mode .navbar,
+body.light-mode .top-nav-header {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+
+body.light-mode .nav-brand-text,
+body.light-mode .nav-links a {
+  color: #0a1128 !important;
+}
+
+body.light-mode .hero h1 {
+  background: linear-gradient(90deg, #0a4da6 0%, #ff7b00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .hero .sub,
+body.light-mode .section-sub,
+body.light-mode p {
+  color: #555555 !important;
+}
+
+body.light-mode .course-card,
+body.light-mode .dash-card,
+body.light-mode .about-card,
+body.light-mode .auth-card,
+body.light-mode .founder-section {
+  background: #ffffff !important;
+  border-color: #e0e0e0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+}
+
+body.light-mode h4,
+body.light-mode h3,
+body.light-mode h2 {
+  color: #0a1128 !important;
+}
+
+body.light-mode .form-group input,
+body.light-mode .form-group textarea,
+body.light-mode select {
+  background-color: #f9f9f9 !important;
+  color: #333 !important;
+  border-color: #cccccc !important;
+}
+
+body.light-mode .course-price,
+body.light-mode .big-number {
+  color: #0a4da6 !important;
+}
+
+body.light-mode .footer {
+  background-color: #ffffff !important;
+  color: #333 !important;
+}
+
+body.light-mode .footer-links a {
+  color: #555 !important;
+}
+
+/* The Toggle Button Style */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ff7b00;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(255,123,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  z-index: 9999;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+body.light-mode .theme-toggle-btn {
+  background: #0a1128;
+  color: white;
+}

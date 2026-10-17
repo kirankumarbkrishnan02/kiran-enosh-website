@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Course Details | Kiran Enosh</title>
@@ -100,7 +101,7 @@
           <p style="color:#ff7b00; font-weight:700; margin-top:15px; font-size:18px;">kiranenosh@ybl</p>
         </div>
 
-        <button class="btn-confirm-pay" onclick="processPayment()">✓ I Have Paid — Confirm Enrollment</button>
+        <button class="btn-confirm-pay" onclick="initiatePayment()">Pay Now & Enroll</button>
       </div>
     </div>
 
@@ -159,46 +160,85 @@
   }
 
   // 6. Process the payment
-  async function processPayment() {
-    const btn = event.target;
-    const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
+  async function initiatePayment() {
+  const btn = event.target;
+  const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
+  
+  btn.textContent = 'Creating Order...';
+  btn.disabled = true;
+
+  try {
+    // 1. Create order on backend
+    const orderRes = await fetch(`/api/admin/create-order`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ amount: paidAmount })
+    });
     
-    btn.textContent = 'Processing...';
-    btn.disabled = true;
+    const orderData = await orderRes.json();
+    if (!orderRes.ok) throw new Error(orderData.error);
 
-    try {
-      const res = await fetch(`${API}/payments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          course_name: courseTitle,
-          amount: paidAmount, 
-          payment_method: 'UPI',
-          payment_type: 'deposit',
-          payment_plan: 'installment',
-          installment_months: months
-        })
-      });
+    // 2. Open Razorpay Checkout
+    const options = {
+      key: "rzp_test_Tp7iT6AUfRMEqt", // REPLACE WITH YOUR RAZORPAY KEY ID
+      amount: orderData.order.amount,
+      currency: "INR",
+      name: "Kiran Enosh",
+      description: `Enrollment for ${courseTitle}`,
+      order_id: orderData.order.id,
+      handler: async function (response) {
+        // 3. Send details to backend for verification
+        btn.textContent = 'Verifying Payment...';
+        
+        const verifyRes = await fetch(`/api/admin/payments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            course_name: courseTitle,
+            amount: paidAmount,
+            payment_method: 'Razorpay',
+            payment_type: 'deposit',
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+          })
+        });
 
-      const data = await res.json();
-      
-      if (!res.ok) {
-        alert('❌ ' + (data.error || 'Payment failed.'));
-        btn.textContent = '✓ I Have Paid — Confirm Enrollment';
-        btn.disabled = false;
-        return;
-      }
-      
-      // Redirect to receipt on success
-      window.location.href = `receipt.html?id=${data.payment.id}`;
+        const verifyData = await verifyRes.json();
+        
+        if (verifyRes.ok) {
+          // Success! Redirect to receipt
+          window.location.href = `receipt.html?id=${verifyData.payment.id}`;
+        } else {
+          alert('Payment verification failed: ' + verifyData.error);
+          btn.textContent = 'Pay Now & Enroll';
+          btn.disabled = false;
+        }
+      },
+      theme: { color: "#ff7b00" }
+    };
 
-    } catch (err) {
-      alert('Cannot reach server.');
-      btn.textContent = '✓ I Have Paid — Confirm Enrollment';
+    const rzp = new Razorpay(options);
+    rzp.open();
+    
+    // Reset button if user closes popup without paying
+    rzp.on('payment.failed', function (response){
+      alert('Payment failed. Please try again.');
+      btn.textContent = 'Pay Now & Enroll';
       btn.disabled = false;
-    }
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert('Error: ' + err.message);
+    btn.textContent = 'Pay Now & Enroll';
+    btn.disabled = false;
   }
+}
+      
+     
 </script>
 </body>
 

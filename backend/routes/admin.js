@@ -1,3 +1,12 @@
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+
 const express = require('express');
 const pool = require('../db');
 const auth = require('../middleware/auth');
@@ -291,85 +300,84 @@ router.patch('/helpdesk/tickets/:id', auth, requireAdmin, async (req, res) => {
    ============================================================ */
 
 /* ============ CREATE PAYMENT RECORD (after "I have paid") ============ */
-router.post('/payments', auth, async (req, res) => {
-  const { course_name, amount, payment_method, payment_type, payment_plan, installment_months } = req.body;
-
-  if (!course_name || !amount) {
-    return res.status(400).json({ error: 'Course name and amount required' });
+/* ============ 1. CREATE RAZORPAY ORDER ============ */
+router.post('/create-order', auth, async (req, res) => {
+  const { amount } = req.body;
+  if (!amount || amount < 1) {
+    return res.status(400).json({ error: 'Invalid amount' });
   }
 
   try {
-    // Check if user is already enrolled
+    const options = {
+      amount: amount * 100, // Razorpay takes amount in paise (₹1 = 100 paise)
+      currency: 'INR',
+      receipt: `receipt_${Date.now()}`,
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.json({ success: true, order });
+  } catch (err) {
+    console.error('Razorpay order error:', err);
+    res.status(500).json({ error: 'Failed to create order' });
+  }
+});
+
+/* ============ 2. VERIFY PAYMENT & SAVE ============ */
+router.post('/payments', auth, async (req, res) => {
+  const { 
+    course_name, amount, payment_method, payment_type, 
+    razorpay_payment_id, razorpay_order_id, razorpay_signature 
+  } = req.body;
+
+  if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+    return res.status(400).json({ error: 'Payment verification failed' });
+  }
+
+  try {
+    // Verify the signature to prove the payment is real
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSignature = crypto
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .update(body.toString())
+      .digest('hex');
+
+    if (expectedSignature !== razorpay_signature) {
+      return res.status(400).json({ error: 'Invalid payment signature. Payment is fake.' });
+    }
+
+    // If signature is valid, save to database
     const enrolled = await pool.query(
       'SELECT id FROM enrollments WHERE user_id = $1 AND course_name = $2',
       [req.user.id, course_name]
     );
     if (enrolled.rows.length) {
-      return res.status(409).json({ error: 'Already enrolled in this course' });
+      return res.status(409).json({ error: 'Already enrolled' });
     }
 
-    // Generate unique receipt number
     const receiptNumber = `KEC-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // Insert payment record (Note: If your DB doesn't have payment_plan columns yet, this will still work but won't save the plan. We log it below).
     const paymentRes = await pool.query(
       `INSERT INTO payments (user_id, course_name, amount, payment_method, payment_type, status, receipt_number)
        VALUES ($1, $2, $3, $4, $5, 'completed', $6)
        RETURNING *`,
-      [
-        req.user.id,
-        course_name,
-        amount,
-        payment_method || 'UPI',
-        payment_type || 'deposit',
-        receiptNumber,
-      ]
+      [req.user.id, course_name, amount, payment_method || 'Razorpay', payment_type || 'deposit', receiptNumber]
     );
 
-    // Auto-enroll the student
     await pool.query(
       'INSERT INTO enrollments (user_id, course_name) VALUES ($1, $2)',
       [req.user.id, course_name]
     );
 
-    // 🌟 THIS IS THE CONSOLE LOG YOU ASKED FOR 🌟
-    console.log('===================================================');
-    console.log(`✅ PAYMENT SUCCESSFUL: ${course_name}`);
-    console.log(`💰 Amount Paid Now: ₹${amount}`);
-    console.log(`📅 Payment Plan: ${payment_plan === 'full' ? 'Full Payment' : installment_months + ' Months Installment'}`);
-    console.log(`💳 Method: ${payment_method}`);
-    console.log(`🧾 Receipt: ${receiptNumber}`);
-    console.log('===================================================');
-
     res.json({
       success: true,
       payment: paymentRes.rows[0],
-      message: 'Payment recorded and enrollment confirmed!',
+      message: 'Payment verified and enrollment confirmed!',
     });
   } catch (err) {
-    console.error('Payment error:', err);
-    res.status(500).json({ error: 'Failed to record payment' });
+    console.error('Payment verification error:', err);
+    res.status(500).json({ error: 'Failed to verify payment' });
   }
 });
-
-/* ============ GET MY PAYMENTS ============ */
-router.get('/payments/my', auth, async (req, res) => {
-  try {
-    const result = await pool.query(
-      `SELECT p.*, u.name AS user_name, u.email AS user_email, u.phone AS user_phone
-       FROM payments p
-       JOIN users u ON u.id = p.user_id
-       WHERE p.user_id = $1
-       ORDER BY p.paid_at DESC`,
-      [req.user.id]
-    );
-    res.json({ payments: result.rows });
-  } catch (err) {
-    console.error('My payments error:', err);
-    res.status(500).json({ error: 'Failed to load payments' });
-  }
-});
-
 /* ============ GET SINGLE PAYMENT RECEIPT ============ */
 router.get('/payments/:id', auth, async (req, res) => {
   try {

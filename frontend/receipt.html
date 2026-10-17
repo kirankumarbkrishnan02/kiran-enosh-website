@@ -103,8 +103,10 @@
     </div>
 
     <div class="receipt-actions">
+      
       <button class="btn-green" onclick="window.print()">🖨️ Print / Save PDF</button>
       <a href="dashboard.html" class="btn-outline">Go to Dashboard</a>
+      <a href="dashboard.html" class="btn-green" style="background:linear-gradient(135deg,#4a90e2,#357abd);">Go to Student Portal</a>
     </div>
 
     <p class="print-note">
@@ -115,8 +117,14 @@
   </div>
 </div>
 
-<script src="js/receipt.js"></script>
+<script src="js/receipt.js">
+  // Auto-redirect after 60 seconds
+setTimeout(() => {
+  window.location.href = 'dashboard.html';
+}, 60000);
+</script>
 <script src="js/navbar.js"></script>
+
 </body>
 
 </html>

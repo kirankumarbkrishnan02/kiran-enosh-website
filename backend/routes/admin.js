@@ -1,17 +1,18 @@
+const express = require('express');
+const pool = require('../db');
+const auth = require('../middleware/auth');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const { sendHelpdeskNotification, sendHelpdeskConfirmation, sendTicketReply } = require('../utils/mailer');
 
+const router = express.Router();
+
+// Initialize Razorpay
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-
-const express = require('express');
-const pool = require('../db');
-const auth = require('../middleware/auth');
-const { sendHelpdeskNotification, sendHelpdeskConfirmation, sendTicketReply } = require('../utils/mailer'); // <-- THIS LINE IS MISSING
-const router = express.Router();
 /* ============ ADMIN GUARD ============ */
 function requireAdmin(req, res, next) {
   if (req.user.role !== 'admin') {
@@ -167,14 +168,12 @@ router.post('/helpdesk', auth, async (req, res) => {
   }
 
   try {
-    // 1. Get Student details
     const userRes = await pool.query(
       'SELECT name, email, phone FROM users WHERE id = $1',
       [req.user.id]
     );
     const student = userRes.rows[0];
 
-    // 2. Save Ticket to Database
     const ticketRes = await pool.query(
       `INSERT INTO helpdesk_tickets (user_id, subject, message)
        VALUES ($1, $2, $3)
@@ -183,47 +182,32 @@ router.post('/helpdesk', auth, async (req, res) => {
     );
     const ticketId = ticketRes.rows[0].id;
 
-    // 3. Send email to ADMIN
     try {
-      await sendHelpdeskNotification({
-        student: student,
-        subject: subject,
-        message: message,
-        ticketId: ticketId,
-      });
+      await sendHelpdeskNotification({ student, subject, message, ticketId });
       console.log(`📧 Admin notified of ticket #${ticketId}`);
     } catch (err) {
       console.error('Failed to notify admin:', err.message);
     }
 
-    // 4. Send confirmation email to STUDENT
     try {
-      await sendHelpdeskConfirmation({
-        student: student,
-        subject: subject,
-        ticketId: ticketId,
-      });
+      await sendHelpdeskConfirmation({ student, subject, ticketId });
       console.log(`📧 Student confirmation sent to ${student.email}`);
     } catch (err) {
       console.error('Failed to send student confirmation:', err.message);
     }
 
-    // 5. Return success to frontend
     res.json({
       success: true,
       ticket_id: ticketId,
       message: 'Thank you! Our team will contact you within 24 hours.',
-      user: {
-        name: student.name,
-        email: student.email,
-        phone: student.phone,
-      },
+      user: { name: student.name, email: student.email, phone: student.phone },
     });
   } catch (err) {
     console.error('Helpdesk error:', err);
     res.status(500).json({ error: 'Failed to submit ticket' });
   }
 });
+
 /* ============ GET ALL TICKETS (admin) ============ */
 router.get('/helpdesk/tickets', auth, requireAdmin, async (req, res) => {
   try {
@@ -256,33 +240,15 @@ router.patch('/helpdesk/tickets/:id', auth, requireAdmin, async (req, res) => {
     
     const ticket = result.rows[0];
 
-    // Send email to student with the reply
     try {
       const userRes = await pool.query('SELECT name, email FROM users WHERE id = $1', [ticket.user_id]);
       const user = userRes.rows[0];
       if (user && user.email) {
-        const nodemailer = require('nodemailer');
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-        });
-        
-        await transporter.sendMail({
-          from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        await sendTicketReply({
           to: user.email,
-          subject: `Reply to your ticket #${ticket.id} - Kiran Enosh`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f6f8fc; padding: 30px;">
-              <h1 style="color: #ff7b00;">Kiran Enosh Support</h1>
-              <p>Hi ${user.name},</p>
-              <p>Our team has replied to your ticket:</p>
-              <div style="background: #fff; padding: 15px; border-left: 4px solid #4a90e2; margin: 20px 0;">
-                <strong>Your Subject:</strong> ${ticket.subject}<br><br>
-                <strong>Our Reply:</strong><br>${ticket.admin_reply}
-              </div>
-              <p>If you have any more questions, feel free to contact us.</p>
-            </div>
-          `
+          name: user.name,
+          subject: ticket.subject,
+          reply: ticket.admin_reply
         });
       }
     } catch (mailErr) {
@@ -295,11 +261,11 @@ router.patch('/helpdesk/tickets/:id', auth, requireAdmin, async (req, res) => {
     res.status(500).json({ error: 'Failed to reply' });
   }
 });
+
 /* ============================================================
-   PAYMENTS
+   PAYMENTS (RAZORPAY)
    ============================================================ */
 
-/* ============ CREATE PAYMENT RECORD (after "I have paid") ============ */
 /* ============ 1. CREATE RAZORPAY ORDER ============ */
 router.post('/create-order', auth, async (req, res) => {
   const { amount } = req.body;
@@ -309,7 +275,7 @@ router.post('/create-order', auth, async (req, res) => {
 
   try {
     const options = {
-      amount: amount * 100, // Razorpay takes amount in paise (₹1 = 100 paise)
+      amount: amount * 100, // Razorpay takes amount in paise
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
     };
@@ -334,7 +300,6 @@ router.post('/payments', auth, async (req, res) => {
   }
 
   try {
-    // Verify the signature to prove the payment is real
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
@@ -345,7 +310,6 @@ router.post('/payments', auth, async (req, res) => {
       return res.status(400).json({ error: 'Invalid payment signature. Payment is fake.' });
     }
 
-    // If signature is valid, save to database
     const enrolled = await pool.query(
       'SELECT id FROM enrollments WHERE user_id = $1 AND course_name = $2',
       [req.user.id, course_name]
@@ -378,6 +342,7 @@ router.post('/payments', auth, async (req, res) => {
     res.status(500).json({ error: 'Failed to verify payment' });
   }
 });
+
 /* ============ GET SINGLE PAYMENT RECEIPT ============ */
 router.get('/payments/:id', auth, async (req, res) => {
   try {

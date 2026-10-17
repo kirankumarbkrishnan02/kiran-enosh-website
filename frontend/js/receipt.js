@@ -2,7 +2,7 @@
    KIRAN ENOSH — RECEIPT.JS
    ============================================================ */
 
-const API = 'http://localhost:5000/api/admin';
+const API = 'https://kiran-enosh-backend.onrender.com/api/admin';
 
 async function loadReceipt() {
   const params = new URLSearchParams(window.location.search);

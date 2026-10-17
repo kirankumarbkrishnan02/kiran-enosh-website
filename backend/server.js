@@ -25,12 +25,14 @@ app.use(
       
       // Allow ANY localhost or 127.0.0.1 port (5500, 5501, etc.)
       if (
+        origin === 'https://kiran-enosh-website-frontend.vercel.app' || // YOUR LIVE FRONTEND
         origin.startsWith('http://localhost:') ||
         origin.startsWith('http://127.0.0.1:') ||
         origin.startsWith('http://192.168.')
       ) {
         return callback(null, true);
       }
+      
       
       console.warn('CORS blocked origin:', origin);
       return callback(new Error('Not allowed by CORS'));

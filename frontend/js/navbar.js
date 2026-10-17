@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  var AUTH_API = 'http://localhost:5000/api/auth';
+  var AUTH_API = 'https://kiran-enosh-backend.onrender.com/api/auth';
 
   // Detect current page for highlighting the active link
   function currentPage() {

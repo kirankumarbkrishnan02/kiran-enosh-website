@@ -2,7 +2,7 @@
    KIRAN ENOSH — AUTH.JS (with role-based redirect & forgot password)
    ============================================================ */
 
-const API_BASE = 'http://localhost:5000/api/auth';
+const API_BASE = 'https://kiran-enosh-backend.onrender.com/api/auth';
 
 function showMessage(text, type) {
   const box = document.getElementById('messageBox');

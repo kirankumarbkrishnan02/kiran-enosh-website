@@ -2,8 +2,8 @@
 
 console.log('=== courses.js v14 starting ===');
 
-var API = 'http://localhost:5000/api/admin';
-var AUTH = 'http://localhost:5000/api/auth';
+var API = 'https://kiran-enosh-backend.onrender.com';
+var AUTH = 'https://kiran-enosh-backend.onrender.com';
 
 function esc(s) {
   if (!s) return '';

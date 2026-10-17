@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Helpdesk | Kiran Enosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .admin-container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+  
+  /* Ticket Card Styles */
+  .ticket-card {
+    background: linear-gradient(160deg, #142a52, #0a1128);
+    border: 1px solid rgba(74,144,226,0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+  }
+  .ticket-card:hover { border-color: #ff7b00; }
+  
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .ticket-user { color: #fff; font-size: 18px; font-weight: 700; margin: 0; }
+  .ticket-meta { color: #7a89a8; font-size: 13px; margin-top: 5px; }
+  
+  .badge-pending { background: rgba(255,193,7,0.2); color: #ffc107; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-replied { background: rgba(34,197,94,0.2); color: #22c55e; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  
+  .ticket-body {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-left: 4px solid #4a90e2;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #c3cce0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .ticket-body h4 { color: #4a90e2; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
+  
+  .reply-box {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+    display: none; /* Hidden by default */
+  }
+  .reply-box.active { display: block; }
+  
+  .reply-box textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #4a90e2;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 15px;
+  }
+  
+  .btn-reply { background: #4a90e2; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+  .btn-reply:hover { background: #357abd; }
+  
+  .btn-submit-reply { background: #22c55e; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-right: 10px; }
+  .btn-submit-reply:hover { background: #16a34a; }
+  
+  .btn-cancel { background: transparent; color: #ff8a8a; border: 1px solid #ff8a8a; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+  .btn-cancel:hover { background: rgba(255,138,138,0.1); }
+
+  .admin-reply-display {
+    background: rgba(34,197,94,0.1);
+    border-left: 4px solid #22c55e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    color: #c3cce0;
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="admin-dashboard.html" class="nav-brand">
+    <img src="images/logo.png" alt="Kiran Enosh Logo" />
+    <div class="nav-brand-text">
+      KIRAN ENOSH
+      <span>ADMIN PANEL</span>
+    </div>
+  </a>
+  <a href="admin-dashboard.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Admin Home</a>
+</nav>
+
+<div class="dashboard-page">
+  <div class="admin-container">
+    <h2 class="section-title" style="text-align:left;font-size:28px;margin-bottom:10px;">Helpdesk Tickets</h2>
+    <p style="color:#a5b1cc;margin-bottom:30px;">View student queries and reply to them directly.</p>
+
+    <div id="ticketsContainer">
+      <p style="text-align:center;color:#7a89a8;">Loading tickets...</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const API = '/api';
+
+  async function loadTickets() {
+    const container = document.getElementById('ticketsContainer');
+    
+    try {
+      const res = await fetch(`${API}/admin/helpdesk/tickets`, { credentials: 'include' });
+      
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          window.location.href = 'login.html';
+          return;
+        }
+        throw new Error('Server error');
+      }
+
+      const data = await res.json();
+      const tickets = data.tickets || [];
+
+      if (!tickets.length) {
+        container.innerHTML = '<p style="text-align:center;color:#7a89a8;">No tickets found.</p>';
+        return;
+      }
+
+      let html = '';
+      tickets.forEach(t => {
+        const isReplied = t.status === 'replied';
+        const badgeClass = isReplied ? 'badge-replied' : 'badge-pending';
+        const badgeText = isReplied ? '✓ Replied' : '⏳ Pending';
+        
+        // Format date
+        const dateObj = new Date(t.created_at);
+        const dateStr = dateObj.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        // Reply HTML if already replied
+        let replyHtml = '';
+        if (isReplied && t.admin_reply) {
+          replyHtml = `
+            <div class="admin-reply-display">
+              <strong style="color:#22c55e;display:block;margin-bottom:5px;">Your Reply:</strong>
+              ${t.admin_reply}
+            </div>
+          `;
+        }
+
+        html += `
+          <div class="ticket-card">
+            <div class="ticket-header">
+              <div>
+                <h3 class="ticket-user">${t.user_name}</h3>
+                <div class="ticket-meta">${t.user_email} • ${t.user_phone || 'No phone'}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="${badgeClass}">${badgeText}</span>
+                <div class="ticket-meta" style="margin-top:5px;">${dateStr}</div>
+              </div>
+            </div>
+
+            <div class="ticket-body">
+              <h4>Subject: ${t.subject}</h4>
+              <p style="margin:0;">${t.message}</p>
+            </div>
+
+            ${replyHtml}
+
+            <!-- Reply Form -->
+            <div class="reply-box" id="replyBox-${t.id}">
+              <textarea id="replyText-${t.id}" placeholder="Type your reply to ${t.user_name}..."></textarea>
+              <button class="btn-submit-reply" onclick="submitReply(${t.id})">Send Reply</button>
+              <button class="btn-cancel" onclick="toggleReply(${t.id})">Cancel</button>
+            </div>
+
+            <!-- Reply Button (only shows if not replied) -->
+            ${!isReplied ? `<button class="btn-reply" onclick="toggleReply(${t.id})">Reply to Student</button>` : ''}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = `<p style="text-align:center;color:#ff8a8a;">Error: ${err.message}</p>`;
+    }
+  }
+
+  function toggleReply(id) {
+    const box = document.getElementById(`replyBox-${id}`);
+    box.classList.toggle('active');
+  }
+
+  async function submitReply(id) {
+    const textarea = document.getElementById(`replyText-${id}`);
+    const replyText = textarea.value.trim();
+
+    if (!replyText) {
+      alert('Please type a reply before sending.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/admin/helpdesk/tickets/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ admin_reply: replyText, status: 'replied' })
+      });
+
+      if (!res.ok) {
+        alert('Failed to send reply.');
+        return;
+      }
+
+      alert('✅ Reply sent successfully! The student will receive an email shortly.');
+      loadTickets(); // Reload to show the new reply
+
+    } catch (err) {
+      console.error(err);
+      alert('Cannot reach server.');
+    }
+  }
+
+  loadTickets();
+</script>
+
+</body>
+</html>

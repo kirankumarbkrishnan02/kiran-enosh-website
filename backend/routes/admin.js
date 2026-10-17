@@ -149,42 +149,72 @@ router.get('/my-courses', auth, async (req, res) => {
 /* ============ SUBMIT HELPDESK TICKET ============ */
 router.post('/helpdesk', auth, async (req, res) => {
   const { subject, message } = req.body;
+
   if (!subject || !message) {
     return res.status(400).json({ error: 'Subject and message required' });
   }
   if (message.length < 10) {
     return res.status(400).json({ error: 'Please describe your issue in more detail' });
   }
+
   try {
+    // 1. Get Student details
     const userRes = await pool.query(
       'SELECT name, email, phone FROM users WHERE id = $1',
       [req.user.id]
     );
-    const user = userRes.rows[0];
+    const student = userRes.rows[0];
+
+    // 2. Save Ticket to Database
     const ticketRes = await pool.query(
       `INSERT INTO helpdesk_tickets (user_id, subject, message)
        VALUES ($1, $2, $3)
        RETURNING id, created_at`,
       [req.user.id, subject, message]
     );
-    console.log('📩 New Helpdesk Ticket:');
-    console.log(`  ID: #${ticketRes.rows[0].id}`);
-    console.log(`  From: ${user.name} <${user.email}>`);
-    console.log(`  Phone: ${user.phone}`);
-    console.log(`  Subject: ${subject}`);
-    console.log(`  Message: ${message}`);
+    const ticketId = ticketRes.rows[0].id;
+
+    // 3. Send email to ADMIN
+    try {
+      await sendHelpdeskNotification({
+        student: student,
+        subject: subject,
+        message: message,
+        ticketId: ticketId,
+      });
+      console.log(`📧 Admin notified of ticket #${ticketId}`);
+    } catch (err) {
+      console.error('Failed to notify admin:', err.message);
+    }
+
+    // 4. Send confirmation email to STUDENT
+    try {
+      await sendHelpdeskConfirmation({
+        student: student,
+        subject: subject,
+        ticketId: ticketId,
+      });
+      console.log(`📧 Student confirmation sent to ${student.email}`);
+    } catch (err) {
+      console.error('Failed to send student confirmation:', err.message);
+    }
+
+    // 5. Return success to frontend
     res.json({
       success: true,
-      ticket_id: ticketRes.rows[0].id,
+      ticket_id: ticketId,
       message: 'Thank you! Our team will contact you within 24 hours.',
-      user: { name: user.name, email: user.email, phone: user.phone },
+      user: {
+        name: student.name,
+        email: student.email,
+        phone: student.phone,
+      },
     });
   } catch (err) {
     console.error('Helpdesk error:', err);
     res.status(500).json({ error: 'Failed to submit ticket' });
   }
 });
-
 /* ============ GET ALL TICKETS (admin) ============ */
 router.get('/helpdesk/tickets', auth, requireAdmin, async (req, res) => {
   try {
@@ -214,13 +244,48 @@ router.patch('/helpdesk/tickets/:id', auth, requireAdmin, async (req, res) => {
       [admin_reply, status || 'replied', id]
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Ticket not found' });
-    res.json({ success: true, ticket: result.rows[0] });
+    
+    const ticket = result.rows[0];
+
+    // Send email to student with the reply
+    try {
+      const userRes = await pool.query('SELECT name, email FROM users WHERE id = $1', [ticket.user_id]);
+      const user = userRes.rows[0];
+      if (user && user.email) {
+        const nodemailer = require('nodemailer');
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+        });
+        
+        await transporter.sendMail({
+          from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+          to: user.email,
+          subject: `Reply to your ticket #${ticket.id} - Kiran Enosh`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f6f8fc; padding: 30px;">
+              <h1 style="color: #ff7b00;">Kiran Enosh Support</h1>
+              <p>Hi ${user.name},</p>
+              <p>Our team has replied to your ticket:</p>
+              <div style="background: #fff; padding: 15px; border-left: 4px solid #4a90e2; margin: 20px 0;">
+                <strong>Your Subject:</strong> ${ticket.subject}<br><br>
+                <strong>Our Reply:</strong><br>${ticket.admin_reply}
+              </div>
+              <p>If you have any more questions, feel free to contact us.</p>
+            </div>
+          `
+        });
+      }
+    } catch (mailErr) {
+      console.error('Failed to send reply email:', mailErr.message);
+    }
+
+    res.json({ success: true, ticket });
   } catch (err) {
     console.error('Reply ticket error:', err);
     res.status(500).json({ error: 'Failed to reply' });
   }
 });
-
 /* ============================================================
    PAYMENTS
    ============================================================ */

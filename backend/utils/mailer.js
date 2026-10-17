@@ -135,5 +135,5 @@ module.exports = {
   sendPasswordResetEmail,
   sendHelpdeskNotification,
   sendHelpdeskConfirmation,
-  sendTicketReply,
+  sendTicketReply, 
 };

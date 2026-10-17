@@ -12,59 +12,34 @@
 <body>
 
 <div class="auth-page">
-  <div class="auth-card">
+  <div class="auth-card" style="border-color: rgba(255,123,0,0.5);">
     <img src="images/logo.png" alt="Kiran Enosh Logo" class="auth-logo" />
-    <h2>Welcome Back</h2>
-    <p class="auth-sub">Login to access your admin dashboard</p>
+    <h2 style="color: #ff7b00;">Admin Access</h2>
+    <p class="auth-sub">Restricted area — Authorized personnel only</p>
 
     <div class="auth-message" id="messageBox"></div>
 
-    <form id="loginForm" novalidate>
+    <form id="adminLoginForm" novalidate>
       <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        <label for="email">Admin Email</label>
+        <input type="email" id="email" name="email" placeholder="admin@kiranenosh.in" required />
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Your password" required />
-
-        <!-- FORCED-INLINE STYLE — cannot be overridden by any CSS -->
-        <div style="display:flex !important; flex-direction:row !important; align-items:center !important; gap:10px !important; margin-top:12px; white-space:nowrap;">
-          <input
-            type="checkbox"
-            id="showPassword"
-            onclick="togglePwd('password', this)"
-            style="width:18px !important; height:18px !important; min-width:18px !important; max-width:18px !important; flex:0 0 18px !important; margin:0 !important; cursor:pointer; accent-color:#ff7b00;"
-          />
-          <label for="showPassword" style="display:inline-block !important; margin:0 !important; padding:0 !important; font-size:14px; color:#c3cce0; cursor:pointer; font-weight:400;">
-            Show Password
-          </label>
+        <input type="password" id="password" name="password" placeholder="Your admin password" required />
+        
+        <div style="display:flex; align-items:center; gap:10px; margin-top:12px;">
+          <input type="checkbox" id="showPassword" onclick="togglePwd('password', this)" style="width:18px; height:18px; cursor:pointer; accent-color:#ff7b00;" />
+          <label for="showPassword" style="font-size:14px; color:#c3cce0; cursor:pointer; margin:0;">Show Password</label>
         </div>
       </div>
+
       <button type="submit" class="btn-submit" id="submitBtn" style="background: linear-gradient(135deg, #0a4da6, #ff5500);">Access Admin Panel</button>
     </form>
 
-    <p class="auth-switch" style="margin-top: 20px;">
+    <p class="auth-switch" style="margin-top: 20px; text-align: center;">
       <a href="index.html" style="color: #7a89a8;">← Back to Homepage</a>
-    </p>
-  </div>
-  
-
-      <p style="text-align:right;margin-top:-6px;margin-bottom:14px;">
-        <a href="forgot-password.html" style="color:#ff7b00;font-size:13px;font-weight:600;text-decoration:none;">
-          Forgot Password?
-        </a>
-      </p>
-
-      <button type="submit" class="btn-submit" id="submitBtn">Login</button>
-    </form>
-
-    <p class="auth-switch">
-      Don't have an account? <a href="register.html">Register now</a>
-    </p>
-    <p class="auth-switch">
-      <a href="index.html">← Back to Home</a>
     </p>
   </div>
 </div>
@@ -78,19 +53,19 @@
     box.className = 'auth-message ' + (type || 'error');
   }
 
-  function togglePwd(inputId, btn) {
+  function togglePwd(inputId, checkbox) {
     const input = document.getElementById(inputId);
     if (input.type === 'password') {
       input.type = 'text';
-      btn.textContent = '🙈';
     } else {
       input.type = 'password';
-      btn.textContent = '👁️';
     }
   }
 
+  // We attach the listener to 'adminLoginForm' which matches the HTML now
   document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const btn = document.getElementById('submitBtn');
@@ -120,13 +95,14 @@
 
       // Check if the logged-in user is actually an admin
       if (data.user.role !== 'admin') {
-        // Log them out immediately for security
+        // Log them out immediately for security if they are just a student
         await fetch(`${API_BASE}/logout`, { method: 'POST', credentials: 'include' });
         btn.disabled = false;
         btn.textContent = 'Access Admin Panel';
         return showMessage('❌ Access Denied. This account is not an administrator.');
       }
 
+      // Success!
       showMessage('✅ Admin access granted. Redirecting...', 'success');
       setTimeout(() => {
         window.location.href = 'admin-dashboard.html';

@@ -1,29 +1,28 @@
 const nodemailer = require('nodemailer');
 
 // ============================================================
-// 1. TRANSPORTER SETUP (Forced to Port 587 for Render)
+// TRANSPORTER (Uses Port 2525 to bypass Render blocks)
 // ============================================================
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // true for 465, false for other ports
+  port: 2525, // <--- THE MAGIC PORT for Render
+  secure: false, // Must be false for 2525
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER, // kirankumarbkrishnan02@gmail.com
+    pass: process.env.EMAIL_PASS, // Your Gmail App Password
   },
 });
 
-// Verify connection at startup
 transporter.verify(function (error, success) {
   if (error) {
     console.error('❌ Mailer verification failed:', error.message);
   } else {
-    console.log('📧 Mailer ready — emails will be sent from', process.env.EMAIL_USER);
+    console.log('📧 Mailer ready — connected to Gmail via port 2525');
   }
 });
 
 // ============================================================
-// 2. PASSWORD RESET EMAIL
+// 1. PASSWORD RESET EMAIL
 // ============================================================
 async function sendPasswordResetEmail({ to, name, resetLink }) {
   const html = `
@@ -44,7 +43,7 @@ async function sendPasswordResetEmail({ to, name, resetLink }) {
   `;
 
   return transporter.sendMail({
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`, // Sends from your Gmail
     to: to,
     subject: 'Reset Your Password — Kiran Enosh',
     html: html,
@@ -52,7 +51,7 @@ async function sendPasswordResetEmail({ to, name, resetLink }) {
 }
 
 // ============================================================
-// 3. HELPDESK: NOTIFY ADMIN
+// 2. HELPDESK: NOTIFY ADMIN
 // ============================================================
 async function sendHelpdeskNotification({ student, subject, message, ticketId }) {
   const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
@@ -77,16 +76,16 @@ async function sendHelpdeskNotification({ student, subject, message, ticketId })
   `;
 
   return transporter.sendMail({
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-    to: adminEmail,
-    replyTo: student.email,
+    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
+    to: adminEmail, // Sends to you (Admin)
+    replyTo: student.email, // If you click "Reply" in Gmail, it goes to the student
     subject: `🎫 Helpdesk Ticket #${ticketId} — ${subject}`,
     html: html,
   });
 }
 
 // ============================================================
-// 4. HELPDESK: CONFIRM TO STUDENT
+// 3. HELPDESK: CONFIRM TO STUDENT
 // ============================================================
 async function sendHelpdeskConfirmation({ student, subject, ticketId }) {
   const html = `
@@ -100,15 +99,15 @@ async function sendHelpdeskConfirmation({ student, subject, ticketId }) {
   `;
 
   return transporter.sendMail({
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-    to: student.email,
+    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
+    to: student.email, // Sends to the student
     subject: `✅ We received your query #${ticketId}`,
     html: html,
   });
 }
 
 // ============================================================
-// 5. HELPDESK: ADMIN REPLIES TO STUDENT
+// 4. HELPDESK: ADMIN REPLIES TO STUDENT
 // ============================================================
 async function sendTicketReply({ to, name, subject, reply }) {
   const html = `
@@ -125,16 +124,13 @@ async function sendTicketReply({ to, name, subject, reply }) {
   `;
 
   return transporter.sendMail({
-    from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-    to: to,
+    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
+    to: to, // Sends to the student's email
     subject: `Reply to your ticket - Kiran Enosh`,
     html: html,
   });
 }
 
-// ============================================================
-// EXPORTS
-// ============================================================
 module.exports = {
   sendPasswordResetEmail,
   sendHelpdeskNotification,

@@ -1,91 +1,83 @@
-const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+require('dotenv').config();
 
 // ============================================================
-// TRANSPORTER (Uses Port 2525 to bypass Render blocks)
+// SETUP GMAIL API (Using OAuth2)
 // ============================================================
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 2525, // <--- THE MAGIC PORT for Render
-  secure: false, // Must be false for 2525
-  auth: {
-    user: process.env.EMAIL_USER, // kirankumarbkrishnan02@gmail.com
-    pass: process.env.EMAIL_PASS, // Your Gmail App Password
-  },
+const OAuth2 = google.auth.OAuth2;
+
+const oauth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'https://developers.google.com/oauthplayground'
+);
+
+oauth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
 
-transporter.verify(function (error, success) {
-  if (error) {
-    console.error('❌ Mailer verification failed:', error.message);
-  } else {
-    console.log('📧 Mailer ready — connected to Gmail via port 2525');
+const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+
+console.log('📧 Gmail API Mailer initialized');
+
+// Helper function to send emails via Gmail API
+async function sendMail({ to, subject, html }) {
+  try {
+    const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
+    const messageParts = [
+      `From: "Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
+      `To: ${to}`,
+      'Content-Type: text/html; charset=utf-8',
+      'MIME-Version: 1.0',
+      `Subject: ${utf8Subject}`,
+      '',
+      html,
+    ];
+    const message = messageParts.join('\n');
+    
+    // Encode the message for Gmail API
+    const encodedMessage = Buffer.from(message)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
+    const res = await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: { raw: encodedMessage },
+    });
+    
+    console.log(`📧 Email sent to ${to} (ID: ${res.data.id})`);
+    return res;
+  } catch (error) {
+    console.error(`❌ Failed to send email to ${to}:`, error.message);
+    throw error;
   }
-});
-
-// ============================================================
-// 1. PASSWORD RESET EMAIL
-// ============================================================
-async function sendPasswordResetEmail({ to, name, resetLink }) {
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f6f8fc; padding: 30px 20px;">
-      <div style="background: #0a1128; padding: 25px; border-radius: 12px 12px 0 0; text-align: center;">
-        <h1 style="color: #ff7b00; margin: 0; font-size: 24px;">KIRAN ENOSH</h1>
-      </div>
-      <div style="background: #ffffff; padding: 35px 30px; border-radius: 0 0 12px 12px;">
-        <h2 style="color: #0a1128; margin-top: 0; font-size: 22px;">Reset Your Password</h2>
-        <p style="color: #333; font-size: 15px; line-height: 1.6;">Hi ${name || 'Student'},</p>
-        <p style="color: #333; font-size: 15px; line-height: 1.6;">Click the button below to reset your password.</p>
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${resetLink}" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #ff7b00, #ff5500); color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 700;">Reset My Password →</a>
-        </div>
-        <p style="color: #666; font-size: 13px;">This link is valid for 1 hour.</p>
-      </div>
-    </div>
-  `;
-
-  return transporter.sendMail({
-    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`, // Sends from your Gmail
-    to: to,
-    subject: 'Reset Your Password — Kiran Enosh',
-    html: html,
-  });
 }
 
 // ============================================================
-// 2. HELPDESK: NOTIFY ADMIN
+// 1. HELPDESK: NOTIFY ADMIN
 // ============================================================
 async function sendHelpdeskNotification({ student, subject, message, ticketId }) {
   const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
 
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; background: #f6f8fc; padding: 30px 20px;">
-      <div style="background: #0a1128; padding: 22px; border-radius: 12px 12px 0 0; text-align: center;">
-        <h1 style="color: #ff7b00; margin: 0; font-size: 22px;">🎫 NEW HELPDESK TICKET</h1>
-      </div>
-      <div style="background: #ffffff; padding: 30px; border-radius: 0 0 12px 12px;">
-        <p style="color: #666; font-size: 13px; margin: 0 0 5px;">Ticket #${ticketId}</p>
-        <h2 style="color: #0a1128; font-size: 20px; margin: 20px 0;">Student Details</h2>
-        <p><strong>Name:</strong> ${student.name}</p>
-        <p><strong>Email:</strong> ${student.email}</p>
-        <p><strong>Phone:</strong> ${student.phone}</p>
-        <h2 style="color: #0a1128; font-size: 20px; margin: 20px 0 10px;">Subject</h2>
-        <p style="background: #f6f8fc; padding: 15px; border-left: 4px solid #ff7b00;">${subject}</p>
-        <h2 style="color: #0a1128; font-size: 20px; margin: 20px 0 10px;">Message</h2>
-        <p style="background: #f6f8fc; padding: 15px; border-left: 4px solid #0a4da6; white-space: pre-wrap;">${message}</p>
-      </div>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f6f8fc; padding: 30px;">
+      <h1 style="color: #ff7b00;">🎫 NEW HELPDESK TICKET #${ticketId}</h1>
+      <p><strong>Student Name:</strong> ${student.name}</p>
+      <p><strong>Email:</strong> ${student.email}</p>
+      <p><strong>Phone:</strong> ${student.phone}</p>
+      <hr style="border: 1px solid #ddd; margin: 20px 0;">
+      <h3>Subject: ${subject}</h3>
+      <p style="background: #fff; padding: 15px; border-left: 4px solid #4a90e2;">${message}</p>
     </div>
   `;
 
-  return transporter.sendMail({
-    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
-    to: adminEmail, // Sends to you (Admin)
-    replyTo: student.email, // If you click "Reply" in Gmail, it goes to the student
-    subject: `🎫 Helpdesk Ticket #${ticketId} — ${subject}`,
-    html: html,
-  });
+  return sendMail({ to: adminEmail, subject: `🎫 Helpdesk #${ticketId} - ${subject}`, html });
 }
 
 // ============================================================
-// 3. HELPDESK: CONFIRM TO STUDENT
+// 2. HELPDESK: CONFIRM TO STUDENT
 // ============================================================
 async function sendHelpdeskConfirmation({ student, subject, ticketId }) {
   const html = `
@@ -94,20 +86,14 @@ async function sendHelpdeskConfirmation({ student, subject, ticketId }) {
       <p>Hi ${student.name},</p>
       <p>Thank you for contacting Kiran Enosh. We have received your ticket <strong>#${ticketId}</strong> regarding: <em>${subject}</em>.</p>
       <p>Our team will get in touch with you at <strong>${student.email}</strong> and <strong>${student.phone}</strong> within 24 hours.</p>
-      <p style="color: #666; font-size: 12px; margin-top: 30px;">This is an automated confirmation. Please do not reply to this email.</p>
     </div>
   `;
 
-  return transporter.sendMail({
-    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
-    to: student.email, // Sends to the student
-    subject: `✅ We received your query #${ticketId}`,
-    html: html,
-  });
+  return sendMail({ to: student.email, subject: `✅ We received your query #${ticketId}`, html });
 }
 
 // ============================================================
-// 4. HELPDESK: ADMIN REPLIES TO STUDENT
+// 3. HELPDESK: ADMIN REPLIES TO STUDENT
 // ============================================================
 async function sendTicketReply({ to, name, subject, reply }) {
   const html = `
@@ -119,21 +105,23 @@ async function sendTicketReply({ to, name, subject, reply }) {
         <strong>Your Subject:</strong> ${subject}<br><br>
         <strong>Our Reply:</strong><br>${reply}
       </div>
-      <p>If you have any more questions, feel free to contact us.</p>
     </div>
   `;
 
-  return transporter.sendMail({
-    from: `"Kiran Enosh Support" <${process.env.EMAIL_USER}>`,
-    to: to, // Sends to the student's email
-    subject: `Reply to your ticket - Kiran Enosh`,
-    html: html,
-  });
+  return sendMail({ to: to, subject: `Reply to your ticket - Kiran Enosh`, html });
+}
+
+// ============================================================
+// 4. PASSWORD RESET (Optional)
+// ============================================================
+async function sendPasswordResetEmail({ to, name, resetLink }) {
+  const html = `<div><h1>Reset Password</h1><p>Hi ${name},</p><a href="${resetLink}">Click here</a></div>`;
+  return sendMail({ to: to, subject: `Reset Your Password - Kiran Enosh`, html });
 }
 
 module.exports = {
   sendPasswordResetEmail,
   sendHelpdeskNotification,
   sendHelpdeskConfirmation,
-  sendTicketReply, 
+  sendTicketReply,
 };

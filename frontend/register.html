@@ -8,27 +8,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
+<link rel="icon" type="image/png" href="images/logo.png" />
 
 <style>
   /* Fix for centering the tall registration form */
   .auth-page {
     display: flex;
-    align-items: center;       /* Centers vertically */
-    justify-content: center;   /* Centers horizontally */
+    align-items: center;       
+    justify-content: center;   
     min-height: 100vh;
-    padding: 80px 20px 40px;   /* Pushes form down so navbar doesn't overlap */
+    padding: 60px 20px 40px;   
   }
   
   .auth-card {
-    margin: 0 auto;            /* Extra safety for horizontal centering */
+    margin: 0 auto;            
     width: 100%;
-    max-width: 500px;          /* Keeps the form from getting too wide */
+    max-width: 500px;          
   }
 
   .auth-switch {
     text-align: center;
     margin-top: 20px;
-    line-height: 2;            /* Adds space between the two links */
+    line-height: 2;            
   }
 </style>
 </head>
@@ -36,7 +37,8 @@
 
 <div class="auth-page">
   <div class="auth-card">
-    <img src="images/logo.png" alt="Kiran Enosh Logo" class="auth-logo" />
+    <!-- Logo Removed From Here -->
+    
     <h2>Create Your Account</h2>
     <p class="auth-sub">Join the Kiran Enosh community today</p>
 
@@ -116,7 +118,6 @@
 
 <script src="js/auth.js"></script>
 <script>
-  // Inline function for the show password checkbox
   function togglePwd(inputId, checkbox) {
     var input = document.getElementById(inputId);
     input.type = checkbox.checked ? 'text' : 'password';

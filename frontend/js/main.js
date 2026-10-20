@@ -162,5 +162,47 @@ if (bgVideo) {
     bgVideo.style.display = 'none';
   });
 }
+/* ============================================================
+   SHOW COURSE PRICES ON HOMEPAGE (Only if logged in)
+   ============================================================ */
+fetch('/api/auth/me', { credentials: 'include' })
+  .then(res => {
+    if (!res.ok) throw new Error('Not logged in');
+    return res.json();
+  })
+  .then(data => {
+    // User is logged in
+    const user = data.user;
+
+    // 1. Show the prices
+    const priceElements = document.querySelectorAll('.course-price');
+    priceElements.forEach(el => {
+      el.style.display = 'block';
+      el.style.color = '#ffb347';
+      el.style.fontWeight = '700';
+      el.style.fontSize = '20px';
+      el.style.marginTop = '12px';
+    });
+
+    // 2. Change buttons to "View Course"
+    const enrollLinks = document.querySelectorAll('.enroll-link');
+    enrollLinks.forEach(btn => {
+      btn.href = 'courses.html';
+      btn.textContent = 'View Course →';
+    });
+
+    // 3. Update navbar to show user name (if pill exists)
+    const pill = document.getElementById('userPill');
+    const nameEl = document.getElementById('userNameNav');
+    if (pill && nameEl) {
+      nameEl.textContent = user.name;
+      pill.style.display = 'inline-flex';
+    }
+  })
+  .catch(err => {
+    // User is a guest.
+    // Prices are already hidden in the HTML (style="display:none;"), so we do nothing.
+    console.log('Guest mode: Prices hidden.');
+  });
 
 console.log('🚀 Kiran Enosh homepage loaded');

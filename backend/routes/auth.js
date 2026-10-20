@@ -15,36 +15,42 @@ const router = express.Router();
 router.post(
   '/register',
   [
-    body('name').trim().isLength({ min: 2 }).withMessage('Name too short'),
-    body('email').isEmail().normalizeEmail().withMessage('Invalid email'),
-    body('phone').isLength({ min: 10, max: 15 }).withMessage('Invalid phone'),
+    body('name').trim().isLength({ min: 2 }).withMessage('Full name is too short'),
+    body('email').isEmail().normalizeEmail().withMessage('Invalid email address'),
+    body('phone').isLength({ min: 10, max: 15 }).withMessage('Invalid phone number'),
+    body('father_name').trim().notEmpty().withMessage("Father's name is required"),
+    body('mother_name').trim().notEmpty().withMessage("Mother's name is required"),
+    body('gender').notEmpty().withMessage('Gender is required'),
+    body('dob').notEmpty().withMessage('Date of birth is required'),
+    body('last_education').notEmpty().withMessage('Last education is required'),
+    body('address').trim().notEmpty().withMessage('Address is required'),
     body('password')
-      .isLength({ min: 8 })
-      .withMessage('Password must be at least 8 characters')
-      .matches(/[A-Z]/)
-      .withMessage('Password must include at least one uppercase letter')
-      .matches(/[a-z]/)
-      .withMessage('Password must include at least one lowercase letter')
-      .matches(/[0-9]/)
-      .withMessage('Password must include at least one number')
-      .matches(/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\\/~`';]/)
-      .withMessage('Password must include at least one symbol (!@#$%^&* etc.)'),
+      .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+      .matches(/[A-Z]/).withMessage('Must include an uppercase letter')
+      .matches(/[0-9]/).withMessage('Must include a number')
+      .matches(/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\\/~`';]/).withMessage('Must include a symbol'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { name, email, phone, password } = req.body;
+    const { 
+      name, email, phone, password, 
+      father_name, mother_name, gender, dob, last_education, address 
+    } = req.body;
+
     try {
       const exists = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
       if (exists.rows.length) return res.status(409).json({ error: 'Email already registered' });
 
       const hash = await bcrypt.hash(password, 12);
+      
+      // Insert with all new fields
       const result = await pool.query(
-        `INSERT INTO users (name, email, phone, password_hash)
-         VALUES ($1, $2, $3, $4)
+        `INSERT INTO users (name, email, phone, password_hash, father_name, mother_name, gender, dob, last_education, address)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
          RETURNING id, name, email, phone, role, created_at`,
-        [name, email, phone, hash]
+        [name, email, phone, hash, father_name, mother_name, gender, dob, last_education, address]
       );
 
       const user = result.rows[0];
@@ -57,7 +63,7 @@ router.post(
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 24 * 60 * 60 * 1000,
       });
 

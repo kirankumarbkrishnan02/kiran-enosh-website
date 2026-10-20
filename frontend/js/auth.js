@@ -38,7 +38,8 @@ function redirectAfterAuth(user) {
   window.location.href = url;
 }
 
-/* ============ REGISTER ============ */
+
+/* ---------- REGISTER FORM ---------- */
 const registerForm = document.getElementById('registerForm');
 if (registerForm) {
   const submitBtn = document.getElementById('submitBtn');
@@ -48,15 +49,25 @@ if (registerForm) {
     e.preventDefault();
     clearMessage();
 
+    // Get all fields
     const name = document.getElementById('name').value.trim();
+    const father_name = document.getElementById('father_name').value.trim();
+    const mother_name = document.getElementById('mother_name').value.trim();
+    const gender = document.getElementById('gender').value;
+    const dob = document.getElementById('dob').value;
+    const last_education = document.getElementById('last_education').value.trim();
+    const address = document.getElementById('address').value.trim();
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const password = document.getElementById('password').value;
 
-    if (!name || !email || !phone || !password) return showMessage('Please fill in all fields.');
+    // Basic validation
+    if (!name || !email || !phone || !password || !father_name || !mother_name || !gender || !dob || !last_education || !address) {
+      return showMessage('Please fill in all required fields.');
+    }
 
-    const pErr = validatePassword(password);
-    if (pErr) return showMessage(pErr);
+    const passwordError = validatePassword(password);
+    if (passwordError) return showMessage(passwordError);
 
     setSubmitting(true);
 
@@ -65,27 +76,31 @@ if (registerForm) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ name, email, phone, password }),
+        body: JSON.stringify({ 
+          name, email, phone, password, 
+          father_name, mother_name, gender, dob, last_education, address 
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        if (data.errors && data.errors.length) return showMessage(data.errors[0].msg);
-        return showMessage(data.error || 'Registration failed.');
+        if (data.errors && data.errors.length) {
+          return showMessage(data.errors[0].msg);
+        }
+        return showMessage(data.error || 'Registration failed. Please try again.');
       }
 
-      showMessage('✅ Account created! Redirecting...', 'success');
-      setTimeout(() => redirectAfterAuth(data.user), 900);
+      showMessage('✅ Account created! Redirecting to dashboard...', 'success');
+      setTimeout(() => (window.location.href = 'dashboard.html'), 900);
     } catch (err) {
-      console.error(err);
+      console.error('Register error:', err);
       showMessage('Cannot reach server. Is the backend running?');
     } finally {
       setSubmitting(false);
     }
   });
 }
-
 /* ============ LOGIN ============ */
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {

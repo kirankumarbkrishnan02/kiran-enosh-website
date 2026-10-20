@@ -40,7 +40,67 @@
     <p style="color: #a5b1cc; font-size: 16px;">Choose the program that fits your career goals.</p>
   </div>
 
-  
+  <!-- Grid Layout -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+    
+    <!-- Course 1 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+      <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
+      <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
+      <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
+      <!-- Price is hidden for guests -->
+      <p class="course-price-display" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,999</p>
+      <!-- Button redirects guests to login via JS -->
+      <a href="course-details.html?course=Full%20Stack%20Web%20Development&price=25000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
+    </div>
+
+    <!-- Course 2 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+      <img src="images/python.png" style="width: 60px; height: 60px; object-fit: contain;" />
+      <h3 style="color: white; margin-top: 15px; font-size: 20px;">Python Programming</h3>
+      <p style="color: #a5b1cc; font-size: 14px;">Learn Python from basics</p>
+      <p class="course-price-display" data-price="₹14,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹14,999</p>
+      <a href="course-details.html?course=Python%20Programming&price=15000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
+    </div>
+
+    <!-- Course 3 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+      <img src="images/ai.png" style="width: 60px; height: 60px; object-fit: contain;" />
+      <h3 style="color: white; margin-top: 15px; font-size: 20px;">Artificial Intelligence & ML</h3>
+      <p style="color: #a5b1cc; font-size: 14px;">AI and machine learning</p>
+      <p class="course-price-display" data-price="₹29,000" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,000</p>
+      <a href="course-details.html?course=Artificial%20Intelligence%20%26%20ML&price=30000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
+    </div>
+
+    <!-- Course 4 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+      <img src="images/datascience.png" style="width: 60px; height: 60px; object-fit: contain;" />
+      <h3 style="color: white; margin-top: 15px; font-size: 20px;">Data Science</h3>
+      <p style="color: #a5b1cc; font-size: 14px;">Data analysis and visualization</p>
+      <p class="course-price-display" data-price="₹24,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹24,999</p>
+      <a href="course-details.html?course=Data%20Science&price=25000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
+    </div>
+
+    <!-- Course 5 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+      <img src="images/java.png" style="width: 60px; height: 60px; object-fit: contain;" />
+      <h3 style="color: white; margin-top: 15px; font-size: 20px;">Java & Android Development</h3>
+      <p style="color: #a5b1cc; font-size: 14px;">Java and Android</p>
+      <p class="course-price-display" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,999</p>
+      <a href="course-details.html?course=Java%20%26%20Android%20Development&price=20000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
+    </div>
+
+    <!-- Course 6 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+      <img src="images/cyber.png" style="width: 60px; height: 60px; object-fit: contain;" />
+      <h3 style="color: white; margin-top: 15px; font-size: 20px;">Cyber Security</h3>
+      <p style="color: #a5b1cc; font-size: 14px;">Ethical hacking and defense</p>
+      <p class="course-price-display" data-price="₹34,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹34,999</p>
+      <a href="course-details.html?course=Cyber%20Security&price=22000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
+    </div>
+
+  </div>
+</div>
 
 <!-- SCRIPT TO HIDE PRICES AND REDIRECT GUESTS -->
 <script>

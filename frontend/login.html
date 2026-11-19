@@ -11,8 +11,70 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="icon" type="image/png" href="images/" />
+
+<script>
+  // Apply theme immediately to prevent flash of wrong color
+  if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.classList.add('light-mode');
+  }
+</script>
+
+<style>
+  /* =========================================
+     THEME TOGGLE STYLES
+     ========================================= */
+  .theme-switch-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+    background: rgba(10, 17, 40, 0.85);
+    padding: 10px 15px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
+  .theme-switch input { display: none; }
+  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+  input:checked + .slider { background-color: #ff7b00; }
+  input:checked + .slider:before { transform: translateX(20px); }
+  .theme-label { font-size: 13px; font-weight: 500; color: #fff; user-select: none; }
+
+  /* =========================================
+     LIGHT MODE OVERRIDES FOR LOGIN PAGE
+     ========================================= */
+  body.light-mode { background-color: #f8f9fa !important; }
+  
+  body.light-mode .theme-switch-wrapper { background: #ffffff; border-color: #ddd; }
+  body.light-mode .theme-label { color: #333 !important; }
+
+  body.light-mode .auth-card { background: #ffffff !important; border: 1px solid #eaeaea !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  body.light-mode .auth-card h2 { color: #1a1a1a !important; }
+  body.light-mode .auth-sub { color: #666 !important; }
+  
+  body.light-mode .form-group label { color: #333 !important; }
+  body.light-mode .form-group input { background: #f8f9fa !important; border-color: #ccc !important; color: #333 !important; }
+  body.light-mode label[for="showPassword"] { color: #333 !important; }
+  
+  body.light-mode .auth-switch, body.light-mode .auth-switch a { color: #555 !important; }
+  body.light-mode .auth-switch a { color: #ff7b00 !important; }
+</style>
 </head>
 <body>
+
+<!-- THEME TOGGLE SWITCH -->
+<div class="theme-switch-wrapper">
+  <span class="theme-label">Dark</span>
+  <label class="theme-switch" for="themeCheckbox">
+    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
+    <div class="slider round"></div>
+  </label>
+  <span class="theme-label">Light</span>
+</div>
 
 <div class="auth-page">
   <div class="auth-card">
@@ -66,12 +128,34 @@
 <script src="js/auth.js"></script>
 
 <script>
+  // Toggle Password Visibility
   function togglePwd(inputId, checkbox) {
     var input = document.getElementById(inputId);
     input.type = checkbox.checked ? 'text' : 'password';
   }
+
+  // Theme Toggle Logic
+  function toggleTheme() {
+    const checkbox = document.getElementById('themeCheckbox');
+    if (checkbox.checked) {
+      document.documentElement.classList.add('light-mode');
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.remove('light-mode');
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Check saved theme on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('themeCheckbox').checked = true;
+    }
+  });
 </script>
 
 </body>
-
 </html>

@@ -45,7 +45,7 @@
 
 <!-- NAVBAR -->
 <div class="page-nav" style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
-  <a href="dashboard.html" style="display: flex; align-items: center; text-decoration: none;">
+  <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
     <div style="font-family: 'Poppins', sans-serif;">
       <span class="logo-text-main">KIRAN ENOSH</span>
       <span style="color: #ff7b00; font-size: 12px; font-weight: 600; letter-spacing: 1px;">STUDENT PORTAL</span>
@@ -67,7 +67,8 @@
     </div>
 
     <a href="index.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">Home</a>
-    <a href="dashboard.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">← Dashboard</a>
+    <!-- Changed to login.html to prevent broken dashboard links if they aren't logged in yet -->
+    <a href="login.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">← Login</a>
   </div>
 </div>
 
@@ -87,8 +88,11 @@
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
+      
+      <!-- PRICE IS HIDDEN BY DEFAULT -->
       <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <!-- USING RELATIVE PATH -->
+      
+      <!-- NATIVE HTML LINK -->
       <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
@@ -163,8 +167,10 @@
   });
 </script>
 
-<!-- AUTHENTICATION & UPGRADE LOGIC -->
+<!-- AUTHENTICATION LOGIC -->
 <script>
+  // We use a try/catch and a timeout here to ensure that 
+  // if the backend is down, it doesn't break the page.
   const API_AUTH = '/api/auth';
 
   fetch(`${API_AUTH}/me`, { credentials: 'include' })
@@ -176,7 +182,6 @@
       // USER IS LOGGED IN
       const user = data.user;
       
-      // Show user name
       const pill = document.getElementById('userPill');
       const nameEl = document.getElementById('userNameNav');
       if (pill && nameEl) {
@@ -191,7 +196,7 @@
         el.style.display = 'block'; 
       });
 
-      // Upgrade buttons from "Login to Enroll" to actual checkout
+      // Upgrade buttons
       const enrollButtons = document.querySelectorAll('.enroll-btn');
       const actualLinks = [
         "course-details.html?course=Full%20Stack%20Web%20Development&price=25000",
@@ -210,17 +215,9 @@
     })
     .catch(err => {
       // USER IS A GUEST
+      // Because the HTML already has href="login.html", we don't need to do anything here. 
+      // The button will work natively.
       console.log('Guest mode active');
-      
-      // BULLETPROOF REDIRECT: 
-      // Attach a direct click event to force the browser to open login.html
-      const enrollButtons = document.querySelectorAll('.enroll-btn');
-      enrollButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault(); // Stop any weird browser behaviors
-          window.location.href = 'login.html'; // Force redirect
-        });
-      });
     });
 </script>
 

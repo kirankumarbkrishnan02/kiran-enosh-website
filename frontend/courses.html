@@ -11,16 +11,12 @@
 <link rel="stylesheet" href="css/style.css" />
 
 <script>
-  // Apply theme immediately to prevent flash of wrong color
   if (localStorage.getItem('theme') === 'light') {
       document.documentElement.classList.add('light-mode');
   }
 </script>
 
 <style>
-  /* =========================================
-     THEME TOGGLE STYLES
-     ========================================= */
   .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; }
   .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
   .theme-switch input { display: none; }
@@ -30,9 +26,6 @@
   input:checked + .slider:before { transform: translateX(20px); }
   .theme-label { font-size: 13px; font-weight: 500; color: #fff; user-select: none; }
 
-  /* =========================================
-     LIGHT MODE OVERRIDES
-     ========================================= */
   body.light-mode { background-color: #f8f9fa !important; color: #333 !important; }
   body.light-mode .page-nav { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
   body.light-mode .page-nav a { color: #333 !important; border-color: #ccc !important; }
@@ -44,7 +37,6 @@
   body.light-mode .course-card p { color: #555 !important; }
   body.light-mode .course-card .price { color: #ff7b00 !important; }
 
-  /* Ensure logo text is always visible */
   .logo-text-main { font-weight: 800; font-size: 18px; display: block; color: #fff; }
   body.light-mode .logo-text-main { color: #111 !important; }
 </style>
@@ -65,7 +57,6 @@
       <span style="color: #22c55e;">●</span> <span id="userNameNav">Student</span>
     </span>
 
-    <!-- THEME TOGGLE SWITCH -->
     <div class="theme-switch-wrapper">
       <span class="theme-label">Dark</span>
       <label class="theme-switch" for="themeCheckbox">
@@ -75,8 +66,8 @@
       <span class="theme-label">Light</span>
     </div>
 
-    <a href="index.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">Home</a>
-    <a href="dashboard.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">← Dashboard</a>
+    <a href="/index.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">Home</a>
+    <a href="/dashboard.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">← Dashboard</a>
   </div>
 </div>
 
@@ -96,10 +87,9 @@
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
-      <!-- Hidden real price -->
       <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">Login to see fees</p>
-      <!-- Default guest button -->
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
+      <!-- DEFAULT GUEST LINK -->
+      <a href="/login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
     </div>
 
     <!-- Course 2 -->
@@ -108,7 +98,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Python Programming</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Learn Python from basics</p>
       <p class="course-price-display price" data-price="₹14,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
+      <a href="/login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
     </div>
 
     <!-- Course 3 -->
@@ -117,7 +107,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Artificial Intelligence & ML</h3>
       <p style="color: #a5b1cc; font-size: 14px;">AI and machine learning</p>
       <p class="course-price-display price" data-price="₹29,000" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
+      <a href="/login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
     </div>
 
     <!-- Course 4 -->
@@ -126,7 +116,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Data Science</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Data analysis and visualization</p>
       <p class="course-price-display price" data-price="₹24,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
+      <a href="/login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
     </div>
 
     <!-- Course 5 -->
@@ -135,7 +125,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Java & Android Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Java and Android</p>
       <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
+      <a href="/login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
     </div>
 
     <!-- Course 6 -->
@@ -144,7 +134,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Cyber Security</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Ethical hacking and defense</p>
       <p class="course-price-display price" data-price="₹34,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
+      <a href="/login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Login to Enroll →</a>
     </div>
 
   </div>
@@ -173,7 +163,7 @@
   });
 </script>
 
-<!-- SCRIPT TO HANDLE LOGGED IN STATE vs GUEST STATE -->
+<!-- AUTHENTICATION & UPGRADE LOGIC -->
 <script>
   const API_AUTH = '/api/auth';
 
@@ -184,10 +174,10 @@
       return res.json();
     })
     .then(data => {
-      // User IS logged in
+      // --- USER IS LOGGED IN ---
       const user = data.user;
       
-      // 1. Show user name
+      // 1. Show user name in navbar
       const pill = document.getElementById('userPill');
       const nameEl = document.getElementById('userNameNav');
       if (pill && nameEl) {
@@ -195,22 +185,21 @@
         pill.style.display = 'inline-block';
       }
 
-      // 2. Reveal the real prices from the data-price attribute
+      // 2. Reveal the real prices
       const priceElements = document.querySelectorAll('.course-price-display');
       priceElements.forEach(el => {
-        const realPrice = el.getAttribute('data-price');
-        el.textContent = realPrice;
+        el.textContent = el.getAttribute('data-price');
       });
 
-      // 3. Upgrade the buttons from "Login to Enroll" to the actual checkout URLs
+      // 3. Upgrade buttons from "Login to Enroll" to Checkout URLs
       const enrollButtons = document.querySelectorAll('.enroll-btn');
       const actualLinks = [
-        "course-details.html?course=Full%20Stack%20Web%20Development&price=25000",
-        "course-details.html?course=Python%20Programming&price=15000",
-        "course-details.html?course=Artificial%20Intelligence%20%26%20ML&price=30000",
-        "course-details.html?course=Data%20Science&price=25000",
-        "course-details.html?course=Java%20%26%20Android%20Development&price=20000",
-        "course-details.html?course=Cyber%20Security&price=22000"
+        "/course-details.html?course=Full%20Stack%20Web%20Development&price=25000",
+        "/course-details.html?course=Python%20Programming&price=15000",
+        "/course-details.html?course=Artificial%20Intelligence%20%26%20ML&price=30000",
+        "/course-details.html?course=Data%20Science&price=25000",
+        "/course-details.html?course=Java%20%26%20Android%20Development&price=20000",
+        "/course-details.html?course=Cyber%20Security&price=22000"
       ];
 
       enrollButtons.forEach((btn, index) => {
@@ -220,9 +209,11 @@
 
     })
     .catch(err => {
-      // User is NOT logged in (Guest Mode)
-      console.log('Guest mode active - buttons already point to login.html');
-      // No JavaScript changes needed here because the HTML defaults are already set to "Login to Enroll" and "Login to see fees".
+      // --- GUEST MODE ---
+      // We do absolutely nothing here.
+      // The HTML code is already set up with href="/login.html" and "Login to see fees".
+      // When the guest clicks, the browser will natively follow the href and take them to the login page.
+      console.log('Guest mode active');
     });
 </script>
 

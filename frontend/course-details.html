@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Course Details | Kiran Enosh</title>
@@ -48,12 +47,16 @@
   
   .btn-confirm-pay { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-size: 18px; font-weight: 700; border: none; border-radius: 12px; margin-top: 30px; cursor: pointer; transition: 0.3s; }
   .btn-confirm-pay:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(34,197,94,0.4); }
+
+  /* New style for UTR input */
+  #utr-section { display: none; margin-top: 25px; text-align: center; background: rgba(34,197,94,0.1); padding: 20px; border-radius: 12px; border: 1px solid #22c55e; }
+  #utr-section input { padding: 12px; border-radius: 10px; border: 1px solid #22c55e; background: #0a1128; color: white; width: 80%; max-width: 300px; margin-bottom: 15px; text-align: center;}
+  #utr-section button { background: #22c55e; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 </style>
 </head>
 <body>
 <nav class="navbar">
   <a href="courses.html" class="nav-brand">
-    
     <div class="nav-brand-text">KIRAN ENOSH<span>STUDENT PORTAL</span></div>
   </a>
   <a href="courses.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Back to Courses</a>
@@ -99,7 +102,15 @@
           <p style="color:#ff7b00; font-weight:700; margin-top:15px; font-size:18px;">kiranenosh@ybl</p>
         </div>
 
-        <button class="btn-confirm-pay" onclick="initiatePayment()">Pay Now & Enroll</button>
+        <!-- BUTTON NOW TRIGGERS UPI -->
+        <button class="btn-confirm-pay" onclick="initiateUPIPayment()">Proceed to Pay via UPI</button>
+
+        <!-- UTR SECTION (Hidden by default) -->
+        <div id="utr-section">
+          <p style="color:#c3cce0; margin-bottom:10px; font-size:14px;">After paying, please enter your 12-digit UPI Transaction ID (UTR) below so we can verify your payment.</p>
+          <input type="text" id="utrInput" placeholder="Enter 12-digit UTR" />
+          <button onclick="submitUTR()">Submit Payment Proof</button>
+        </div>
       </div>
     </div>
 
@@ -110,7 +121,7 @@
   const API = '/api/admin';
   let courseTitle = '';
   let coursePrice = 0;
-  const months = 3; // You can make this dynamic later if needed
+  const months = 3; 
 
   // 1. Get URL params
   const params = new URLSearchParams(window.location.search);
@@ -131,7 +142,7 @@
   function revealPayment() {
     document.getElementById('paymentSection').style.display = 'block';
     document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
-    updateRemaining(); // Run calculation once visible
+    updateRemaining(); 
   }
 
   // 5. Dynamic remaining calculation
@@ -157,87 +168,65 @@
     }
   }
 
-  // 6. Process the payment
-  async function initiatePayment() {
-  const btn = event.target;
-  const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
-  
-  btn.textContent = 'Creating Order...';
-  btn.disabled = true;
+  // 6. Process UPI Payment
+  function initiateUPIPayment() {
+    const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
+    const upiId = 'kiranenosh@ybl';
+    const payeeName = 'Kiran Enosh Group of Institutions';
 
-  try {
-    // 1. Create order on backend
-    const orderRes = await fetch(`/api/admin/create-order`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ amount: paidAmount })
-    });
-    
-    const orderData = await orderRes.json();
-    if (!orderRes.ok) throw new Error(orderData.error);
+    // Create standard UPI link
+    const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${paidAmount}&cu=INR&tn=${encodeURIComponent('Payment for ' + courseTitle)}`;
 
-    // 2. Open Razorpay Checkout
-    const options = {
-      key: "rzp_test_Tp7iT6AUfRMEqt", // REPLACE WITH YOUR RAZORPAY KEY ID
-      amount: orderData.order.amount,
-      currency: "INR",
-      name: "Kiran Enosh",
-      description: `Enrollment for ${courseTitle}`,
-      order_id: orderData.order.id,
-      handler: async function (response) {
-        // 3. Send details to backend for verification
-        btn.textContent = 'Verifying Payment...';
-        
-        const verifyRes = await fetch(`/api/admin/payments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            course_name: courseTitle,
-            amount: paidAmount,
-            payment_method: 'Razorpay',
-            payment_type: 'deposit',
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_signature: response.razorpay_signature
-          })
-        });
+    // Detect Mobile vs Desktop
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-        const verifyData = await verifyRes.json();
-        
-        if (verifyRes.ok) {
-          // Success! Redirect to receipt
-          window.location.href = `receipt.html?id=${verifyData.payment.id}`;
-        } else {
-          alert('Payment verification failed: ' + verifyData.error);
-          btn.textContent = 'Pay Now & Enroll';
-          btn.disabled = false;
-        }
-      },
-      theme: { color: "#ff7b00" }
-    };
-
-    const rzp = new Razorpay(options);
-    rzp.open();
-    
-    // Reset button if user closes popup without paying
-    rzp.on('payment.failed', function (response){
-      alert('Payment failed. Please try again.');
-      btn.textContent = 'Pay Now & Enroll';
-      btn.disabled = false;
-    });
-
-  } catch (err) {
-    console.error(err);
-    alert('Error: ' + err.message);
-    btn.textContent = 'Pay Now & Enroll';
-    btn.disabled = false;
+    if (isMobile) {
+      // On mobile, redirect to UPI apps
+      window.location.href = upiUrl;
+      // Show the UTR section after a short delay
+      setTimeout(() => {
+        document.getElementById('utr-section').style.display = 'block';
+      }, 1500);
+    } else {
+      // On Desktop, prompt them to scan the QR
+      alert(`Please scan the QR code above using your UPI app (GPay, PhonePe, Paytm) to pay ₹${paidAmount}.\n\nAfter payment, please enter your UTR/Transaction ID below.`);
+      // Show the UTR section
+      document.getElementById('utr-section').style.display = 'block';
+    }
   }
-}
-      
-     
+
+  // 7. Submit UTR for verification
+  async function submitUTR() {
+    const utr = document.getElementById('utrInput').value.trim();
+    const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
+
+    if (utr.length < 10) {
+      alert("Please enter a valid 12-digit UTR number.");
+      return;
+    }
+
+    // Here you would normally send the UTR to your backend to save it in the database.
+    // For now, we will simulate success and redirect to the receipt.
+    
+    // Example backend call:
+    /*
+    try {
+       const res = await fetch('/api/admin/manual-payment', {
+         method: 'POST',
+         headers: {'Content-Type': 'application/json'},
+         body: JSON.stringify({ course_name: courseTitle, amount: paidAmount, utr: utr })
+       });
+       const data = await res.json();
+       if(res.ok) window.location.href = `receipt.html?id=${data.payment.id}`;
+       else alert("Error saving payment: " + data.error);
+    } catch(e) { alert(e.message); }
+    */
+
+    // Simulated redirect for now:
+    alert("UTR Received! Your payment is pending admin verification. Redirecting...");
+    // Remove the line below once your backend is set up to handle UTRs
+    window.location.href = `receipt.html?utr=${utr}`; 
+  }
 </script>
 </body>
-
 </html>

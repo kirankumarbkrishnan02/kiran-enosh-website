@@ -20,56 +20,185 @@
   /* =========================================
      THEME TOGGLE (HUMAN MADE STYLE)
      ========================================= */
-  .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; }
-  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
-  .theme-switch input { display: none; }
-  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
-  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
-  input:checked + .slider { background-color: #ff7b00; }
-  input:checked + .slider:before { transform: translateX(20px); }
-  .theme-label { font-size: 13px; font-weight: 500; color: #fff; user-select: none; }
+  .theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 15px;
+  }
+  .theme-switch {
+    display: inline-block;
+    height: 24px;
+    position: relative;
+    width: 44px;
+  }
+  .theme-switch input {
+    display: none;
+  }
+  .slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    border-radius: 34px;
+  }
+  .slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 16px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 16px;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #ff7b00;
+  }
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+  .theme-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    user-select: none;
+  }
 
   /* =========================================
-     LIGHT MODE OVERRIDES FOR INDEX
+     LIGHT MODE OVERRIDES
      ========================================= */
-  body.light-mode { background-color: #ffffff !important; color: #333333 !important; }
-  body.light-mode #bg-canvas { display: none !important; }
+  body.light-mode {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+  }
+
+  /* Hide the 3D canvas in light mode */
+  body.light-mode #bg-canvas {
+    display: none !important;
+  }
+
+  /* Navbar adjustments */
+  body.light-mode .navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #eaeaea !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  body.light-mode .nav-brand-text,
+  body.light-mode .nav-brand-text span,
+  body.light-mode .nav-links a {
+    color: #222 !important;
+  }
+  body.light-mode .theme-label {
+    color: #333;
+  }
+  body.light-mode .slider {
+    background-color: #bbb;
+  }
   
-  body.light-mode .navbar { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-  body.light-mode .nav-brand-text, body.light-mode .nav-brand-text span, body.light-mode .nav-links a { color: #222 !important; }
-  body.light-mode .theme-label { color: #333; }
-  body.light-mode .slider { background-color: #bbb; }
-  
-  body.light-mode .hero h1, body.light-mode .hero .sub { color: #1a1a1a !important; }
-  body.light-mode .hero .tagline { color: #ff7b00 !important; }
-  body.light-mode .btn-outline { color: #1a1a1a !important; border-color: #1a1a1a !important; }
-  body.light-mode .btn-outline:hover { background: #f0f0f0 !important; }
+  /* Hero Section */
+  body.light-mode .hero h1,
+  body.light-mode .hero .sub {
+    color: #1a1a1a !important;
+  }
+  body.light-mode .hero .tagline {
+    color: #ff7b00 !important;
+  }
+  body.light-mode .btn-outline {
+    color: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+  }
+  body.light-mode .btn-outline:hover {
+    background: #f0f0f0 !important;
+  }
 
-  body.light-mode .about-video-section { background: #ffffff !important; }
-  body.light-mode .about-bg-video, body.light-mode .about-overlay, body.light-mode .floating-shape { display: none !important; }
-  body.light-mode .about-card.glass { background: #f9f9f9 !important; border: 1px solid #eaeaea !important; box-shadow: none !important; border-radius: 8px !important; }
-  body.light-mode .about-card h3 { color: #1a1a1a !important; }
-  body.light-mode .about-card p { color: #555 !important; }
-  body.light-mode .section-title { color: #1a1a1a !important; }
-  body.light-mode .section-sub { color: #666 !important; }
+  /* About Video Section */
+  body.light-mode .about-video-section {
+    background: #ffffff !important;
+  }
+  body.light-mode .about-bg-video,
+  body.light-mode .about-overlay,
+  body.light-mode .floating-shape {
+    display: none !important; /* Hide video and shapes */
+  }
+  body.light-mode .about-card.glass {
+    background: #f9f9f9 !important;
+    border: 1px solid #eaeaea !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+  }
+  body.light-mode .about-card h3 {
+    color: #1a1a1a !important;
+  }
+  body.light-mode .about-card p {
+    color: #555 !important;
+  }
+  body.light-mode .section-title {
+    color: #1a1a1a !important;
+  }
+  body.light-mode .section-sub {
+    color: #666 !important;
+  }
 
-  body.light-mode .courses-section { background: #f9f9f9 !important; }
-  body.light-mode .founder-section { background: #ffffff !important; }
-  body.light-mode .founder-section h2 { color: #1a1a1a !important; }
-  body.light-mode .founder-section .quote-box { background: #f9f9f9 !important; border: 1px solid #eaeaea !important; border-left: 4px solid #ff7b00 !important; }
-  body.light-mode .founder-section .quote-box p { color: #444 !important; }
-  body.light-mode .founder-section .quote-box span { color: #777 !important; }
-  body.light-mode .founder-section .badge { background: #f0f0f0 !important; border: 1px solid #ddd !important; color: #333 !important; }
-  body.light-mode .cta-section { background: #f9f9f9 !important; }
+  /* Courses Section */
+  body.light-mode .courses-section {
+    background: #f9f9f9 !important;
+  }
 
-  body.light-mode footer { background-color: #ffffff !important; border-top: 1px solid #eaeaea !important; }
-  body.light-mode .footer-links a, body.light-mode .footer-contact span, body.light-mode .footer-copy { color: #555 !important; }
+  /* Founder Section */
+  body.light-mode .founder-section {
+    background: #ffffff !important;
+  }
+  body.light-mode .founder-section h2 {
+    color: #1a1a1a !important;
+  }
+  body.light-mode .founder-section .quote-box {
+    background: #f9f9f9 !important;
+    border: 1px solid #eaeaea !important;
+    border-left: 4px solid #ff7b00 !important;
+  }
+  body.light-mode .founder-section .quote-box p {
+    color: #444 !important;
+  }
+  body.light-mode .founder-section .quote-box span {
+    color: #777 !important;
+  }
+  body.light-mode .founder-section .badge {
+    background: #f0f0f0 !important;
+    border: 1px solid #ddd !important;
+    color: #333 !important;
+  }
+
+  /* CTA Section */
+  body.light-mode .cta-section {
+    background: #f9f9f9 !important;
+  }
+
+  /* Footer */
+  body.light-mode footer {
+    background-color: #ffffff !important;
+    border-top: 1px solid #eaeaea !important;
+  }
+  body.light-mode .footer-links a,
+  body.light-mode .footer-contact span,
+  body.light-mode .footer-copy {
+    color: #555 !important;
+  }
 </style>
 
 </head>
 <body>
+<!-- 3D BACKGROUND CANVAS -->
 <canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></canvas>
 
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-brand">
     <div class="nav-brand-text">
@@ -93,100 +222,167 @@
   </ul>
 
   <div style="display: flex; align-items: center;">
+    <!-- CLEAN TOGGLE SWITCH -->
     <div class="theme-switch-wrapper">
       <span class="theme-label">Dark</span>
       <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
+        <input type="checkbox" id="checkbox" onchange="toggleTheme()" />
         <div class="slider round"></div>
       </label>
       <span class="theme-label">Light</span>
     </div>
+    
     <a href="login.html" class="nav-cta">Login / Register</a>
   </div>
+  
 </nav>
 
+
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
 <section class="hero" id="home">
   <h1>KIRAN ENOSH<br/>GROUP OF INSTITUTIONS</h1>
   <p class="tagline">LEARN • CODE • GROW</p>
-  <p class="sub">Empowering students in Gudur with future-ready skills in programming, software development, and emerging technologies. Join a community where innovation meets education.</p>
+  <p class="sub">
+    Empowering students in Gudur with future-ready skills in programming,
+    software development, and emerging technologies. Join a community where
+    innovation meets education.
+  </p>
+
   <div class="hero-buttons">
     <a href="courses.html" class="btn btn-primary">Explore Courses</a>
     <a href="about.html" class="btn btn-outline">From Code to Career →</a>
   </div>
 </section>
 
+
+<!-- ============================================================
+     ABOUT SECTION
+     ============================================================ -->
 <section class="about-video-section" id="about">
   <video class="about-bg-video" autoplay muted loop playsinline poster="images/">
     <source src="videos/lab.mp4" type="video/mp4" />
   </video>
+
   <div class="about-overlay"></div>
+  
   <div class="about-content">
     <h2 class="section-title">About Our Institute</h2>
-    <p class="section-sub">Step inside our world-class facility in Gudur — where students transform into tech professionals.</p>
+    <p class="section-sub">
+      Step inside our world-class facility in Gudur — where students transform into tech professionals.
+    </p>
+
     <div class="about-grid">
       <div class="about-card glass reveal">
         <h3>Our Vision</h3>
         <p>To become the leading technology training institute in Andhra Pradesh, producing highly skilled, industry-ready professionals who compete globally.</p>
       </div>
+
       <div class="about-card glass reveal">
         <h3>Our Mission</h3>
         <p>Hands-on training, real-world projects, and mentorship from industry experts. Practical coding, problem-solving, and career development.</p>
       </div>
+
       <div class="about-card glass reveal">
         <h3>Why Choose Us</h3>
         <p>Expert trainers, modern computer labs, placement assistance, and a curriculum that evolves with the tech industry.</p>
       </div>
+
       <div class="about-card glass reveal">
         <h3>Our Approach</h3>
         <p>Learn by doing. Every student works on live projects, builds a portfolio, and gains the confidence to succeed in interviews.</p>
       </div>
     </div>
+
     <div style="text-align:center;margin-top:50px;">
       <a href="about.html" class="btn btn-primary">From Code to Career →</a>
     </div>
   </div>
 </section>
 
+
+<!-- ============================================================
+     COURSES PREVIEW
+     ============================================================ -->
 <section class="courses-section" id="courses">
   <h2 class="section-title">Our Courses</h2>
-  <p class="section-sub">Industry-focused programs designed to make you job-ready from day one.</p>
+  <p class="section-sub">
+    Industry-focused programs designed to make you job-ready from day one.
+  </p>
+
   <div style="text-align:center;margin-top:50px;">
     <a href="courses.html" class="btn btn-primary">View All Courses →</a>
   </div>
 </section>
 
+
+<!-- ============================================================
+     FOUNDER SECTION
+     ============================================================ -->
 <section class="founder-section" style="padding: 80px 20px; display: flex; justify-content: center;">
+  
   <div style="display: grid; grid-template-columns: 200px 1fr; gap: 40px; max-width: 900px; width: 100%; align-items: start;">
+
+    <!-- LEFT: Photo -->
     <div style="display: flex; flex-direction: column; align-items: center;">
-      <img src="images/founder.jpeg" alt="Founder" style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid #ff7b00; box-shadow: 0 10px 25px rgba(0,0,0,0.2);" onerror="this.src='images/';" />
+      <img 
+        src="images/founder.jpeg" 
+        alt="Founder" 
+        style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid #ff7b00; box-shadow: 0 10px 25px rgba(0,0,0,0.2);"
+        onerror="this.src='images/';"
+      />
     </div>
+
+    <!-- RIGHT: Text Content -->
     <div>
-      <p style="color: #ff7b00; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5px 0;">Meet the Founder</p>
-      <h2 style="font-size: 32px; margin: 0 0 15px 0; line-height: 1.2;">Kiran Kumar Balakrishnan</h2>
+      <p style="color: #ff7b00; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5px 0;">
+        Meet the Founder
+      </p>
+
+      <h2 style="font-size: 32px; margin: 0 0 15px 0; line-height: 1.2;">
+        Kiran Kumar Balakrishnan
+      </h2>
+      
       <div style="display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;">
         <span class="badge" style="padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600;">BSc(MSCS)</span>
         <span class="badge" style="padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600;">MCA</span>
         <span class="badge" style="padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600;">M.Tech</span>
       </div>
+
       <div class="quote-box" style="padding: 30px; border-left: 4px solid #ff7b00; border-radius: 0 8px 8px 0;">
-        <p style="font-size: 16px; font-style: italic; line-height: 1.7; margin-top: 0;">"Every student who walks through our doors carries a dream. My mission — and the mission of everyone at Kiran Enosh — is to give them the skills, the confidence, and the opportunities to make that dream a reality."</p>
+        <p style="font-size: 16px; font-style: italic; line-height: 1.7; margin-top: 0;">
+          "Every student who walks through our doors carries a dream. My mission — and the mission of everyone at Kiran Enosh — is to give them the skills, the confidence, and the opportunities to make that dream a reality."
+        </p>
+        
         <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">- Founder &amp; Director</span>
       </div>
     </div>
+
   </div>
 </section>
 
+<!-- ============================================================
+     CTA SECTION
+     ============================================================ -->
 <section class="cta-section" style="text-align:center;padding:100px 20px;">
   <h2 class="section-title">Ready to Begin?</h2>
-  <p class="section-sub">Join hundreds of students who transformed their careers with Kiran Enosh Group of Institutions.</p>
+  <p class="section-sub">
+    Join hundreds of students who transformed their careers with Kiran Enosh Group of Institutions.
+  </p>
   <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap; margin-top: 30px;">
     <a href="register.html" class="btn btn-primary">Apply Now</a>
     <a href="login.html" class="btn btn-outline">Student Login</a>
   </div>
 </section>
 
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer id="contact">
   <div class="footer-content">
+
     <div class="footer-links">
       <a href="#home">Home</a>
       <a href="#about">About</a>
@@ -195,11 +391,13 @@
       <a href="login.html">Login</a>
       <a href="register.html">Register</a>
     </div>
+
     <div class="footer-contact">
       <span>+91 70932 77482</span>
       <span>Gudur, Andhra Pradesh, India</span>
       <span>info.kiranenosh@gmail.com</span>
     </div>
+
     <div class="footer-copy">
       © 2026 Kiran Enosh Group of Institutions, Gudur. All Rights Reserved.
       <a href="admin-login.html" style="color: rgba(255,255,255,0.1); font-size: 10px; text-decoration: none; margin-left: 10px;" title="Admin Access">admin</a>
@@ -207,7 +405,27 @@
   </div>
 </footer>
 
-<script src="js/theme.js"></script>
+
 <script src="js/main.js"></script>
+
+<script>
+  // Check if user previously selected light mode
+  const themeCheckbox = document.getElementById('checkbox');
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+    themeCheckbox.checked = true;
+  }
+
+  function toggleTheme() {
+    if (themeCheckbox.checked) {
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+</script>
+
 </body>
 </html>

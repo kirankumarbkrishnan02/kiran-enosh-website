@@ -1,26 +1,34 @@
-(function() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.documentElement.classList.add('light-mode');
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('light-mode');
-            const checkbox = document.getElementById('themeCheckbox');
-            if(checkbox) checkbox.checked = true;
+// js/theme.js
+
+// 1. Check for saved theme immediately to prevent flashing
+if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light-mode');
+}
+
+// 2. Wait for the page to load, then apply to body
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+    }
+
+    // 3. Find the toggle switch on the current page
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    
+    if (toggleSwitch) {
+        // Set initial switch position based on saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            toggleSwitch.checked = true;
+        }
+
+        // Add the click event listener
+        toggleSwitch.addEventListener('change', function(e) {
+            if (e.target.checked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
         });
     }
-})();
-
-function toggleTheme() {
-    const checkbox = document.getElementById('themeCheckbox');
-    const isLight = checkbox.checked;
-    
-    if (isLight) {
-        document.documentElement.classList.add('light-mode');
-        document.body.classList.add('light-mode');
-        localStorage.setItem('theme', 'light');
-    } else {
-        document.documentElement.classList.remove('light-mode');
-        document.body.classList.remove('light-mode');
-        localStorage.setItem('theme', 'dark');
-    }
-}
+});

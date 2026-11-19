@@ -39,13 +39,31 @@
 
   .logo-text-main { font-weight: 800; font-size: 18px; display: block; color: #fff; }
   body.light-mode .logo-text-main { color: #111 !important; }
+  
+  /* Pure CSS for card hover to avoid JS interference */
+  .course-card {
+    background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s;
+  }
+  .course-card:hover {
+    transform: translateY(-5px); border-color: #ff7b00; box-shadow: 0 10px 30px rgba(255,123,0,0.3);
+  }
+  
+  /* Pure CSS for button hover */
+  .enroll-btn {
+    display: block; padding: 15px; background: #ff7b00; color: white; text-align: center; 
+    border-radius: 10px; font-weight: bold; text-decoration: none; margin-top: 20px;
+    transition: 0.3s;
+  }
+  .enroll-btn:hover {
+    background: #e66a00;
+  }
 </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
 <div class="page-nav" style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
-  <a href="./index.html" style="display: flex; align-items: center; text-decoration: none;">
+  <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
     <div style="font-family: 'Poppins', sans-serif;">
       <span class="logo-text-main">KIRAN ENOSH</span>
       <span style="color: #ff7b00; font-size: 12px; font-weight: 600; letter-spacing: 1px;">STUDENT PORTAL</span>
@@ -62,9 +80,8 @@
       <span class="theme-label">Light</span>
     </div>
 
-    <a href="./index.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">Home</a>
-    <!-- Changed this link to go to registration as a fallback -->
-    <a href="./register.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">Register</a>
+    <a href="index.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">Home</a>
+    <a href="login.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">← Login</a>
   </div>
 </div>
 
@@ -80,53 +97,51 @@
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
     
     <!-- Course 1 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div class="course-card">
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
-      
-      <!-- PURE HTML LINK -->
-      <a href="./login.html" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; margin-top: 20px;">Login to Enroll →</a>
+      <a href="login.html" class="enroll-btn">Login to Enroll →</a>
     </div>
 
     <!-- Course 2 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div class="course-card">
       <img src="images/python.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Python Programming</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Learn Python from basics</p>
-      <a href="./login.html" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; margin-top: 20px;">Login to Enroll →</a>
+      <a href="login.html" class="enroll-btn">Login to Enroll →</a>
     </div>
 
     <!-- Course 3 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div class="course-card">
       <img src="images/ai.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Artificial Intelligence & ML</h3>
       <p style="color: #a5b1cc; font-size: 14px;">AI and machine learning</p>
-      <a href="./login.html" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; margin-top: 20px;">Login to Enroll →</a>
+      <a href="login.html" class="enroll-btn">Login to Enroll →</a>
     </div>
 
     <!-- Course 4 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div class="course-card">
       <img src="images/datascience.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Data Science</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Data analysis and visualization</p>
-      <a href="./login.html" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; margin-top: 20px;">Login to Enroll →</a>
+      <a href="login.html" class="enroll-btn">Login to Enroll →</a>
     </div>
 
     <!-- Course 5 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div class="course-card">
       <img src="images/java.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Java & Android Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Java and Android</p>
-      <a href="./login.html" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; margin-top: 20px;">Login to Enroll →</a>
+      <a href="login.html" class="enroll-btn">Login to Enroll →</a>
     </div>
 
     <!-- Course 6 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div class="course-card">
       <img src="images/cyber.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Cyber Security</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Ethical hacking and defense</p>
-      <a href="./login.html" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; margin-top: 20px;">Login to Enroll →</a>
+      <a href="login.html" class="enroll-btn">Login to Enroll →</a>
     </div>
 
   </div>

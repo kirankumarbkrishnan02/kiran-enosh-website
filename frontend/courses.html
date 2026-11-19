@@ -19,46 +19,31 @@
   input:checked + .slider:before { transform: translateX(20px); }
   .theme-label { font-size: 13px; font-weight: 500; color: #fff; user-select: none; }
 
-  /* Light Mode Overrides */
+  /* Light Mode Overrides for this page */
   body.light-mode { background-color: #f8f9fa !important; color: #333 !important; }
-  
-  /* Navbar Override (Targeting the inline style) */
-  body.light-mode .navbar-container { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
-  body.light-mode .navbar-container a { color: #333 !important; border-color: #ccc !important; }
-  body.light-mode .navbar-container div[style*="color: white"] { color: #333 !important; }
+  body.light-mode .page-nav { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
+  body.light-mode .page-nav a { color: #333 !important; border-color: #ccc !important; }
   body.light-mode .theme-label { color: #333 !important; }
-  
-  /* Header Text Overrides */
   body.light-mode h1 { color: #1a1a1a !important; }
-  body.light-mode p[style*="color: #a5b1cc"] { color: #666 !important; }
+  body.light-mode .subtitle { color: #666 !important; }
   
-  /* Course Card Overrides (Targeting inline styles) */
-  body.light-mode .course-card { 
-      background: #ffffff !important; 
-      border: 1px solid #eaeaea !important; 
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-  }
+  /* Card Overrides */
+  body.light-mode .course-card { background: #ffffff !important; border: 1px solid #eaeaea !important; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
   body.light-mode .course-card h3 { color: #1a1a1a !important; }
   body.light-mode .course-card p { color: #555 !important; }
   body.light-mode .course-price { color: #ff7b00 !important; }
-  
-  /* Ensure enroll button stays visible and orange */
-  body.light-mode .enroll-btn { color: #ffffff !important; }
 </style>
 
 <script>
   // Prevents the flash of dark mode if the user previously chose light mode
   if (localStorage.getItem('theme') === 'light') {
       document.documentElement.classList.add('light-mode');
-      document.addEventListener('DOMContentLoaded', () => {
-          document.body.classList.add('light-mode');
-      });
   }
 </script>
 </head>
 <body style="background-color: #0a1128; margin: 0; padding: 0;">
 
-<div class="navbar-container" style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
+<div style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
   <a href="dashboard.html" style="display: flex; align-items: center; text-decoration: none;">
     <div style="color: white; font-family: 'Poppins', sans-serif;">
       <span style="font-weight: 800; font-size: 18px; display: block;">KIRAN ENOSH</span>
@@ -67,16 +52,6 @@
   </a>
   
   <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-    
-    <!-- THEME TOGGLE ADDED HERE -->
-    <div class="theme-switch-wrapper">
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="checkbox" />
-        <span class="slider"></span>
-      </label>
-      <span class="theme-label">Light Mode</span>
-    </div>
-
     <span id="userPill" style="display:none; color: #7fb3ff; font-size: 13px; font-weight: 600; background: rgba(74,144,226,0.15); padding: 8px 15px; border-radius: 20px;">
       <span style="color: #22c55e;">●</span> <span id="userNameNav">Student</span>
     </span>
@@ -94,7 +69,7 @@
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
     
     <!-- Course 1 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
@@ -103,7 +78,7 @@
     </div>
 
     <!-- Course 2 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/python.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Python Programming</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Learn Python from basics</p>
@@ -112,7 +87,7 @@
     </div>
 
     <!-- Course 3 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/ai.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Artificial Intelligence & ML</h3>
       <p style="color: #a5b1cc; font-size: 14px;">AI and machine learning</p>
@@ -121,7 +96,7 @@
     </div>
 
     <!-- Course 4 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/datascience.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Data Science</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Data analysis and visualization</p>
@@ -130,7 +105,7 @@
     </div>
 
     <!-- Course 5 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/java.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Java & Android Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Java and Android</p>
@@ -139,7 +114,7 @@
     </div>
 
     <!-- Course 6 -->
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/cyber.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Cyber Security</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Ethical hacking and defense</p>
@@ -181,27 +156,6 @@
     .catch(err => {
       console.log('Guest mode: prices hidden.');
     });
-
-  // --- THEME TOGGLE LOGIC ---
-  const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-  const currentTheme = localStorage.getItem('theme');
-
-  // Set initial switch position based on saved theme
-  if (currentTheme === 'light') {
-    toggleSwitch.checked = true;
-  }
-
-  function switchTheme(e) {
-    if (e.target.checked) {
-      document.body.classList.add('light-mode');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
-    }
-  }
-
-  toggleSwitch.addEventListener('change', switchTheme, false);
 </script>
 
 </body>

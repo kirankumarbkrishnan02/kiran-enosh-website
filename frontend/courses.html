@@ -10,35 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 
-<style>
-  body.light-mode { background-color: #f8f9fa !important; color: #333 !important; }
-  body.light-mode .page-nav { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
-  body.light-mode .page-nav a { color: #333 !important; border-color: #ccc !important; }
-  body.light-mode .page-nav h1 { color: #1a1a1a !important; }
-  body.light-mode .page-nav p { color: #555 !important; }
-  body.light-mode .course-card { background: #ffffff !important; border: 1px solid #eaeaea !important; }
-  body.light-mode .course-card h3 { color: #1a1a1a !important; }
-  body.light-mode .course-card p { color: #555 !important; }
-  body.light-mode .course-card .price { color: #ff7b00 !important; }
-  body.light-mode .main-title { color: #1a1a1a !important; }
-  body.light-mode .main-sub { color: #666 !important; }
-  
-  .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; }
-  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
-  .theme-switch input { display: none; }
-  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
-  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
-  input:checked + .slider { background-color: #ff7b00; }
-  input:checked + .slider:before { transform: translateX(20px); }
-  .theme-label { font-size: 13px; font-weight: 500; color: #fff; user-select: none; }
-  body.light-mode .theme-label { color: #333 !important; }
-</style>
 </head>
 <body style="background-color: #0a1128; margin: 0; padding: 0;">
 
-<div class="page-nav" style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
+  <!-- Updated Navbar with Home Button and User Name -->
+<div style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
   <a href="dashboard.html" style="display: flex; align-items: center; text-decoration: none;">
-    <div style="font-family: 'Poppins', sans-serif;">
+    
+    <div style="color: white; font-family: 'Poppins', sans-serif;">
       <span style="font-weight: 800; font-size: 18px; display: block;">KIRAN ENOSH</span>
       <span style="color: #ff7b00; font-size: 12px; font-weight: 600; letter-spacing: 1px;">STUDENT PORTAL</span>
     </div>
@@ -48,95 +27,125 @@
     <span id="userPill" style="display:none; color: #7fb3ff; font-size: 13px; font-weight: 600; background: rgba(74,144,226,0.15); padding: 8px 15px; border-radius: 20px;">
       <span style="color: #22c55e;">●</span> <span id="userNameNav">Student</span>
     </span>
-    <div class="theme-switch-wrapper">
-      <span class="theme-label">Dark</span>
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
-        <div class="slider round"></div>
-      </label>
-      <span class="theme-label">Light</span>
-    </div>
     <a href="index.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;"> Home</a>
     <a href="dashboard.html" style="color: white; text-decoration: none; border: 1px solid #4a90e2; padding: 10px 20px; border-radius: 20px; font-family: sans-serif; font-weight: bold;">← Dashboard</a>
   </div>
 </div>
 
+<!-- Main Content -->
 <div style="max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: 'Poppins', sans-serif;">
+  
   <div style="text-align: center; margin-bottom: 50px;">
-    <h1 class="main-title" style="color: white; font-size: 36px; margin-bottom: 10px;">Explore Our <span style="color: #ff7b00;">Courses</span></h1>
-    <p class="main-sub" style="color: #a5b1cc; font-size: 16px;">Choose the program that fits your career goals.</p>
+    <h1 style="color: white; font-size: 36px; margin-bottom: 10px;">Explore Our <span style="color: #ff7b00;">Courses</span></h1>
+    <p style="color: #a5b1cc; font-size: 16px;">Choose the program that fits your career goals.</p>
   </div>
 
+  <!-- Grid Layout -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
     
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2';">
+    <!-- Course 1 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
-      <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,999</p>
+      <!-- Price is hidden for guests -->
+      <p class="course-price-display" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,999</p>
+      <!-- Button redirects guests to login via JS -->
       <a href="course-details.html?course=Full%20Stack%20Web%20Development&price=25000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
     </div>
 
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2';">
+    <!-- Course 2 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/python.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Python Programming</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Learn Python from basics</p>
-      <p class="course-price-display price" data-price="₹14,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹14,999</p>
+      <p class="course-price-display" data-price="₹14,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹14,999</p>
       <a href="course-details.html?course=Python%20Programming&price=15000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
     </div>
 
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2';">
+    <!-- Course 3 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/ai.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Artificial Intelligence & ML</h3>
       <p style="color: #a5b1cc; font-size: 14px;">AI and machine learning</p>
-      <p class="course-price-display price" data-price="₹29,000" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,000</p>
+      <p class="course-price-display" data-price="₹29,000" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,000</p>
       <a href="course-details.html?course=Artificial%20Intelligence%20%26%20ML&price=30000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
     </div>
 
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2';">
+    <!-- Course 4 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/datascience.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Data Science</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Data analysis and visualization</p>
-      <p class="course-price-display price" data-price="₹24,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹24,999</p>
+      <p class="course-price-display" data-price="₹24,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹24,999</p>
       <a href="course-details.html?course=Data%20Science&price=25000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
     </div>
 
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2';">
+    <!-- Course 5 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/java.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Java & Android Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Java and Android</p>
-      <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,999</p>
+      <p class="course-price-display" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹29,999</p>
       <a href="course-details.html?course=Java%20%26%20Android%20Development&price=20000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
     </div>
 
-    <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2';">
+    <!-- Course 6 -->
+    <div style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/cyber.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Cyber Security</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Ethical hacking and defense</p>
-      <p class="course-price-display price" data-price="₹34,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹34,999</p>
+      <p class="course-price-display" data-price="₹34,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0;">₹34,999</p>
       <a href="course-details.html?course=Cyber%20Security&price=22000" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none; cursor:pointer; pointer-events:auto;">Enroll Now →</a>
     </div>
 
   </div>
 </div>
 
-<script src="js/theme.js"></script>
+<!-- SCRIPT TO HIDE PRICES AND REDIRECT GUESTS -->
 <script>
   const API_AUTH = '/api/auth';
+
+  // Check if user is logged in
   fetch(`${API_AUTH}/me`, { credentials: 'include' })
-    .then(res => { if (!res.ok) throw new Error('Not logged in'); return res.json(); })
+    .then(res => {
+      if (!res.ok) throw new Error('Not logged in');
+      return res.json();
+    })
     .then(data => {
+      // User IS logged in
       const user = data.user;
+      
+      // 1. Show user name in navbar
       const pill = document.getElementById('userPill');
       const nameEl = document.getElementById('userNameNav');
-      if (pill && nameEl) { nameEl.textContent = user.name; pill.style.display = 'inline-block'; }
+      if (pill && nameEl) {
+        nameEl.textContent = user.name;
+        pill.style.display = 'inline-block';
+      }
+      
+      // 2. Prices remain visible (do nothing)
     })
     .catch(err => {
+      // User is NOT logged in
+      console.log('Guest mode active');
+
+      // 1. Hide all prices and show "Login to see fees"
       const priceElements = document.querySelectorAll('.course-price-display');
-      priceElements.forEach(el => { el.textContent = 'Login to see fees'; el.style.color = '#ff7b00'; el.style.fontSize = '16px'; });
+      priceElements.forEach(el => {
+        el.textContent = 'Login to see fees';
+        el.style.color = '#ff7b00';
+        el.style.fontSize = '16px';
+      });
+
+      // 2. Redirect guests to login if they click Enroll
       const enrollButtons = document.querySelectorAll('.enroll-btn');
-      enrollButtons.forEach(btn => { btn.href = 'login.html'; btn.textContent = 'Login to Enroll →'; });
+      enrollButtons.forEach(btn => {
+        btn.href = 'login.html';
+        btn.textContent = 'Login to Enroll →';
+      });
     });
 </script>
+
 </body>
 </html>

@@ -24,71 +24,106 @@
   .stat-card h4 { color: #7a89a8; font-size: 13px; text-transform: uppercase; margin-bottom: 10px; }
   .stat-card .value { color: #fff; font-size: 28px; font-weight: 800; }
 
-  .pending-alert-btn { background: #ff7b00; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 10px; animation: pulseGlow 2s infinite; }
+  /* --- PENDING POPUP & COUNTER STYLES --- */
+  .pending-alert-btn {
+    background: #ff7b00;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    animation: pulseGlow 2s infinite;
+  }
   .pending-alert-btn:hover { background: #e66a00; }
-  @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(255,123,0, 0.6); } 70% { box-shadow: 0 0 0 15px rgba(255,123,0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255,123,0, 0); } }
 
-  .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
-  .popup-content { background: #0a1128; border: 1px solid #ff7b00; padding: 30px; border-radius: 15px; width: 90%; max-width: 650px; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; max-height: 85vh; overflow-y: auto; }
-  .close-popup { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #ff7b00; cursor: pointer; font-weight: bold; line-height: 1; }
-  .counter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; text-align: center; }
-  .counter-box { background: rgba(255,255,255,0.05); padding: 20px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(255,123,0, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(255,123,0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,123,0, 0); }
+  }
+
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-content {
+    background: #0a1128;
+    border: 1px solid #ff7b00;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 650px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .close-popup {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 28px;
+    color: #ff7b00;
+    cursor: pointer;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  .counter-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
   .counter-box h4 { margin: 0 0 10px 0; font-size: 14px; color: #a5b1cc; }
   .counter-box .num { font-size: 32px; font-weight: bold; margin: 0; }
-  .num-pending { color: #ffb347; } .num-success { color: #22c55e; } .num-failed { color: #ef4444; }
-  .pending-list-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #ffb347; flex-wrap: wrap; gap: 15px; }
+  .num-pending { color: #ffb347; }
+  .num-success { color: #22c55e; }
+  .num-failed { color: #ef4444; }
+
+  .pending-list-item {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #ffb347;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
   .action-btns { display: flex; gap: 8px; }
   .btn-approve { background: #22c55e; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
   .btn-approve:hover { background: #16a34a; }
   .btn-email { background: #4a90e2; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; }
   .btn-email:hover { background: #357abd; }
-
-  .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; }
-  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
-  .theme-switch input { display: none; }
-  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
-  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
-  input:checked + .slider { background-color: #ff7b00; }
-  input:checked + .slider:before { transform: translateX(20px); }
-  .theme-label { font-size: 13px; font-weight: 500; color: #fff; }
-
-  body.light-mode { background-color: #f8f9fa !important; color: #333 !important; }
-  body.light-mode .navbar { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
-  body.light-mode .nav-brand-text { color: #111 !important; }
-  body.light-mode .nav-brand-text span { color: #ff7b00 !important; }
-  body.light-mode .theme-label { color: #333 !important; }
-  body.light-mode .stat-card { background: #ffffff !important; border-color: #eaeaea !important; }
-  body.light-mode .stat-card h4 { color: #666 !important; }
-  body.light-mode .stat-card .value { color: #111 !important; }
-  body.light-mode .table-wrapper { background: #ffffff !important; border-color: #eaeaea !important; }
-  body.light-mode .admin-table td { color: #333 !important; border-bottom-color: #eaeaea !important; }
-  body.light-mode .admin-table tr:hover { background: #f5f5f5 !important; }
-  body.light-mode .section-title { color: #111 !important; }
-  body.light-mode .popup-content { background: #ffffff !important; border-color: #ff7b00 !important; color: #111 !important; }
-  body.light-mode .popup-content h2 { color: #111 !important; }
-  body.light-mode .counter-box { background: #f9f9f9 !important; border-color: #eaeaea !important; }
-  body.light-mode .counter-box h4 { color: #555 !important; }
-  body.light-mode .pending-list-item { background: #f9f9f9 !important; border-color: #eaeaea !important; }
-  body.light-mode .pending-list-item strong { color: #111 !important; }
 </style>
 </head>
 <body>
   
 <nav class="navbar">
   <a href="admin-dashboard.html" class="nav-brand">
-    <div class="nav-brand-text">KIRAN ENOSH<span style="color: #ff7b00;">ADMIN PANEL</span></div>
+    <div class="nav-brand-text">KIRAN ENOSH<span>ADMIN PANEL</span></div>
   </a>
-  <div style="display: flex; align-items: center;">
-    <div class="theme-switch-wrapper">
-      <span class="theme-label">Dark</span>
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
-        <div class="slider round"></div>
-      </label>
-      <span class="theme-label">Light</span>
-    </div>
-    <a href="admin-dashboard.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Admin Home</a>
-  </div>
+  <a href="admin-dashboard.html" class="nav-cta" style="background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.5);">← Admin Home</a>
 </nav>
 
 <div class="dashboard-page">
@@ -96,17 +131,29 @@
     
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
       <h2 class="section-title" style="text-align:left;font-size:28px;margin-bottom:20px;">Payment & Enrollment Records</h2>
+      <!-- ALERT BUTTON -->
       <button class="pending-alert-btn" onclick="openPendingPopup()">
         <span>⚠️</span> Pending Requests: <span id="pendingCountBadge">0</span>
       </button>
     </div>
 
+    <!-- Quick Stats -->
     <div class="stats-grid">
-      <div class="stat-card"><h4>Total Payments</h4><div class="value" id="totalPayments">—</div></div>
-      <div class="stat-card"><h4>Total Revenue</h4><div class="value" id="totalRevenue" style="color:#ffb347;">—</div></div>
-      <div class="stat-card"><h4>Active Students</h4><div class="value" id="activeStudents">—</div></div>
+      <div class="stat-card">
+        <h4>Total Payments</h4>
+        <div class="value" id="totalPayments">—</div>
+      </div>
+      <div class="stat-card">
+        <h4>Total Revenue</h4>
+        <div class="value" id="totalRevenue" style="color:#ffb347;">—</div>
+      </div>
+      <div class="stat-card">
+        <h4>Active Students</h4>
+        <div class="value" id="activeStudents">—</div>
+      </div>
     </div>
 
+    <!-- Payments Table -->
     <div class="table-wrapper">
       <table class="admin-table">
         <thead>
@@ -129,21 +176,34 @@
   </div>
 </div>
 
+<!-- PENDING REQUESTS POPUP MODAL -->
 <div class="popup-overlay" id="pendingPopup">
   <div class="popup-content">
     <span class="close-popup" onclick="closePendingPopup()">×</span>
     <h2 style="color: #fff; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">Payment Verification Overview</h2>
+    
     <div class="counter-grid">
-      <div class="counter-box"><h4>Pending</h4><p class="num num-pending" id="popPendingCount">0</p></div>
-      <div class="counter-box"><h4>Successful</h4><p class="num num-success" id="popSuccessCount">0</p></div>
-      <div class="counter-box"><h4>Failed / Cancelled</h4><p class="num num-failed" id="popFailedCount">0</p></div>
+      <div class="counter-box">
+        <h4>Pending</h4>
+        <p class="num num-pending" id="popPendingCount">0</p>
+      </div>
+      <div class="counter-box">
+        <h4>Successful</h4>
+        <p class="num num-success" id="popSuccessCount">0</p>
+      </div>
+      <div class="counter-box">
+        <h4>Failed / Cancelled</h4>
+        <p class="num num-failed" id="popFailedCount">0</p>
+      </div>
     </div>
+
     <h3 style="color: #ff7b00; font-size: 18px; margin-bottom: 15px;">Students waiting for approval:</h3>
-    <div id="pendingListContainer"></div>
+    <div id="pendingListContainer">
+      <!-- Pending items will load here -->
+    </div>
   </div>
 </div>
 
-<script src="js/theme.js"></script>
 <script>
   const API = '/api';
   let allPayments = [];
@@ -152,18 +212,33 @@
     const tbody = document.getElementById('paymentsTable');
     try {
       const res = await fetch(`${API}/admin/payments`, { credentials: 'include' });
-      if (!res.ok) { if (res.status === 401 || res.status === 403) { window.location.href = 'login.html'; return; } throw new Error('Server error ' + res.status); }
+      
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          window.location.href = 'login.html';
+          return;
+        }
+        throw new Error('Server error ' + res.status);
+      }
 
       const data = await res.json();
       allPayments = data.payments || [];
 
+      // 1. Calculate Stats
       let totalRev = 0;
       const uniqueStudents = new Set();
-      let pendingCount = 0, successCount = 0, failedCount = 0;
+      let pendingCount = 0;
+      let successCount = 0;
+      let failedCount = 0;
 
       allPayments.forEach(p => {
-        if (p.status === 'completed') { totalRev += p.amount || 0; }
+        // Only add to revenue if completed
+        if (p.status === 'completed') {
+          totalRev += p.amount || 0;
+        }
         uniqueStudents.add(p.user_id);
+
+        // Count statuses
         if (p.status === 'pending') pendingCount++;
         else if (p.status === 'completed') successCount++;
         else failedCount++;
@@ -173,19 +248,23 @@
       document.getElementById('totalRevenue').textContent = '₹' + totalRev.toLocaleString('en-IN');
       document.getElementById('activeStudents').textContent = uniqueStudents.size;
 
+      // 2. Update Popup Counters
       document.getElementById('pendingCountBadge').textContent = pendingCount;
       document.getElementById('popPendingCount').textContent = pendingCount;
       document.getElementById('popSuccessCount').textContent = successCount;
       document.getElementById('popFailedCount').textContent = failedCount;
 
+      // 3. Build Pending List for Popup
       const pendingContainer = document.getElementById('pendingListContainer');
       pendingContainer.innerHTML = '';
+
       const pendingPayments = allPayments.filter(p => p.status === 'pending');
 
       if (pendingPayments.length === 0) {
         pendingContainer.innerHTML = '<p style="color:#a5b1cc; text-align:center;">No pending requests right now.</p>';
       } else {
         pendingPayments.forEach(p => {
+          // Create email link for admin
           const emailSubject = encodeURIComponent(`Payment Verification Required - ${p.user_name}`);
           const emailBody = encodeURIComponent(`Hello Admin,\n\nStudent ${p.user_name} (${p.user_email}) has submitted a UPI payment.\n\nCourse: ${p.course_name}\nAmount: ₹${p.amount}\nUTR: ${p.utr_number}\n\nPlease verify this in the bank and approve.`);
           const mailtoLink = `mailto:kirankumarbkrishnan02@gmail.com?subject=${emailSubject}&body=${emailBody}`;
@@ -206,6 +285,7 @@
         });
       }
 
+      // 4. Render Main Table
       if (!allPayments.length) {
         tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#7a89a8;">No payments recorded yet.</td></tr>';
         return;
@@ -215,8 +295,14 @@
       allPayments.forEach(p => {
         let badgeClass = p.payment_type === 'deposit' ? 'badge-deposit' : 'badge-full';
         let planText = p.payment_type === 'deposit' ? '₹' + p.amount + ' Deposit' : 'Full Payment';
-        let statusColor = '#22c55e';
-        if (p.status === 'pending') { badgeClass = 'badge-pending'; statusColor = '#ffb347'; }
+        
+        let statusColor = '#22c55e'; // Green for completed
+        if (p.status === 'pending') {
+            badgeClass = 'badge-pending';
+            statusColor = '#ffb347'; // Orange for pending
+        }
+
+        // Format Date
         let dateObj = new Date(p.paid_at);
         let dateStr = dateObj.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -233,27 +319,51 @@
           </tr>
         `;
       });
+
       tbody.innerHTML = html;
+
     } catch (err) {
       console.error('Error loading payments:', err);
       tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#ff8a8a;padding:30px;">Error: ${err.message}</td></tr>`;
     }
   }
 
-  function openPendingPopup() { document.getElementById('pendingPopup').style.display = 'flex'; }
-  function closePendingPopup() { document.getElementById('pendingPopup').style.display = 'none'; }
-
-  async function approvePayment(id) {
-    if(!confirm("Are you sure you have verified this UTR in your bank account and want to approve enrollment?")) return;
-    try {
-      const res = await fetch(`${API}/admin/approve-payment/${id}`, { method: 'POST', credentials: 'include' });
-      const data = await res.json();
-      if (data.success) { alert("Payment Approved! Student is now enrolled."); closePendingPopup(); loadPayments(); }
-      else { alert("Error: " + data.error); }
-    } catch (err) { console.error(err); alert("Network error while approving."); }
+  // Popup Functions
+  function openPendingPopup() {
+    document.getElementById('pendingPopup').style.display = 'flex';
   }
 
+  function closePendingPopup() {
+    document.getElementById('pendingPopup').style.display = 'none';
+  }
+
+  // Approve Function
+  async function approvePayment(id) {
+    if(!confirm("Are you sure you have verified this UTR in your bank account and want to approve enrollment?")) return;
+
+    try {
+      const res = await fetch(`${API}/admin/approve-payment/${id}`, { 
+        method: 'POST', 
+        credentials: 'include' 
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Payment Approved! Student is now enrolled.");
+        closePendingPopup();
+        loadPayments(); // Reload data to update everything
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error while approving.");
+    }
+  }
+
+  // Load data when page opens
   loadPayments();
 </script>
+
 </body>
 </html>

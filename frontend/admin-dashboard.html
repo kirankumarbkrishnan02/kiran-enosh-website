@@ -10,72 +10,105 @@
 <link rel="stylesheet" href="css/style.css" />
 
 <style>
-  .admin-action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-bottom: 50px; }
-  .admin-action-card { background: linear-gradient(160deg, #142a52, #0a1128); border: 1px solid rgba(255,123,0,0.3); border-radius: 20px; padding: 32px; text-decoration: none; color: #fff; transition: 0.35s; display: block; }
-  .admin-action-card:hover { transform: translateY(-6px); border-color: #ff7b00; box-shadow: 0 25px 50px rgba(255,123,0,0.25); }
-  .admin-action-icon { font-size: 38px; margin-bottom: 15px; display: block; }
-  .admin-action-card h3 { color: #ff7b00; font-size: 19px; margin-bottom: 10px; }
-  .admin-action-card p { color: #a5b1cc; font-size: 14px; line-height: 1.6; }
+  .admin-action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    margin-bottom: 50px;
+  }
   
-  .top-nav-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #0b132b; border-bottom: 1px solid rgba(255, 255, 255, 0.1); width: 100%; box-sizing: border-box; }
+  .admin-action-card {
+    background: linear-gradient(160deg, #142a52, #0a1128);
+    border: 1px solid rgba(255,123,0,0.3);
+    border-radius: 20px;
+    padding: 32px;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.35s;
+    display: block;
+  }
+  .admin-action-card:hover {
+    transform: translateY(-6px);
+    border-color: #ff7b00;
+    box-shadow: 0 25px 50px rgba(255,123,0,0.25);
+  }
+  .admin-action-icon {
+    font-size: 38px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .admin-action-card h3 {
+    color: #ff7b00;
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+  .admin-action-card p {
+    color: #a5b1cc;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .top-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #0b132b;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-  .pending-payment-section { margin-top: 50px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,123,0,0.4); border-radius: 15px; padding: 30px; }
-  .pending-table { width: 100%; border-collapse: collapse; margin-top: 20px; color: #fff; }
-  .pending-table th, .pending-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .pending-table th { color: #ff7b00; font-weight: 600; }
-  .btn-approve { background: #22c55e; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+  /* New styles for Pending Payments Table */
+  .pending-payment-section {
+    margin-top: 50px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,123,0,0.4);
+    border-radius: 15px;
+    padding: 30px;
+  }
+  .pending-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #fff;
+  }
+  .pending-table th, .pending-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .pending-table th {
+    color: #ff7b00;
+    font-weight: 600;
+  }
+  .btn-approve {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
   .btn-approve:hover { background: #16a34a; }
-
-  .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; }
-  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
-  .theme-switch input { display: none; }
-  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
-  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
-  input:checked + .slider { background-color: #ff7b00; }
-  input:checked + .slider:before { transform: translateX(20px); }
-  .theme-label { font-size: 13px; font-weight: 500; color: #fff; }
-
-  body.light-mode { background-color: #f8f9fa !important; color: #333 !important; }
-  body.light-mode .top-nav-header { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
-  body.light-mode .nav-brand-text { color: #111 !important; }
-  body.light-mode .nav-brand-text span { color: #ff7b00 !important; }
-  body.light-mode .theme-label { color: #333 !important; }
-  body.light-mode .admin-action-card { background: #ffffff !important; border-color: #eaeaea !important; }
-  body.light-mode .admin-action-card h3 { color: #ff7b00 !important; }
-  body.light-mode .admin-action-card p { color: #555 !important; }
-  body.light-mode .welcome-banner { background: #ffffff !important; border: 1px solid #eaeaea !important; color: #111 !important; }
-  body.light-mode .welcome-banner h1 { color: #111 !important; }
-  body.light-mode .welcome-banner p { color: #555 !important; }
-  body.light-mode .dash-card { background: #ffffff !important; border: 1px solid #eaeaea !important; }
-  body.light-mode .dash-card h3 { color: #ff7b00 !important; }
-  body.light-mode .dash-card .big-number { color: #111 !important; }
-  body.light-mode .dash-card p { color: #555 !important; }
-  body.light-mode .pending-payment-section { background: #ffffff !important; border-color: #eaeaea !important; }
-  body.light-mode .pending-table { color: #111 !important; }
-  body.light-mode .pending-table th { color: #ff7b00 !important; border-bottom-color: #eaeaea !important; }
-  body.light-mode .pending-table td { border-bottom-color: #eaeaea !important; }
 </style>
 </head>
 <body>
 <header class="top-nav-header">
   <a href="admin-dashboard.html" class="nav-brand" style="text-decoration:none;">
-    <div class="nav-brand-text">KIRAN ENOSH<span style="color: #ff7b00;">ADMIN PORTAL</span></div>
-  </a>
-  <div style="display: flex; align-items: center;">
-    <div class="theme-switch-wrapper">
-      <span class="theme-label">Dark</span>
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
-        <div class="slider round"></div>
-      </label>
-      <span class="theme-label">Light</span>
+    <div class="nav-brand-text">
+      KIRAN ENOSH
+      <span>ADMIN PORTAL</span>
     </div>
-    <a href="#" id="logoutBtn" class="nav-cta" style="background:rgba(255,60,60,0.2);border:1px solid rgba(255,60,60,0.5); text-decoration:none;">Logout</a>
-  </div>
+  </a>
+  <a href="#" id="logoutBtn" class="nav-cta" style="background:rgba(255,60,60,0.2);border:1px solid rgba(255,60,60,0.5); text-decoration:none;">Logout</a>
 </header>
 
 <div class="dashboard-page">
   <div class="dashboard-container">
+
     <div class="welcome-banner" style="background:linear-gradient(135deg,rgba(255,123,0,0.25),rgba(10,77,166,0.25));border:1px solid rgba(255,123,0,0.4);">
       <h1>Admin Dashboard </h1>
       <p>Welcome back, <strong id="adminName" style="color:#ff7b00;">Admin</strong>. Manage your institute from here.</p>
@@ -84,60 +117,78 @@
     <h2 class="section-title" style="text-align:left;font-size:24px;margin-bottom:20px;">Quick Overview</h2>
 
     <div class="dashboard-grid" style="margin-bottom:50px;">
+      
       <a href="admin.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
-        <h3>Total Users</h3>
+        <h3> Total Users</h3>
         <p class="big-number" id="totalUsers">—</p>
         <p>Registered students &amp; admins</p>
       </a>
+
       <a href="courses.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
-        <h3>Active Courses</h3>
+        <h3> Active Courses</h3>
         <p class="big-number" id="totalCourses">—</p>
         <p>Programs currently offered</p>
       </a>
+
       <a href="admin-payments.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
-        <h3>Enrollments</h3>
+        <h3> Enrollments</h3>
         <p class="big-number" id="totalEnrollments">—</p>
         <p>Total course sign-ups</p>
       </a>
+
       <a href="admin-payments.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
-        <h3>Total Revenue</h3>
+        <h3> Total Revenue</h3>
         <p class="big-number" id="totalRevenue">—</p>
         <p>From course registrations</p>
       </a>
+
     </div>
 
     <h2 class="section-title" style="text-align:left;font-size:24px;margin-bottom:20px;">Quick Actions</h2>
 
     <div class="admin-action-grid">
       <a href="admin.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
         <h3>Manage Users</h3>
         <p>View, search, and delete student accounts. Change roles and monitor activity.</p>
       </a>
+      
       <a href="admin-helpdesk.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
         <h3>Helpdesk Tickets</h3>
         <p>See all student questions, reply, and mark them as resolved.</p>
       </a>
+
       <a href="admin-payments.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
         <h3>Payment Records</h3>
         <p>View all course registration payments, verify against your bank, and export.</p>
       </a>
+
       <a href="admin-attendance.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
         <h3>Attendance & Live Links</h3>
         <p>Set today's Google Meet link & password. Verify student attendance.</p>
       </a>
+
       <a href="courses.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
         <h3>Browse Courses</h3>
         <p>See courses as a student would. Preview enrollment and payment flow.</p>
       </a>
+
       <a href="index.html" class="admin-action-card">
+        <span class="admin-action-icon"></span>
         <h3>View Homepage</h3>
         <p>See the public site as visitors do. Check the 3D homepage and courses page.</p>
       </a>
     </div>
 
+    <!-- NEW SECTION: PENDING UPI PAYMENTS -->
     <div class="pending-payment-section">
       <h2 class="section-title" style="text-align:left;font-size:22px;margin-bottom:10px;color:#fff;">Pending UPI Verifications</h2>
       <p style="color:#a5b1cc; margin-bottom:20px; font-size:14px;">Verify these UTR numbers against your bank statement before approving.</p>
+      
       <table class="pending-table" id="pendingPaymentsTable">
         <thead>
           <tr>
@@ -150,46 +201,69 @@
           </tr>
         </thead>
         <tbody id="pendingTableBody">
+          <!-- Data will load here -->
           <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
         </tbody>
       </table>
     </div>
+
   </div>
 </div>
 
-<script src="js/theme.js"></script>
 <script>
   const API = '/api';
   const AUTH_API = '/api/auth';
 
+  // Verify admin access
   fetch(`${AUTH_API}/me`, { credentials: 'include' })
     .then(function (r) {
-      if (!r.ok) { window.location.href = 'login.html'; throw new Error('Not logged in'); }
+      if (!r.ok) {
+        window.location.href = 'login.html';
+        throw new Error('Not logged in');
+      }
       return r.json();
     })
     .then(function (data) {
-      if (data.user.role !== 'admin') { alert('❌ Access Denied. Admin only.'); window.location.href = 'dashboard.html'; return; }
+      if (data.user.role !== 'admin') {
+        alert('❌ Access Denied. Admin only.');
+        window.location.href = 'dashboard.html';
+        return;
+      }
       document.getElementById('adminName').textContent = data.user.name;
-      loadPendingPayments();
+      loadPendingPayments(); // Load pending payments only if admin
     })
-    .catch(function (err) { console.error(err); });
+    .catch(function (err) {
+      console.error(err);
+    });
 
+  // Load stats
   fetch(`${API}/admin/stats`, { credentials: 'include' })
     .then(function (r) { return r.json(); })
     .then(function (data) {
       document.getElementById('totalUsers').textContent = data.users;
       document.getElementById('totalCourses').textContent = data.courses;
       document.getElementById('totalEnrollments').textContent = data.enrollments;
-    }).catch(function (err) { console.error(err); });
+    })
+    .catch(function (err) { console.error(err); });
 
+  // Load total revenue from payments
   fetch(`${API}/admin/payments`, { credentials: 'include' })
-    .then(function (r) { if (!r.ok) return { payments: [] }; return r.json(); })
+    .then(function (r) {
+      if (!r.ok) return { payments: [] };
+      return r.json();
+    })
     .then(function (data) {
       var total = 0;
-      (data.payments || []).forEach(function (p) { total += p.amount || 0; });
+      (data.payments || []).forEach(function (p) {
+        total += p.amount || 0;
+      });
       document.getElementById('totalRevenue').textContent = '₹' + total.toLocaleString('en-IN');
-    }).catch(function () { document.getElementById('totalRevenue').textContent = '₹0'; });
+    })
+    .catch(function () {
+      document.getElementById('totalRevenue').textContent = '₹0';
+    });
 
+  // Load Pending Payments
   async function loadPendingPayments() {
     try {
       const res = await fetch(`${API}/admin/pending-payments`, { credentials: 'include' });
@@ -210,28 +284,51 @@
           <td>${pay.course_name}</td>
           <td>₹${pay.amount}</td>
           <td><strong style="color:#ff7b00;">${pay.utr_number}</strong></td>
-          <td><button class="btn-approve" onclick="approvePayment(${pay.id})">Approve</button></td>
+          <td>
+            <button class="btn-approve" onclick="approvePayment(${pay.id})">Approve</button>
+          </td>
         `;
         tbody.appendChild(tr);
       });
-    } catch (err) { console.error("Failed to load pending payments", err); }
+    } catch (err) {
+      console.error("Failed to load pending payments", err);
+    }
   }
 
+  // Approve Payment Function
   async function approvePayment(id) {
     if(!confirm("Are you sure you have verified this UTR in your bank account and want to approve enrollment?")) return;
+
     try {
-      const res = await fetch(`${API}/admin/approve-payment/${id}`, { method: 'POST', credentials: 'include' });
+      const res = await fetch(`${API}/admin/approve-payment/${id}`, { 
+        method: 'POST', 
+        credentials: 'include' 
+      });
       const data = await res.json();
-      if (data.success) { alert("Payment Approved! Student is now enrolled."); loadPendingPayments(); }
-      else { alert("Error: " + data.error); }
-    } catch (err) { console.error(err); alert("Network error while approving."); }
+
+      if (data.success) {
+        alert("Payment Approved! Student is now enrolled.");
+        loadPendingPayments(); // Refresh the table
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error while approving.");
+    }
   }
 
+  // Logout
   document.getElementById('logoutBtn').addEventListener('click', async function (e) {
     e.preventDefault();
-    try { await fetch(`${AUTH_API}/logout`, { method: 'POST', credentials: 'include' }); } catch (err) { console.error(err); }
+    try {
+      await fetch(`${AUTH_API}/logout`, { method: 'POST', credentials: 'include' });
+    } catch (err) {
+      console.error(err);
+    }
     window.location.href = 'index.html';
   });
 </script>
+    
 </body>
 </html>

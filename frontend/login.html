@@ -11,8 +11,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="icon" type="image/png" href="images/" />
+
+<style>
+  .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; position: absolute; top: 20px; right: 20px; z-index: 100; background: rgba(10, 17, 40, 0.85); padding: 10px 15px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); }
+  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
+  .theme-switch input { display: none; }
+  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+  input:checked + .slider { background-color: #ff7b00; }
+  input:checked + .slider:before { transform: translateX(20px); }
+  .theme-label { font-size: 13px; font-weight: 500; color: #fff; }
+  
+  body.light-mode { background-color: #f8f9fa !important; }
+  body.light-mode .auth-card { background: #ffffff !important; border: 1px solid #eaeaea !important; }
+  body.light-mode .auth-card h2 { color: #1a1a1a !important; }
+  body.light-mode .auth-sub { color: #666 !important; }
+  body.light-mode .form-group label { color: #333 !important; }
+  body.light-mode .form-group input { background: #f8f9fa !important; border-color: #ccc !important; color: #333 !important; }
+  body.light-mode .auth-switch, body.light-mode .auth-switch a { color: #555 !important; }
+  body.light-mode .theme-switch-wrapper { background: #fff; border-color: #ddd; }
+  body.light-mode .theme-label { color: #333; }
+  body.light-mode label[for="showPassword"] { color: #333 !important; }
+</style>
 </head>
 <body>
+
+<div class="theme-switch-wrapper">
+  <span class="theme-label">Dark</span>
+  <label class="theme-switch" for="checkbox">
+    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
+    <div class="slider round"></div>
+  </label>
+  <span class="theme-label">Light</span>
+</div>
 
 <div class="auth-page">
   <div class="auth-card">
@@ -30,48 +61,31 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Your password" required />
-
-        <!-- FORCED-INLINE STYLE — cannot be overridden by any CSS -->
         <div style="display:flex !important; flex-direction:row !important; align-items:center !important; gap:10px !important; margin-top:12px; white-space:nowrap;">
-          <input
-            type="checkbox"
-            id="showPassword"
-            onclick="togglePwd('password', this)"
-            style="width:18px !important; height:18px !important; min-width:18px !important; max-width:18px !important; flex:0 0 18px !important; margin:0 !important; cursor:pointer; accent-color:#ff7b00;"
-          />
-          <label for="showPassword" style="display:inline-block !important; margin:0 !important; padding:0 !important; font-size:14px; color:#c3cce0; cursor:pointer; font-weight:400;">
-            Show Password
-          </label>
+          <input type="checkbox" id="showPassword" onclick="togglePwd('password', this)" style="width:18px !important; height:18px !important; min-width:18px !important; max-width:18px !important; flex:0 0 18px !important; margin:0 !important; cursor:pointer; accent-color:#ff7b00;" />
+          <label for="showPassword" style="display:inline-block !important; margin:0 !important; padding:0 !important; font-size:14px; color:#c3cce0; cursor:pointer; font-weight:400;">Show Password</label>
         </div>
       </div>
 
       <p style="text-align:right;margin-top:-6px;margin-bottom:14px;">
-        <a href="forgot-password.html" style="color:#ff7b00;font-size:13px;font-weight:600;text-decoration:none;">
-          Forgot Password?
-        </a>
+        <a href="forgot-password.html" style="color:#ff7b00;font-size:13px;font-weight:600;text-decoration:none;">Forgot Password?</a>
       </p>
 
       <button type="submit" class="btn-submit" id="submitBtn">Login</button>
     </form>
 
-    <p class="auth-switch">
-      Don't have an account? <a href="register.html">Register now</a>
-    </p>
-    <p class="auth-switch">
-      <a href="index.html">← Back to Home</a>
-    </p>
+    <p class="auth-switch">Don't have an account? <a href="register.html">Register now</a></p>
+    <p class="auth-switch"><a href="index.html">← Back to Home</a></p>
   </div>
 </div>
 
+<script src="js/theme.js"></script>
 <script src="js/auth.js"></script>
-
 <script>
   function togglePwd(inputId, checkbox) {
     var input = document.getElementById(inputId);
     input.type = checkbox.checked ? 'text' : 'password';
   }
 </script>
-
 </body>
-
 </html>

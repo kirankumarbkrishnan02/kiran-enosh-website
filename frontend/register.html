@@ -11,37 +11,46 @@
 <link rel="icon" type="image/png" href="images/logo.png" />
 
 <style>
-  /* Fix for centering the tall registration form */
-  .auth-page {
-    display: flex;
-    align-items: center;       
-    justify-content: center;   
-    min-height: 100vh;
-    padding: 60px 20px 40px;   
-  }
-  
-  .auth-card {
-    margin: 0 auto;            
-    width: 100%;
-    max-width: 500px;          
-  }
+  .auth-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 60px 20px 40px; }
+  .auth-card { margin: 0 auto; width: 100%; max-width: 500px; }
+  .auth-switch { text-align: center; margin-top: 20px; line-height: 2; }
 
-  .auth-switch {
-    text-align: center;
-    margin-top: 20px;
-    line-height: 2;            
-  }
+  .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; position: absolute; top: 20px; right: 20px; z-index: 100; background: rgba(10, 17, 40, 0.85); padding: 10px 15px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); }
+  .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
+  .theme-switch input { display: none; }
+  .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+  .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
+  input:checked + .slider { background-color: #ff7b00; }
+  input:checked + .slider:before { transform: translateX(20px); }
+  .theme-label { font-size: 13px; font-weight: 500; color: #fff; }
+  
+  body.light-mode { background-color: #f8f9fa !important; }
+  body.light-mode .auth-card { background: #ffffff !important; border: 1px solid #eaeaea !important; }
+  body.light-mode .auth-card h2 { color: #1a1a1a !important; }
+  body.light-mode .auth-sub { color: #666 !important; }
+  body.light-mode .form-group label { color: #333 !important; }
+  body.light-mode .form-group input, body.light-mode .form-group select { background: #f8f9fa !important; border-color: #ccc !important; color: #333 !important; }
+  body.light-mode .auth-switch, body.light-mode .auth-switch a { color: #555 !important; }
+  body.light-mode .theme-switch-wrapper { background: #fff; border-color: #ddd; }
+  body.light-mode .theme-label { color: #333; }
+  body.light-mode label[for="showPassword"] { color: #333 !important; }
 </style>
 </head>
 <body>
 
+<div class="theme-switch-wrapper">
+  <span class="theme-label">Dark</span>
+  <label class="theme-switch" for="checkbox">
+    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
+    <div class="slider round"></div>
+  </label>
+  <span class="theme-label">Light</span>
+</div>
+
 <div class="auth-page">
   <div class="auth-card">
-    <!-- Logo Removed From Here -->
-    
     <h2>Create Your Account</h2>
     <p class="auth-sub">Join the Kiran Enosh community today</p>
-
     <div class="auth-message" id="messageBox"></div>
 
     <form id="registerForm" novalidate>
@@ -49,17 +58,14 @@
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" placeholder="Your full name" required />
       </div>
-
       <div class="form-group">
         <label for="father_name">Father's Name</label>
         <input type="text" id="father_name" name="father_name" placeholder="Father's full name" required />
       </div>
-
       <div class="form-group">
         <label for="mother_name">Mother's Name</label>
         <input type="text" id="mother_name" name="mother_name" placeholder="Mother's full name" required />
       </div>
-
       <div class="form-group">
         <label for="gender">Gender</label>
         <select id="gender" name="gender" required style="width:100%; padding:14px 18px; background:rgba(0,0,0,0.35); border:1px solid rgba(74,144,226,0.4); border-radius:12px; color:#fff; font-size:15px; outline:none; font-family:inherit; appearance:none;">
@@ -69,46 +75,37 @@
           <option value="Other">Other</option>
         </select>
       </div>
-
       <div class="form-group">
         <label for="dob">Date of Birth</label>
         <input type="date" id="dob" name="dob" required style="color-scheme: dark;" />
       </div>
-
       <div class="form-group">
         <label for="last_education">Last Studied / Standard</label>
         <input type="text" id="last_education" name="last_education" placeholder="e.g. 12th Pass, B.Sc Completed" required />
       </div>
-
       <div class="form-group">
         <label for="address">Address</label>
         <input type="text" id="address" name="address" placeholder="Your full address" required />
       </div>
-
       <div class="form-group">
         <label for="email">Email Address</label>
         <input type="email" id="email" name="email" placeholder="you@example.com" required />
       </div>
-
       <div class="form-group">
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone" placeholder="10-digit mobile number" required />
       </div>
-
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Min 8 chars, 1 uppercase, 1 number, 1 symbol" required />
-        
         <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
           <input type="checkbox" id="showPassword" onclick="togglePwd('password', this)" style="width:18px; height:18px; cursor:pointer; accent-color:#ff7b00;" />
           <label for="showPassword" style="font-size:14px; color:#c3cce0; cursor:pointer; margin:0;">Show Password</label>
         </div>
       </div>
-
       <button type="submit" class="btn-submit" id="submitBtn">Create Account</button>
     </form>
 
-    <!-- Bottom Links (Centered) -->
     <div class="auth-switch" style="margin-top: 30px;">
       Already have an account? <a href="login.html">Login here</a><br>
       <a href="index.html" style="color:#7a89a8; font-size: 14px;">← Back to Home</a>
@@ -116,6 +113,7 @@
   </div>
 </div>
 
+<script src="js/theme.js"></script>
 <script src="js/auth.js"></script>
 <script>
   function togglePwd(inputId, checkbox) {
@@ -123,6 +121,5 @@
     input.type = checkbox.checked ? 'text' : 'password';
   }
 </script>
-
 </body>
 </html>

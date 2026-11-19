@@ -53,6 +53,10 @@
   </a>
   
   <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <span id="userPill" style="display:none; color: #7fb3ff; font-size: 13px; font-weight: 600; background: rgba(74,144,226,0.15); padding: 8px 15px; border-radius: 20px;">
+      <span style="color: #22c55e;">●</span> <span id="userNameNav">Student</span>
+    </span>
+
     <div class="theme-switch-wrapper">
       <span class="theme-label">Dark</span>
       <label class="theme-switch" for="themeCheckbox">
@@ -83,8 +87,12 @@
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Complete web development course</p>
+      
+      <!-- HIDDEN PRICE (Will show if logged in) -->
       <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
+      
+      <!-- FORCED JAVASCRIPT CLICK REDIRECT -->
+      <a href="login.html" onclick="window.location.href='login.html'; return false;" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
     <!-- Course 2 -->
@@ -93,7 +101,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Python Programming</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Learn Python from basics</p>
       <p class="course-price-display price" data-price="₹14,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
+      <a href="login.html" onclick="window.location.href='login.html'; return false;" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
     <!-- Course 3 -->
@@ -102,7 +110,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Artificial Intelligence & ML</h3>
       <p style="color: #a5b1cc; font-size: 14px;">AI and machine learning</p>
       <p class="course-price-display price" data-price="₹29,000" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
+      <a href="login.html" onclick="window.location.href='login.html'; return false;" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
     <!-- Course 4 -->
@@ -111,7 +119,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Data Science</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Data analysis and visualization</p>
       <p class="course-price-display price" data-price="₹24,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
+      <a href="login.html" onclick="window.location.href='login.html'; return false;" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
     <!-- Course 5 -->
@@ -120,7 +128,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Java & Android Development</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Java and Android</p>
       <p class="course-price-display price" data-price="₹29,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
+      <a href="login.html" onclick="window.location.href='login.html'; return false;" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
     <!-- Course 6 -->
@@ -129,7 +137,7 @@
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Cyber Security</h3>
       <p style="color: #a5b1cc; font-size: 14px;">Ethical hacking and defense</p>
       <p class="course-price-display price" data-price="₹34,999" style="color: #ffb347; font-weight: bold; font-size: 20px; margin: 15px 0; display: none;">Login to see fees</p>
-      <a href="login.html" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
+      <a href="login.html" onclick="window.location.href='login.html'; return false;" class="enroll-btn" style="display:block; padding:15px; background:#ff7b00; color:white; text-align:center; border-radius:10px; font-weight:bold; text-decoration:none;">Login to Enroll →</a>
     </div>
 
   </div>
@@ -156,6 +164,63 @@
       document.getElementById('themeCheckbox').checked = true;
     }
   });
+</script>
+
+<!-- AUTHENTICATION LOGIC (Safely wrapped so it won't crash) -->
+<script>
+  const API_AUTH = '/api/auth';
+  
+  // We check if the page is running on Vercel (where the backend might be offline)
+  // We use try/catch to ensure that if the backend fails, the buttons STILL work.
+  try {
+    fetch(`${API_AUTH}/me`, { credentials: 'include' })
+      .then(res => {
+        if (!res.ok) throw new Error('Not logged in');
+        return res.json();
+      })
+      .then(data => {
+        // USER IS LOGGED IN
+        const user = data.user;
+        
+        const pill = document.getElementById('userPill');
+        const nameEl = document.getElementById('userNameNav');
+        if (pill && nameEl) {
+          nameEl.textContent = user.name;
+          pill.style.display = 'inline-block';
+        }
+
+        const priceElements = document.querySelectorAll('.course-price-display');
+        priceElements.forEach(el => {
+          el.textContent = el.getAttribute('data-price');
+          el.style.display = 'block'; 
+        });
+
+        // Upgrade buttons
+        const enrollButtons = document.querySelectorAll('.enroll-btn');
+        const actualLinks = [
+          "course-details.html?course=Full%20Stack%20Web%20Development&price=25000",
+          "course-details.html?course=Python%20Programming&price=15000",
+          "course-details.html?course=Artificial%20Intelligence%20%26%20ML&price=30000",
+          "course-details.html?course=Data%20Science&price=25000",
+          "course-details.html?course=Java%20%26%20Android%20Development&price=20000",
+          "course-details.html?course=Cyber%20Security&price=22000"
+        ];
+
+        enrollButtons.forEach((btn, index) => {
+          btn.href = actualLinks[index];
+          btn.removeAttribute('onclick'); // Remove the login redirect
+          btn.textContent = 'Enroll Now →';
+        });
+
+      })
+      .catch(err => {
+        // USER IS A GUEST
+        // The inline onclick="window.location.href='login.html'" will handle the redirect.
+        console.log('Guest mode active');
+      });
+  } catch(err) {
+    console.log('Backend offline. Using HTML fallback.');
+  }
 </script>
 
 </body>

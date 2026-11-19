@@ -9,8 +9,17 @@
 <link rel="stylesheet" href="css/style.css" />
 <link rel="icon" type="image/png" href="images/logo.png" />
 
+<script>
+  // Prevents the flash of dark mode if the user previously chose light mode
+  if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.classList.add('light-mode');
+  }
+</script>
+
 <style>
-  /* Toggle Switch Styles */
+  /* =========================================
+     THEME TOGGLE SWITCH STYLES
+     ========================================= */
   .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; margin-right: 15px; }
   .theme-switch { display: inline-block; height: 24px; position: relative; width: 44px; }
   .theme-switch input { display: none; }
@@ -20,35 +29,35 @@
   input:checked + .slider:before { transform: translateX(20px); }
   .theme-label { font-size: 13px; font-weight: 500; color: #fff; user-select: none; }
 
-  /* Light Mode Overrides */
+  /* =========================================
+     LIGHT MODE OVERRIDES
+     ========================================= */
   body.light-mode { background-color: #f8f9fa !important; color: #333 !important; }
+  
+  /* Navbar */
   body.light-mode .page-nav { background-color: #ffffff !important; border-bottom: 1px solid #eaeaea !important; }
   body.light-mode .page-nav a { color: #333 !important; border-color: #ccc !important; }
-  body.light-mode .page-nav div span { color: #111 !important; } /* Fixes Kiran Enosh logo color */
+  body.light-mode .page-nav span { color: #111 !important; } /* Makes logo text dark */
   body.light-mode .theme-label { color: #333 !important; }
+  
+  /* Headings */
   body.light-mode h1 { color: #1a1a1a !important; }
   body.light-mode .subtitle { color: #666 !important; }
   
-  /* Card Overrides */
+  /* Cards */
   body.light-mode .course-card { background: #ffffff !important; border: 1px solid #eaeaea !important; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
   body.light-mode .course-card h3 { color: #1a1a1a !important; }
   body.light-mode .course-card p { color: #555 !important; }
   body.light-mode .course-price { color: #ff7b00 !important; }
 </style>
-
-<script>
-  if (localStorage.getItem('theme') === 'light') {
-      document.documentElement.classList.add('light-mode');
-  }
-</script>
 </head>
 <body style="background-color: #0a1128; margin: 0; padding: 0;">
 
-<!-- NAVBAR (Theme toggle goes here) -->
+<!-- NAVBAR -->
 <div class="page-nav" style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
   <a href="dashboard.html" style="display: flex; align-items: center; text-decoration: none;">
-    <div style="color: white; font-family: 'Poppins', sans-serif;">
-      <span style="font-weight: 800; font-size: 18px; display: block;">KIRAN ENOSH</span>
+    <div style="font-family: 'Poppins', sans-serif;">
+      <span style="color: white; font-weight: 800; font-size: 18px; display: block;">KIRAN ENOSH</span>
       <span style="color: #ff7b00; font-size: 12px; font-weight: 600; letter-spacing: 1px;">STUDENT PORTAL</span>
     </div>
   </a>
@@ -57,8 +66,8 @@
     <span id="userPill" style="display:none; color: #7fb3ff; font-size: 13px; font-weight: 600; background: rgba(74,144,226,0.15); padding: 8px 15px; border-radius: 20px;">
       <span style="color: #22c55e;">●</span> <span id="userNameNav">Student</span>
     </span>
-    
-    <!-- THEME SWITCH IN THE CORRECT PLACE -->
+
+    <!-- THEME TOGGLE SWITCH (Now up top) -->
     <div class="theme-switch-wrapper">
       <span class="theme-label">Dark</span>
       <label class="theme-switch" for="themeCheckbox">
@@ -80,10 +89,9 @@
     <p class="subtitle" style="color: #a5b1cc; font-size: 16px;">Choose the program that fits your career goals.</p>
   </div>
 
-  <!-- Grid Layout -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
     
-    <!-- Course 1 (Added course-card class) -->
+    <!-- Course 1 -->
     <div class="course-card" style="background: #142a52; padding: 25px; border-radius: 15px; border: 1px solid #4a90e2; transition: 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ff7b00'; this.style.boxShadow='0 10px 30px rgba(255,123,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#4a90e2'; this.style.boxShadow='none';">
       <img src="images/fullstack.png" style="width: 60px; height: 60px; object-fit: contain;" />
       <h3 style="color: white; margin-top: 15px; font-size: 20px;">Full Stack Web Development</h3>
@@ -140,6 +148,29 @@
   </div>
 </div>
 
+<!-- Theme Logic -->
+<script>
+  function toggleTheme() {
+    const checkbox = document.getElementById('themeCheckbox');
+    if (checkbox.checked) {
+      document.documentElement.classList.add('light-mode');
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.remove('light-mode');
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('themeCheckbox').checked = true;
+    }
+  });
+</script>
+
 <!-- Your Working Fetch Script -->
 <script>
   fetch('/api/auth/me', { credentials: 'include' })
@@ -173,27 +204,5 @@
     });
 </script>
 
-<!-- Theme Toggle Logic -->
-<script>
-  function toggleTheme() {
-    const checkbox = document.getElementById('themeCheckbox');
-    if (checkbox.checked) {
-      document.documentElement.classList.add('light-mode');
-      document.body.classList.add('light-mode');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.remove('light-mode');
-      document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light-mode');
-      document.getElementById('themeCheckbox').checked = true;
-    }
-  });
-</script>
 </body>
 </html>

@@ -7,7 +7,6 @@ const { sendHelpdeskNotification, sendHelpdeskConfirmation, sendTicketReply } = 
 
 const router = express.Router();
 
-// Initialize Razorpay
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -102,7 +101,6 @@ router.delete('/users/:id', auth, requireAdmin, async (req, res) => {
    COURSES
    ============================================================ */
 
-/* ============ GET ALL COURSES ============ */
 router.get('/courses', auth, async (req, res) => {
   try {
     const result = await pool.query(
@@ -115,7 +113,6 @@ router.get('/courses', auth, async (req, res) => {
   }
 });
 
-/* ============ ENROLL IN COURSE ============ */
 router.post('/enroll', auth, async (req, res) => {
   const { course_name } = req.body;
   if (!course_name) return res.status(400).json({ error: 'Course name required' });
@@ -138,7 +135,6 @@ router.post('/enroll', auth, async (req, res) => {
   }
 });
 
-/* ============ MY ENROLLMENTS ============ */
 router.get('/my-courses', auth, async (req, res) => {
   try {
     const result = await pool.query(
@@ -156,7 +152,6 @@ router.get('/my-courses', auth, async (req, res) => {
    HELPDESK
    ============================================================ */
 
-/* ============ SUBMIT HELPDESK TICKET ============ */
 router.post('/helpdesk', auth, async (req, res) => {
   const { subject, message } = req.body;
 
@@ -208,7 +203,6 @@ router.post('/helpdesk', auth, async (req, res) => {
   }
 });
 
-/* ============ GET ALL TICKETS (admin) ============ */
 router.get('/helpdesk/tickets', auth, requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
@@ -224,7 +218,6 @@ router.get('/helpdesk/tickets', auth, requireAdmin, async (req, res) => {
   }
 });
 
-/* ============ REPLY TO TICKET (admin) ============ */
 router.patch('/helpdesk/tickets/:id', auth, requireAdmin, async (req, res) => {
   const { id } = req.params;
   const { admin_reply, status } = req.body;
@@ -263,10 +256,9 @@ router.patch('/helpdesk/tickets/:id', auth, requireAdmin, async (req, res) => {
 });
 
 /* ============================================================
-   PAYMENTS (RAZORPAY)
+   PAYMENTS (RAZORPAY & UPI MANUAL)
    ============================================================ */
 
-/* ============ 1. CREATE RAZORPAY ORDER ============ */
 router.post('/create-order', auth, async (req, res) => {
   const { amount } = req.body;
   if (!amount || amount < 1) {
@@ -275,7 +267,7 @@ router.post('/create-order', auth, async (req, res) => {
 
   try {
     const options = {
-      amount: amount * 100, // Razorpay takes amount in paise
+      amount: amount * 100,
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
     };
@@ -288,7 +280,6 @@ router.post('/create-order', auth, async (req, res) => {
   }
 });
 
-/* ============ 2. VERIFY PAYMENT & SAVE ============ */
 router.post('/payments', auth, async (req, res) => {
   const { 
     course_name, amount, payment_method, payment_type, 
@@ -343,7 +334,83 @@ router.post('/payments', auth, async (req, res) => {
   }
 });
 
-/* ============ GET SINGLE PAYMENT RECEIPT ============ */
+/* --- NEW: MANUAL UPI PAYMENT SUBMISSION --- */
+router.post('/manual-payment', auth, async (req, res) => {
+  const { course_name, amount, utr } = req.body;
+
+  if (!course_name || !amount || !utr) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const receiptNumber = `KEC-UPI-${Date.now()}`;
+    
+    // Save payment with 'pending' status
+    const paymentRes = await pool.query(
+      `INSERT INTO payments (user_id, course_name, amount, payment_method, status, receipt_number, utr_number)
+       VALUES ($1, $2, $3, 'UPI', 'pending', $4, $5)
+       RETURNING *`,
+      [req.user.id, course_name, amount, receiptNumber, utr]
+    );
+
+    res.json({ success: true, payment: paymentRes.rows[0] });
+  } catch (err) {
+    console.error('Manual payment error:', err);
+    res.status(500).json({ error: 'Failed to save manual payment' });
+  }
+});
+
+/* --- NEW: FETCH PENDING PAYMENTS FOR ADMIN --- */
+router.get('/pending-payments', auth, requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT p.*, u.name AS user_name, u.email AS user_email, u.phone AS user_phone
+       FROM payments p
+       JOIN users u ON u.id = p.user_id
+       WHERE p.status = 'pending'
+       ORDER BY p.paid_at DESC`
+    );
+    res.json({ payments: result.rows });
+  } catch (err) {
+    console.error('Pending payments error:', err);
+    res.status(500).json({ error: 'Failed to load pending payments' });
+  }
+});
+
+/* --- NEW: APPROVE UPI PAYMENT --- */
+router.post('/approve-payment/:id', auth, requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    // 1. Update status to completed
+    const result = await pool.query(
+      `UPDATE payments SET status = 'completed' WHERE id = $1 RETURNING *`,
+      [id]
+    );
+    
+    if (!result.rows.length) return res.status(404).json({ error: 'Payment not found' });
+    
+    const payment = result.rows[0];
+
+    // 2. Automatically enroll the student in the course
+    const enrolled = await pool.query(
+      'SELECT id FROM enrollments WHERE user_id = $1 AND course_name = $2',
+      [payment.user_id, payment.course_name]
+    );
+    
+    if (!enrolled.rows.length) {
+      await pool.query(
+        'INSERT INTO enrollments (user_id, course_name) VALUES ($1, $2)',
+        [payment.user_id, payment.course_name]
+      );
+    }
+
+    res.json({ success: true, payment });
+  } catch (err) {
+    console.error('Approve payment error:', err);
+    res.status(500).json({ error: 'Failed to approve payment' });
+  }
+});
+
 router.get('/payments/:id', auth, async (req, res) => {
   try {
     const result = await pool.query(
@@ -361,7 +428,6 @@ router.get('/payments/:id', auth, async (req, res) => {
   }
 });
 
-/* ============ GET ALL PAYMENTS (admin) ============ */
 router.get('/payments', auth, requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(

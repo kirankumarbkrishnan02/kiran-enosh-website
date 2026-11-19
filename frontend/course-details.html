@@ -48,7 +48,6 @@
   .btn-confirm-pay { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-size: 18px; font-weight: 700; border: none; border-radius: 12px; margin-top: 30px; cursor: pointer; transition: 0.3s; }
   .btn-confirm-pay:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(34,197,94,0.4); }
 
-  /* New style for UTR input */
   #utr-section { display: none; margin-top: 25px; text-align: center; background: rgba(34,197,94,0.1); padding: 20px; border-radius: 12px; border: 1px solid #22c55e; }
   #utr-section input { padding: 12px; border-radius: 10px; border: 1px solid #22c55e; background: #0a1128; color: white; width: 80%; max-width: 300px; margin-bottom: 15px; text-align: center;}
   #utr-section button { background: #22c55e; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; }
@@ -102,14 +101,12 @@
           <p style="color:#ff7b00; font-weight:700; margin-top:15px; font-size:18px;">kiranenosh@ybl</p>
         </div>
 
-        <!-- BUTTON NOW TRIGGERS UPI -->
-        <button class="btn-confirm-pay" onclick="initiateUPIPayment()">Proceed to Pay via UPI</button>
+        <button class="btn-confirm-pay" id="proceedBtn" onclick="initiateUPIPayment()">Proceed to Pay via UPI</button>
 
-        <!-- UTR SECTION (Hidden by default) -->
         <div id="utr-section">
           <p style="color:#c3cce0; margin-bottom:10px; font-size:14px;">After paying, please enter your 12-digit UPI Transaction ID (UTR) below so we can verify your payment.</p>
           <input type="text" id="utrInput" placeholder="Enter 12-digit UTR" />
-          <button onclick="submitUTR()">Submit Payment Proof</button>
+          <button id="submitUtrBtn" onclick="submitUTR()">Submit Payment Proof</button>
         </div>
       </div>
     </div>
@@ -123,29 +120,23 @@
   let coursePrice = 0;
   const months = 3; 
 
-  // 1. Get URL params
   const params = new URLSearchParams(window.location.search);
   courseTitle = params.get('course') || 'Course Name';
   coursePrice = parseInt(params.get('price') || '0');
-
-  // 2. Calculate exact EMI
   const emiAmount = Math.round(coursePrice / months);
 
-  // 3. Set UI Text
   document.getElementById('courseName').textContent = courseTitle;
   document.getElementById('coursePrice').textContent = '₹' + coursePrice.toLocaleString('en-IN');
   document.getElementById('courseDuration').textContent = months + ' Months Duration';
   document.getElementById('emiFullBreakdown').textContent = `Total: ₹${coursePrice.toLocaleString('en-IN')} / ${months} months`;
   document.getElementById('emiMonthlyAmount').textContent = '₹' + emiAmount.toLocaleString('en-IN') + ' / month';
 
-  // 4. Show Payment Section
   function revealPayment() {
     document.getElementById('paymentSection').style.display = 'block';
     document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
     updateRemaining(); 
   }
 
-  // 5. Dynamic remaining calculation
   function updateRemaining() {
     const input = document.getElementById('customAmount');
     let paidAmount = parseInt(input.value) || 0;
@@ -168,64 +159,66 @@
     }
   }
 
-  // 6. Process UPI Payment
   function initiateUPIPayment() {
     const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
     const upiId = 'kiranenosh@ybl';
     const payeeName = 'Kiran Enosh Group of Institutions';
 
-    // Create standard UPI link
     const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${paidAmount}&cu=INR&tn=${encodeURIComponent('Payment for ' + courseTitle)}`;
-
-    // Detect Mobile vs Desktop
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (isMobile) {
-      // On mobile, redirect to UPI apps
       window.location.href = upiUrl;
-      // Show the UTR section after a short delay
       setTimeout(() => {
         document.getElementById('utr-section').style.display = 'block';
       }, 1500);
     } else {
-      // On Desktop, prompt them to scan the QR
       alert(`Please scan the QR code above using your UPI app (GPay, PhonePe, Paytm) to pay ₹${paidAmount}.\n\nAfter payment, please enter your UTR/Transaction ID below.`);
-      // Show the UTR section
       document.getElementById('utr-section').style.display = 'block';
     }
   }
 
-  // 7. Submit UTR for verification
   async function submitUTR() {
     const utr = document.getElementById('utrInput').value.trim();
     const paidAmount = parseInt(document.getElementById('customAmount').value) || 10;
+    const btn = document.getElementById('submitUtrBtn');
 
-    if (utr.length < 10) {
+    if (utr.length !== 12 || isNaN(utr)) {
       alert("Please enter a valid 12-digit UTR number.");
       return;
     }
 
-    // Here you would normally send the UTR to your backend to save it in the database.
-    // For now, we will simulate success and redirect to the receipt.
-    
-    // Example backend call:
-    /*
-    try {
-       const res = await fetch('/api/admin/manual-payment', {
-         method: 'POST',
-         headers: {'Content-Type': 'application/json'},
-         body: JSON.stringify({ course_name: courseTitle, amount: paidAmount, utr: utr })
-       });
-       const data = await res.json();
-       if(res.ok) window.location.href = `receipt.html?id=${data.payment.id}`;
-       else alert("Error saving payment: " + data.error);
-    } catch(e) { alert(e.message); }
-    */
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
 
-    // Simulated redirect for now:
-    alert("UTR Received! Your payment is pending admin verification. Redirecting...");
-    // Remove the line below once your backend is set up to handle UTRs
-    window.location.href = `receipt.html?utr=${utr}`; 
+    try {
+      const response = await fetch('/api/admin/manual-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Important if you require users to be logged in
+        body: JSON.stringify({
+          course_name: courseTitle,
+          amount: paidAmount,
+          utr: utr
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Success! Your payment details have been sent to the admin for verification.");
+        window.location.href = `receipt.html?utr=${utr}`; 
+      } else {
+        alert("Error: " + data.error);
+        btn.textContent = 'Submit Payment Proof';
+        btn.disabled = false;
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error. Please try again.");
+      btn.textContent = 'Submit Payment Proof';
+      btn.disabled = false;
+    }
   }
 </script>
 </body>

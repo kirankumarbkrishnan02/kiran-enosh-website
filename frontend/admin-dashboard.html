@@ -48,10 +48,9 @@
     line-height: 1.6;
   }
   
-  /* --- NEW HEADER FLEXBOX STYLES --- */
   .top-nav-header {
     display: flex;
-    justify-content: space-between; /* This pushes them to East and West */
+    justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
     background-color: #0b132b;
@@ -59,10 +58,44 @@
     width: 100%;
     box-sizing: border-box;
   }
+
+  /* New styles for Pending Payments Table */
+  .pending-payment-section {
+    margin-top: 50px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,123,0,0.4);
+    border-radius: 15px;
+    padding: 30px;
+  }
+  .pending-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #fff;
+  }
+  .pending-table th, .pending-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .pending-table th {
+    color: #ff7b00;
+    font-weight: 600;
+  }
+  .btn-approve {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .btn-approve:hover { background: #16a34a; }
 </style>
 </head>
 <body>
-<!-- WRAPPER ADDED HERE -->
 <header class="top-nav-header">
   <a href="admin-dashboard.html" class="nav-brand" style="text-decoration:none;">
     <div class="nav-brand-text">
@@ -72,7 +105,6 @@
   </a>
   <a href="#" id="logoutBtn" class="nav-cta" style="background:rgba(255,60,60,0.2);border:1px solid rgba(255,60,60,0.5); text-decoration:none;">Logout</a>
 </header>
-<!-- END WRAPPER -->
 
 <div class="dashboard-page">
   <div class="dashboard-container">
@@ -86,28 +118,24 @@
 
     <div class="dashboard-grid" style="margin-bottom:50px;">
       
-      <!-- Total Users -> admin.html -->
       <a href="admin.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
         <h3> Total Users</h3>
         <p class="big-number" id="totalUsers">—</p>
         <p>Registered students &amp; admins</p>
       </a>
 
-      <!-- Active Courses -> courses.html -->
       <a href="courses.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
         <h3> Active Courses</h3>
         <p class="big-number" id="totalCourses">—</p>
         <p>Programs currently offered</p>
       </a>
 
-      <!-- Enrollments -> admin-payments.html -->
       <a href="admin-payments.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
         <h3> Enrollments</h3>
         <p class="big-number" id="totalEnrollments">—</p>
         <p>Total course sign-ups</p>
       </a>
 
-      <!-- Total Revenue -> admin-payments.html -->
       <a href="admin-payments.html" class="dash-card" style="text-decoration: none; color: inherit; display: block;">
         <h3> Total Revenue</h3>
         <p class="big-number" id="totalRevenue">—</p>
@@ -119,47 +147,64 @@
     <h2 class="section-title" style="text-align:left;font-size:24px;margin-bottom:20px;">Quick Actions</h2>
 
     <div class="admin-action-grid">
-      <!-- Manage Users -->
       <a href="admin.html" class="admin-action-card">
         <span class="admin-action-icon"></span>
         <h3>Manage Users</h3>
         <p>View, search, and delete student accounts. Change roles and monitor activity.</p>
       </a>
       
-
-      <!-- Helpdesk -->
       <a href="admin-helpdesk.html" class="admin-action-card">
-  <span class="admin-action-icon"></span>
-  <h3>Helpdesk Tickets</h3>
-  <p>See all student questions, reply, and mark them as resolved.</p>
-</a>
-      <!-- Payments -->
+        <span class="admin-action-icon"></span>
+        <h3>Helpdesk Tickets</h3>
+        <p>See all student questions, reply, and mark them as resolved.</p>
+      </a>
+
       <a href="admin-payments.html" class="admin-action-card">
         <span class="admin-action-icon"></span>
         <h3>Payment Records</h3>
         <p>View all course registration payments, verify against your bank, and export.</p>
       </a>
 
-      <!-- NEW ATTENDANCE CARD -->
       <a href="admin-attendance.html" class="admin-action-card">
         <span class="admin-action-icon"></span>
         <h3>Attendance & Live Links</h3>
         <p>Set today's Google Meet link & password. Verify student attendance.</p>
       </a>
 
-      <!-- Browse Courses -->
       <a href="courses.html" class="admin-action-card">
         <span class="admin-action-icon"></span>
         <h3>Browse Courses</h3>
         <p>See courses as a student would. Preview enrollment and payment flow.</p>
       </a>
 
-      <!-- View Homepage -->
       <a href="index.html" class="admin-action-card">
         <span class="admin-action-icon"></span>
         <h3>View Homepage</h3>
         <p>See the public site as visitors do. Check the 3D homepage and courses page.</p>
       </a>
+    </div>
+
+    <!-- NEW SECTION: PENDING UPI PAYMENTS -->
+    <div class="pending-payment-section">
+      <h2 class="section-title" style="text-align:left;font-size:22px;margin-bottom:10px;color:#fff;">Pending UPI Verifications</h2>
+      <p style="color:#a5b1cc; margin-bottom:20px; font-size:14px;">Verify these UTR numbers against your bank statement before approving.</p>
+      
+      <table class="pending-table" id="pendingPaymentsTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Student Name</th>
+            <th>Course</th>
+            <th>Amount</th>
+            <th>UTR Number</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="pendingTableBody">
+          <!-- Data will load here -->
+          <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+        </tbody>
+      </table>
     </div>
 
   </div>
@@ -185,6 +230,7 @@
         return;
       }
       document.getElementById('adminName').textContent = data.user.name;
+      loadPendingPayments(); // Load pending payments only if admin
     })
     .catch(function (err) {
       console.error(err);
@@ -217,6 +263,61 @@
       document.getElementById('totalRevenue').textContent = '₹0';
     });
 
+  // Load Pending Payments
+  async function loadPendingPayments() {
+    try {
+      const res = await fetch(`${API}/admin/pending-payments`, { credentials: 'include' });
+      const data = await res.json();
+      const tbody = document.getElementById('pendingTableBody');
+      
+      if (!data.payments || data.payments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#a5b1cc;">No pending payments right now.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      data.payments.forEach(pay => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${new Date(pay.paid_at).toLocaleDateString()}</td>
+          <td>${pay.user_name}<br><small style="color:#a5b1cc">${pay.user_email}</small></td>
+          <td>${pay.course_name}</td>
+          <td>₹${pay.amount}</td>
+          <td><strong style="color:#ff7b00;">${pay.utr_number}</strong></td>
+          <td>
+            <button class="btn-approve" onclick="approvePayment(${pay.id})">Approve</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error("Failed to load pending payments", err);
+    }
+  }
+
+  // Approve Payment Function
+  async function approvePayment(id) {
+    if(!confirm("Are you sure you have verified this UTR in your bank account and want to approve enrollment?")) return;
+
+    try {
+      const res = await fetch(`${API}/admin/approve-payment/${id}`, { 
+        method: 'POST', 
+        credentials: 'include' 
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Payment Approved! Student is now enrolled.");
+        loadPendingPayments(); // Refresh the table
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error while approving.");
+    }
+  }
+
   // Logout
   document.getElementById('logoutBtn').addEventListener('click', async function (e) {
     e.preventDefault();
@@ -230,5 +331,4 @@
 </script>
     
 </body>
-
-</html> 
+</html>

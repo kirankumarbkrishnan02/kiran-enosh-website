@@ -72,7 +72,7 @@
   }
 
   /* =========================================
-     LIGHT MODE OVERRIDES FOR COURSES PAGE
+     LIGHT MODE OVERRIDES
      ========================================= */
   body.light-mode { 
     background-color: #f8f9fa !important; 
@@ -112,15 +112,26 @@
   body.light-mode .course-card .price { 
     color: #ff7b00 !important; 
   }
+
+  /* Ensure logo text is always visible */
+  .logo-text-main {
+    font-weight: 800; 
+    font-size: 18px; 
+    display: block; 
+    color: #fff;
+  }
+  body.light-mode .logo-text-main {
+    color: #111 !important;
+  }
 </style>
 </head>
-<body style="background-color: #0a1128; margin: 0; padding: 0;">
+<body>
 
-<!-- UPDATED NAVBAR WITH TOGGLE -->
+<!-- NAVBAR -->
 <div class="page-nav" style="background-color: #0b132b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 10px;">
   <a href="dashboard.html" style="display: flex; align-items: center; text-decoration: none;">
     <div style="font-family: 'Poppins', sans-serif;">
-      <span style="font-weight: 800; font-size: 18px; display: block; color: #fff;">KIRAN ENOSH</span>
+      <span class="logo-text-main">KIRAN ENOSH</span>
       <span style="color: #ff7b00; font-size: 12px; font-weight: 600; letter-spacing: 1px;">STUDENT PORTAL</span>
     </div>
   </a>
@@ -133,7 +144,7 @@
     <!-- THEME TOGGLE SWITCH -->
     <div class="theme-switch-wrapper">
       <span class="theme-label">Dark</span>
-      <label class="theme-switch" for="checkbox">
+      <label class="theme-switch" for="themeCheckbox">
         <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()" />
         <div class="slider round"></div>
       </label>

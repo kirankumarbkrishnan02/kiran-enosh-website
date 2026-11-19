@@ -268,7 +268,7 @@
       }
     })
     .catch(err => {
-      // User is NOT logged in
+      // User is NOT logged in (Guest Mode)
       console.log('Guest mode active');
 
       // 1. Hide all prices and show "Login to see fees"
@@ -279,11 +279,19 @@
         el.style.fontSize = '16px';
       });
 
-      // 2. Redirect guests to login if they click Enroll
+      // 2. Force redirect guests to login if they click Enroll
       const enrollButtons = document.querySelectorAll('.enroll-btn');
       enrollButtons.forEach(btn => {
-        btn.href = 'login.html';
         btn.textContent = 'Login to Enroll →';
+        
+        // Remove the default href so the browser doesn't try to follow it
+        btn.removeAttribute('href'); 
+        
+        // Add a click event to force the redirect
+        btn.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            window.location.href = 'login.html'; 
+        });
       });
     });
 </script>

@@ -1834,3 +1834,51 @@ p {
 .highlight-text, .course-price {
   color: var(--primary-orange) !important;
 }
+  /* =========================================
+     MODERN LIGHT THEME OVERRIDES
+     ========================================= */
+  
+  /* 1. Global Background */
+  body.light-mode { 
+      background-color: #f3f4f6 !important; 
+  }
+  
+  /* 2. Navbar */
+  body.light-mode .page-nav, 
+  body.light-mode .navbar-container { 
+      background-color: #ffffff !important; 
+      border-bottom: 1px solid #e5e7eb !important; 
+  }
+  body.light-mode .page-nav a,
+  body.light-mode .navbar-container a { 
+      color: #374151 !important; 
+      border-color: #d1d5db !important; 
+  }
+  body.light-mode .theme-label { color: #374151 !important; }
+
+  /* 3. Header Text */
+  body.light-mode h1 { color: #111827 !important; }
+  body.light-mode .subtitle, 
+  body.light-mode p[style*="color: #a5b1cc"] { 
+      color: #4b5563 !important; 
+  }
+  
+  /* 4. Course Cards - White background, soft shadow */
+  body.light-mode .course-card { 
+      background: #ffffff !important; 
+      border: 1px solid #e5e7eb !important; 
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025); 
+  }
+  
+  /* 5. FORCE Card Text to Black (Overriding inline styles) */
+  body.light-mode .course-card h3 { 
+      color: #111827 !important; /* Deep Black */
+  }
+  body.light-mode .course-card p { 
+      color: #6b7280 !important; /* Modern Gray for descriptions */
+  }
+  
+  /* 6. Price Styling */
+  body.light-mode .course-price { 
+      color: #ea580c !important; /* Slightly darker orange for readability */
+  }

@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const { body, validationResult } = require('express-validator');
 const pool = require('../db');
 const sendPasswordResetEmail = require('../utils/email');
+const nodemailer = require('nodemailer');
 
 const router = express.Router();
 
@@ -111,7 +112,7 @@ router.post(
         maxAge: 24 * 60 * 60 * 1000,
       });
       delete user.password_hash;
-      res.json({ success: true, user });
+      sendWelcomeEmail(user.email, user.name); 
     } catch (err) {
       console.error('Login error:', err);
       res.status(500).json({ error: 'Server error' });
@@ -286,4 +287,38 @@ router.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
 });
+// 1. Setup the transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'info.kiranenosh@gmail.com',
+    pass: process.env.GMAIL_APP_PASSWORD
+  }
+});
+
+// 2. Create the function
+const sendWelcomeEmail = async (studentEmail, studentName) => {
+  try {
+    const mailOptions = {
+      from: '"Kiran Enosh" <info.kiranenosh@gmail.com>',
+      to: studentEmail,
+      subject: 'Welcome to Kiran Enosh Student Portal!',
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+          <h2 style="color: #ff7b00;">Welcome, ${studentName}!</h2>
+          <p>Thank you for logging in to the Kiran Enosh Student Portal.</p>
+          <p>We are excited to have you on board. You can now explore our courses and start learning.</p>
+          <br>
+          <p>Best regards,</p>
+          <p><strong>The Kiran Enosh Team</strong></p>
+        </div>
+      `
+    };
+    
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent to:', studentEmail);
+  } catch (error) {
+    console.error('Email error:', error);
+  }
+};
 module.exports = router;

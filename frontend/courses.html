@@ -163,6 +163,41 @@
     .catch(err => {
       console.log('Guest mode: prices hidden.');
     });
+  // Check authentication IMMEDIATELY when page loads
+  fetch('/api/auth/me', { credentials: 'include' })
+    .then(res => {
+      if (!res.ok) {
+        // USER IS NOT LOGGED IN: Redirect to login page
+        window.location.href = 'login.html'; 
+        throw new Error('Not logged in');
+      }
+      return res.json();
+    })
+    .then(data => {
+      const user = data.user;
+      
+      // 1. Show prices now that we know they are logged in
+      const prices = document.querySelectorAll('.course-price');
+      prices.forEach(p => { p.style.display = 'block'; });
+
+      // 2. Change buttons to redirect to course-details
+      const btns = document.querySelectorAll('.enroll-btn');
+      btns.forEach(btn => {
+        btn.textContent = 'View & Enroll →';
+      });
+      
+      // 3. Show user name
+      const pill = document.getElementById('userPill');
+      const nameEl = document.getElementById('userNameNav');
+      if (pill && nameEl) {
+        nameEl.textContent = user.name;
+        pill.style.display = 'inline-block';
+      }
+    })
+    .catch(err => {
+      // If there's an error (like not logged in), they are already redirected above.
+      console.log('Authentication check failed.');
+    });
 </script>
 <script src="js/theme.js"></script>
 </body>
